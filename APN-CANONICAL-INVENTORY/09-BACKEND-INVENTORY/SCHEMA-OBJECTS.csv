@@ -1,0 +1,26 @@
+object,type,rows_at_inspection,data_status,rls_enabled,anon_access,classification,plain_english_purpose
+public.resources,table,1423,operational,true,SELECT (published only),RESOURCE DIRECTORY,Free resource register (public hub core)
+public.apn_ledger_events,table,13158,operational,true,none,LEDGER INFRASTRUCTURE,Append-only global hash-chained audit spine for 4 machines
+public.domains,table,216,operational,true,SELECT (live/listed),INTERNAL/SALES,Domain portfolio register + live-check
+public.resource_categories,table,30,seed,true,SELECT (active),RESOURCE DIRECTORY,Resource taxonomy
+public.packages,table,7,seed,true,SELECT (listed),MARKETPLACE ASSET,Domain/network sale packages
+public.brands,table,5,seed,true,SELECT (active),REFERENCE,Brand registry
+public.verticals,table,4,seed,true,SELECT (active),REFERENCE,Industry verticals
+public.company_profile,table,1,seed,true,none (RLS deny),INTERNAL CONFIGURATION,Singleton APN company profile (ACN only)
+public.audit_config,table,1,config,true,none (deny-all),INTERNAL CONFIGURATION,Private machine config incl link-audit cron_secret
+public.ads,table,0,empty,true,SELECT (active),FUTURE USE,Sponsor placements
+public.inquiries,table,0,empty,true,INSERT only,ACTIVE PRODUCT,Sales/contact enquiries (PII)
+public.jobs,table,0,empty,true,SELECT (active),FUTURE USE,Job board
+public.waitlist,table,0,empty,true,INSERT only,ACTIVE PRODUCT,Launch-site early access (PII)
+public.resource_submissions,table,0,empty,true,INSERT only,ACTIVE PRODUCT,Public resource proposals (contributor PII private)
+public.manual_resources,table,0,empty,true,none,DORMANT,Manually-maintained resources
+public.network_nodes,table,0,empty,true,SELECT (active),FUTURE USE,APN network node registry
+public.network_events,table,0,empty,true,none,FUTURE USE,Network referral/health telemetry
+public.link_audit_queue,table,0,empty,true,none,SCHEDULED PROCESS,Link-audit work queue
+public.inbox_projects,table,0,empty,true,owner-isolated,INTERNAL TOOL,Inbox Guardian projects
+public.inbox_queue_items,table,0,empty,true,owner-isolated,INTERNAL TOOL,Inbox uploads queue (storage-linked)
+public.inbox_routing_rules,table,0,empty,true,owner-isolated,INTERNAL TOOL,Inbox routing rules
+public.resource_register,view,n/a,derived,n/a,none (service only),RESOURCE DIRECTORY,Public-safe resource projection (NOT wired to anon)
+public.contributor_wall,view,n/a,derived,n/a,none (service only),RESOURCE DIRECTORY,Contributor recognition projection (NOT wired to anon)
+public.security_audit_log,view,n/a,derived,n/a,none (service only),INTERNAL TOOL,Security self-audit view
+storage.inbox-uploads,bucket,n/a,private,n/a,none,STORAGE SERVICE,Private inbox file uploads

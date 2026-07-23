@@ -1,0 +1,34 @@
+version,name,plain_english,author_signature,migration_state,notes
+20260606170440,apn_engine_room_company_profile_and_resources,Initial company profile + resources,named (CLI/Claude),LIVE (repo unverified),
+20260606183629,resources_table_v2_with_link_health,Resources v2 + link health,named,LIVE,
+20260606184332,resources_revoke_seed_grant_and_add_jurisdiction_trust,Lock seed grants; jurisdiction/trust,named,LIVE,
+20260609164357,create_waitlist_launch_site,Waitlist table,named,LIVE,
+20260609202948,create_resource_import_staging,Import staging,named,LIVE,
+20260610072725,sales_community_jobs_network_layer_v1,Sales/community/jobs/network tables,named,LIVE,mostly empty tables
+20260610075019,resources_withheld_reason_for_transparency_ledger,Withheld reason column,named,LIVE,
+20260610085327,machines_foundation_v1,Four-machine foundation,named,LIVE,
+20260610093340,domain_strategy_classification_v1,Domain classification,named,LIVE,
+20260613025408,apn_link_audit_engine,Link audit engine,named,LIVE,
+20260613025701,apn_ledger_tamper_evident_and_api,Tamper-evident ledger + API,named,LIVE,ledger_chain + block triggers
+20260613033633,apn_self_governing_retention_and_erasure,Retention + erasure,named,LIVE,erase_subject/purge_expired
+20260613124242,lock_down_resources_rollback_backup,Resource lockdown,named,LIVE,
+20260619220222,harden_function_search_path_and_lockdown_destructive_rpcs,Harden search_path; lock destructive RPCs,named,LIVE,security hardening
+20260619220853,least_privilege_table_grants_and_inquiries_validation,Least-privilege grants,named,LIVE,
+20260619221658,lock_default_privileges_new_objects_born_locked,Born-locked defaults,named,LIVE,
+20260708201927,add_live_check_columns_to_domains,Domain live-check columns,named,LIVE,
+20260708202252,schedule_domain_watch_cron,Domain-watch cron,named,LIVE,
+20260714115750,resource_register_public_view,Public-safe resource view,named,LIVE,view not granted to anon
+20260714120114,resource_submissions_and_recognition,Submissions + contributor wall,named,LIVE,
+20260714120211,accept_resource_submission_fn,Accept-submission fn,named,LIVE,
+20260714120344,audit_config_secret,audit_config secret table,named,LIVE,
+20260717045637,UUID 7ec0b057,UNVERIFIED (Lovable dashboard),Lovable UUID,LIVE ONLY (repo unverified),needs Codex repo diff
+20260717045726,UUID df470884,UNVERIFIED (Lovable),Lovable UUID,LIVE ONLY,needs Codex repo diff
+20260717050351,UUID 94da63d9,UNVERIFIED (Lovable),Lovable UUID,LIVE ONLY,needs Codex repo diff
+20260719003610,UUID b95a5bee,UNVERIFIED (Lovable),Lovable UUID,LIVE ONLY,needs Codex repo diff
+20260719212943,UUID 20024dc3,UNVERIFIED (Lovable),Lovable UUID,LIVE ONLY,needs Codex repo diff
+20260719222505,UUID cbb216de,UNVERIFIED (Lovable),Lovable UUID,LIVE ONLY,needs Codex repo diff
+20260719223347,UUID bf0a6d75,UNVERIFIED (Lovable),Lovable UUID,LIVE ONLY,needs Codex repo diff
+20260720013031,UUID e491e545,UNVERIFIED (Lovable),Lovable UUID,LIVE ONLY,needs Codex repo diff
+20260721013226,inbox_v0_schema_and_ledger_lane,Inbox v0 schema + ledger lane,named,LIVE,
+20260721150354,UUID 6f6897bf,UNVERIFIED (Lovable),Lovable UUID,LIVE ONLY,needs Codex repo diff
+20260721151039,UUID a0de37b5,UNVERIFIED (Lovable),Lovable UUID,LIVE ONLY,needs Codex repo diff
