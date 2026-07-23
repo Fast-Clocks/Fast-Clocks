@@ -1,0 +1,14 @@
+# Python build artifacts
+__pycache__/
+*.pyc
+*.pyo
+
+# File Brain runtime data (never committed — lives on the user's machine)
+*.db
+*.db-wal
+*.db-shm
+.filebrain/
+dist/
+reports/
+quarantine/
+MANIFEST.sha256
