@@ -1,0 +1,15 @@
+contradiction_id,title,affected_product_ids,evidence,status
+CON-001,Pricing ladder — which is authoritative today,APN-PROD-0001;0002;0003;0012;0014;0019,"Portfolio Map CURRENT (10 Jun) locks ONLY $75 + $1,200 live; all others RETIRED. Older docs + June pricing model carry different full ladders ($200/$700/$999/$1,500/$3,000/$25,000 and $29–$5,000).",UNRESOLVED — do not select
+CON-002,Founding Members price,APN-PROD-0002,"$700 (ADR_Business_Breakdown, Mar) vs $1,200 (Portfolio Map, Jun locked)",UNRESOLVED
+CON-003,DIY Kit price,APN-PROD-0003,$75 (locked) vs $79 (older),UNRESOLVED
+CON-004,Exposure audit price,APN-PROD-0014,$75 (Network Map) vs $200/$350 (elsewhere),UNRESOLVED
+CON-005,Legal entity,ALL,Sole trader ABN 86 921 751 764 (older; now a 'dead' value that must not appear) vs Pty Ltd ACN 695 272 836 (current),UNRESOLVED — record both
+CON-006,Incorporation date,ALL,"'Incorporated 13 Feb 2026' (ADR_Business_Breakdown) vs 'sole trader, not yet incorporated' (Master Business Plan, 30 May)",UNRESOLVED
+CON-007,Resource count,APN-PROD-0011;0007,"~268 published (Supabase) vs ~310/316 vs ~48k/50,000 referenced",UNRESOLVED — only 268 confirmed
+CON-008,DataTrace purpose,APN-PROD-0014,Portfolio Map 'UNKNOWN — confirm what this is' vs Network Map treats TRACE as confirmed self-exposure scanner,UNRESOLVED
+CON-009,'File Brain' naming,APN-PROD-0033,'File Brain' not found verbatim; closest is 'Watchkeeper's Filing Machine'/'filing-machine' (5 duplicate docs),UNRESOLVED — verify same product
+CON-010,Payments live vs test,APN-PROD-0001;0003;0006;0034,"Stripe on TEST/sandbox across ADR, DWD, SafePet as of latest docs; no confirmed live end-to-end transaction",UNRESOLVED
+CON-011,Tamper-evidence claim,APN-PROD-0024;0027,Ledger presented as tamper-evident vs Layer C (external witness) DESIGNED not built; DB hash chain alone not tamper-evident,UNRESOLVED — matches backend FIND-004
+CON-012,Sovereign Hub vs Suite / Forge duplicate,APN-PROD-0031,Sovereign Hub duplicates the canonical Suite; Sovereign Forge has a duplicate to retire,UNRESOLVED — de-dupe pending
+CON-013,Hugo AI maturity,APN-PROD-0009,'Live in code' (DWD2.0) vs 'prototype stack in progress' (Master Business Plan),UNRESOLVED
+CON-014,SafePet verified vs pending,APN-PROD-0034,'100% verified / 0 anonymous' marketing vs 'pending' statuses in reality (ACL misleading-conduct risk),UNRESOLVED — legal review

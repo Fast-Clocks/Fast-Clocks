@@ -1,0 +1,78 @@
+product_id,canonical_name,source_doc,drive_id,evidence_label
+APN-PROD-0001,Australian Data Removal — Core Service Ladder,ADR_Business_Breakdown.md,1FvErnZmcqs9OfW1Xzqqr0zeouImDxOvk,DIRECT
+APN-PROD-0001,Australian Data Removal — Core Service Ladder,APN — Master Business Plan (Living Doc) v1,1G_lBLty7YUtOMjxz-mM-5H_mXyoKKny9dHaAAvjo1fc,DIRECT
+APN-PROD-0001,Australian Data Removal — Core Service Ladder,APN-PORTFOLIO-MAP-CURRENT.md,1B9P3VZACABcKenc9zPdYerQdOEGrUhJNcEwjQob3kEI,DIRECT
+APN-PROD-0001,Australian Data Removal — Core Service Ladder,DWD2.0.docx,1UigDmhZs-9wmLf-Ys3F3LYcYnCw1GHrV,DIRECT
+APN-PROD-0002,ADR Founding Members Program,ADR_Business_Breakdown.md,1FvErnZmcqs9OfW1Xzqqr0zeouImDxOvk,DIRECT
+APN-PROD-0002,ADR Founding Members Program,APN — Master Business Plan (Living Doc) v1,1G_lBLty7YUtOMjxz-mM-5H_mXyoKKny9dHaAAvjo1fc,DIRECT
+APN-PROD-0002,ADR Founding Members Program,APN-PORTFOLIO-MAP-CURRENT.md,1B9P3VZACABcKenc9zPdYerQdOEGrUhJNcEwjQob3kEI,DIRECT
+APN-PROD-0003,ADR DIY Removal Kit,DWD2.0.docx,1UigDmhZs-9wmLf-Ys3F3LYcYnCw1GHrV,DIRECT
+APN-PROD-0003,ADR DIY Removal Kit,ADR_Business_Breakdown.md,1FvErnZmcqs9OfW1Xzqqr0zeouImDxOvk,DIRECT
+APN-PROD-0003,ADR DIY Removal Kit,APN — Master Business Plan (Living Doc) v1,1G_lBLty7YUtOMjxz-mM-5H_mXyoKKny9dHaAAvjo1fc,DIRECT
+APN-PROD-0004,ExposureRadar / OSINT Scanner (ADR-era),ADR_Business_Breakdown.md,1FvErnZmcqs9OfW1Xzqqr0zeouImDxOvk,DIRECT
+APN-PROD-0005,Sovereign Tank Lab (early product line),ADR_Business_Breakdown.md,1FvErnZmcqs9OfW1Xzqqr0zeouImDxOvk,DIRECT
+APN-PROD-0006,darkwebscanner.com.au,DWD2.0.docx,1UigDmhZs-9wmLf-Ys3F3LYcYnCw1GHrV,DIRECT
+APN-PROD-0007,Dark Web Directory (The Hub),DWD2.0.docx,1UigDmhZs-9wmLf-Ys3F3LYcYnCw1GHrV,DIRECT
+APN-PROD-0007,Dark Web Directory (The Hub),APN-NETWORK-MAP-v1.md,1XjCzP2b4VFkdY0hCLX0IaQz79dsqkTP0W5sq8E_5SW0,DIRECT
+APN-PROD-0007,Dark Web Directory (The Hub),APN — Master Business Plan (Living Doc) v1,1G_lBLty7YUtOMjxz-mM-5H_mXyoKKny9dHaAAvjo1fc,DIRECT
+APN-PROD-0008,Business-in-a-Box + Domain Portfolio,DWD2.0.docx,1UigDmhZs-9wmLf-Ys3F3LYcYnCw1GHrV,DIRECT
+APN-PROD-0008,Business-in-a-Box + Domain Portfolio,APN-NETWORK-MAP-v1.md,1XjCzP2b4VFkdY0hCLX0IaQz79dsqkTP0W5sq8E_5SW0,DIRECT
+APN-PROD-0009,Hugo AI (concierge / HITL),DWD2.0.docx,1UigDmhZs-9wmLf-Ys3F3LYcYnCw1GHrV,DIRECT
+APN-PROD-0009,Hugo AI (concierge / HITL),APN — Master Business Plan (Living Doc) v1,1G_lBLty7YUtOMjxz-mM-5H_mXyoKKny9dHaAAvjo1fc,DIRECT
+APN-PROD-0010,APN Hub / Core (front door),APN-NETWORK-MAP-v1.md,1XjCzP2b4VFkdY0hCLX0IaQz79dsqkTP0W5sq8E_5SW0,DIRECT
+APN-PROD-0010,APN Hub / Core (front door),APN-Project-Overview.md,16xmNJ3epeKHI4o0MQT31XyEgE_KyEwriQM1hMwVI2Yw,DIRECT
+APN-PROD-0010,APN Hub / Core (front door),APN-PORTFOLIO-MAP-CURRENT.md,1B9P3VZACABcKenc9zPdYerQdOEGrUhJNcEwjQob3kEI,DIRECT
+APN-PROD-0011,APN Free Resource Hub + Verified Directory,APN — Master Business Plan (Living Doc) v1,1G_lBLty7YUtOMjxz-mM-5H_mXyoKKny9dHaAAvjo1fc,DIRECT
+APN-PROD-0011,APN Free Resource Hub + Verified Directory,APN-Project-Overview.md,16xmNJ3epeKHI4o0MQT31XyEgE_KyEwriQM1hMwVI2Yw,DIRECT
+APN-PROD-0011,APN Free Resource Hub + Verified Directory,APN-NETWORK-MAP-v1.md,1XjCzP2b4VFkdY0hCLX0IaQz79dsqkTP0W5sq8E_5SW0,DIRECT
+APN-PROD-0011,APN Free Resource Hub + Verified Directory,"SOVEREIGN ENGINE — Uses, Extensions and Keeper Builds",1235yBjKhXpAScE4dpIEgYDjji31UBo60KB8XLGKLIVM,DIRECT
+APN-PROD-0012,APN Directory / Resource Widget,APN — Master Business Plan (Living Doc) v1,1G_lBLty7YUtOMjxz-mM-5H_mXyoKKny9dHaAAvjo1fc,DIRECT
+APN-PROD-0012,APN Directory / Resource Widget,June Commercial Pricing Model (owner kiwichefchris),,DIRECT (drive_id pending — Codex)
+APN-PROD-0012,APN Directory / Resource Widget,apn_master_specification_v2,1eFephrqosyJHAEDf01gMLxkpMLnnIxpMas5vb9bUtUQ,DIRECT
+APN-PROD-0013,APN Scanner / CID / Intelligence Platform,APN — Master Business Plan (Living Doc) v1,1G_lBLty7YUtOMjxz-mM-5H_mXyoKKny9dHaAAvjo1fc,DIRECT
+APN-PROD-0013,APN Scanner / CID / Intelligence Platform,DWD2.0.docx,1UigDmhZs-9wmLf-Ys3F3LYcYnCw1GHrV,DIRECT
+APN-PROD-0014,TRACE / DataTrace,APN-NETWORK-MAP-v1.md,1XjCzP2b4VFkdY0hCLX0IaQz79dsqkTP0W5sq8E_5SW0,DIRECT
+APN-PROD-0014,TRACE / DataTrace,APN-PORTFOLIO-MAP-CURRENT.md,1B9P3VZACABcKenc9zPdYerQdOEGrUhJNcEwjQob3kEI,DIRECT
+APN-PROD-0015,APN Builder ('Product Zero'),APN-Project-Overview.md,16xmNJ3epeKHI4o0MQT31XyEgE_KyEwriQM1hMwVI2Yw,DIRECT
+APN-PROD-0016,APN Bot Workshop,APN-Project-Overview.md,16xmNJ3epeKHI4o0MQT31XyEgE_KyEwriQM1hMwVI2Yw,DIRECT
+APN-PROD-0017,APN Trust Spine / Verification Machine,APN — Master Business Plan (Living Doc) v1,1G_lBLty7YUtOMjxz-mM-5H_mXyoKKny9dHaAAvjo1fc,DIRECT
+APN-PROD-0017,APN Trust Spine / Verification Machine,APN-NETWORK-MAP-v1.md,1XjCzP2b4VFkdY0hCLX0IaQz79dsqkTP0W5sq8E_5SW0,DIRECT
+APN-PROD-0017,APN Trust Spine / Verification Machine,APN-Project-Overview.md,16xmNJ3epeKHI4o0MQT31XyEgE_KyEwriQM1hMwVI2Yw,DIRECT
+APN-PROD-0018,Dead Letter Box / 0xBRK.BKWD,APN — Master Business Plan (Living Doc) v1,1G_lBLty7YUtOMjxz-mM-5H_mXyoKKny9dHaAAvjo1fc,DIRECT
+APN-PROD-0019,APN Tech Startup Hub + Sponsors / Jobs Board,APN-NETWORK-MAP-v1.md,1XjCzP2b4VFkdY0hCLX0IaQz79dsqkTP0W5sq8E_5SW0,DIRECT
+APN-PROD-0019,APN Tech Startup Hub + Sponsors / Jobs Board,June Commercial Pricing Model (owner kiwichefchris),,DIRECT (drive_id pending — Codex)
+APN-PROD-0019,APN Tech Startup Hub + Sponsors / Jobs Board,apn_master_specification_v2,1eFephrqosyJHAEDf01gMLxkpMLnnIxpMas5vb9bUtUQ,DIRECT
+APN-PROD-0020,Government & Public API Index,APN-Project-Overview.md,16xmNJ3epeKHI4o0MQT31XyEgE_KyEwriQM1hMwVI2Yw,DIRECT
+APN-PROD-0021,APN Site Bundle,APN-NETWORK-MAP-v1.md,1XjCzP2b4VFkdY0hCLX0IaQz79dsqkTP0W5sq8E_5SW0,DIRECT
+APN-PROD-0022,APN Education Arm,APN — Master Business Plan (Living Doc) v1,1G_lBLty7YUtOMjxz-mM-5H_mXyoKKny9dHaAAvjo1fc,DIRECT
+APN-PROD-0022,APN Education Arm,ADR_Business_Breakdown.md,1FvErnZmcqs9OfW1Xzqqr0zeouImDxOvk,DIRECT
+APN-PROD-0023,APN Modernised API Design Standard,03 — APN Modernised API Design Standard,1QrPtLxj-xZ4fizZklZLFwdTwb7Kkvu8HlfIYW2RO3tI,DIRECT
+APN-PROD-0023,APN Modernised API Design Standard,"SOVEREIGN ENGINE — Uses, Extensions and Keeper Builds",1235yBjKhXpAScE4dpIEgYDjji31UBo60KB8XLGKLIVM,DIRECT
+APN-PROD-0024,Sovereign Engine (assurance core),APN-Sovereign-Engine-Commercial-Discussion-Pack,1aWDwF0wHP8DxM48aMF2X1rdr3ap-cveBee-kFwJGpGs,DIRECT
+APN-PROD-0024,Sovereign Engine (assurance core),"SOVEREIGN ENGINE — Uses, Extensions and Keeper Builds",1235yBjKhXpAScE4dpIEgYDjji31UBo60KB8XLGKLIVM,DIRECT
+APN-PROD-0024,Sovereign Engine (assurance core),01 — Sovereign Engine — Controlled Commercial Review — July 2026,1yIrAYGYcmADzBfBDeKax3CroI5jfO0tQ,DIRECT
+APN-PROD-0025,Assay Seal v0.1,01 — Assay Seal v0.1 — Build Book and 8-of-8 Logic Tests,1QOcgR3MiBP15K4zt8DH7cAyVqNEuDCa2GkaGD8R2gHk,DIRECT
+APN-PROD-0026,APN Seal / Sign & Stamp,"SOVEREIGN ENGINE — Uses, Extensions and Keeper Builds",1235yBjKhXpAScE4dpIEgYDjji31UBo60KB8XLGKLIVM,DIRECT
+APN-PROD-0026,APN Seal / Sign & Stamp,02 — APN Seal — Market and Build Report,1Wk4qCdu9Fe7LEeuKtXq9fo-ghm3TRJCYoFcEaxdYEkc,DIRECT
+APN-PROD-0027,APN Backbone (apn-backbone-sydney),"SOVEREIGN ENGINE — Uses, Extensions and Keeper Builds",1235yBjKhXpAScE4dpIEgYDjji31UBo60KB8XLGKLIVM,DIRECT
+APN-PROD-0027,APN Backbone (apn-backbone-sydney),APN-PORTFOLIO-MAP-CURRENT.md,1B9P3VZACABcKenc9zPdYerQdOEGrUhJNcEwjQob3kEI,DIRECT
+APN-PROD-0028,APN Ledger Trust / provenance-keeper,"SOVEREIGN ENGINE — Uses, Extensions and Keeper Builds",1235yBjKhXpAScE4dpIEgYDjji31UBo60KB8XLGKLIVM,DIRECT
+APN-PROD-0029,Certificate / Trust-Seal Template,"SOVEREIGN ENGINE — Uses, Extensions and Keeper Builds",1235yBjKhXpAScE4dpIEgYDjji31UBo60KB8XLGKLIVM,DIRECT
+APN-PROD-0030,APN Widget Studio (guardian-studio),"SOVEREIGN ENGINE — Uses, Extensions and Keeper Builds",1235yBjKhXpAScE4dpIEgYDjji31UBo60KB8XLGKLIVM,DIRECT
+APN-PROD-0031,Sovereign Suite family,"SOVEREIGN ENGINE — Uses, Extensions and Keeper Builds",1235yBjKhXpAScE4dpIEgYDjji31UBo60KB8XLGKLIVM,DIRECT
+APN-PROD-0032,Sovereign standalones & harvest/merge/bin set,"SOVEREIGN ENGINE — Uses, Extensions and Keeper Builds",1235yBjKhXpAScE4dpIEgYDjji31UBo60KB8XLGKLIVM,DIRECT
+APN-PROD-0033,Watchkeeper's Filing Machine,filing-machine (x5 duplicate docs),1Zo7-jurmZCWVvHlI4wu37PY8nhsfbtMFsLdLs-QCtYw,DIRECT
+APN-PROD-0033,Watchkeeper's Filing Machine,FilingMachine.html,1_AzMovFaqLq-uHvFD1G1PMAj-akR_QjZ,DIRECT
+APN-PROD-0033,Watchkeeper's Filing Machine,FilingMachine_v2.html,10z5GwwmgxA6Ty7WdUx90pbw3uVzmbBB8,DIRECT
+APN-PROD-0033,Watchkeeper's Filing Machine,APN_SOVEREIGN_ENGINE_TECHNICAL_BOOK.md,11rwZ53moe2iDnSC200P4kwVtcR88sz6MOl3owpuktuU,DIRECT
+APN-PROD-0034,SafePet / Perth Pets,SafePet_Compliance_Legal_Privacy_Review,1eupouhlVS4A1WewLaqejbJu_LlbhaK5mPAW828VYvGw,DIRECT
+APN-PROD-0035,Sovereign Tank (showcase / game),"SOVEREIGN ENGINE — Uses, Extensions and Keeper Builds",1235yBjKhXpAScE4dpIEgYDjji31UBo60KB8XLGKLIVM,DIRECT
+APN-PROD-0035,Sovereign Tank (showcase / game),sovereigntankdesign.md,1npV7tw4m2DJjuJLnZnA7kk9YdmW0I8j0J_Yi1gsw8vo,DIRECT
+APN-PROD-0036,Sovereignty Lab / reseller cluster,APN-PORTFOLIO-MAP-CURRENT.md,1B9P3VZACABcKenc9zPdYerQdOEGrUhJNcEwjQob3kEI,DIRECT
+APN-PROD-0036,Sovereignty Lab / reseller cluster,APN-NETWORK-MAP-v1.md,1XjCzP2b4VFkdY0hCLX0IaQz79dsqkTP0W5sq8E_5SW0,DIRECT
+APN-PROD-0037,Executive / Corporate Privacy,APN-Project-Overview.md,16xmNJ3epeKHI4o0MQT31XyEgE_KyEwriQM1hMwVI2Yw,DIRECT
+APN-PROD-0037,Executive / Corporate Privacy,DWD2.0.docx,1UigDmhZs-9wmLf-Ys3F3LYcYnCw1GHrV,DIRECT
+APN-PROD-0038,Hologram Safety Displays,APN — Master Business Plan (Living Doc) v1,1G_lBLty7YUtOMjxz-mM-5H_mXyoKKny9dHaAAvjo1fc,DIRECT
+APN-PROD-0039,Sovereign Data Environment (ADS),APN — Master Business Plan (Living Doc) v1,1G_lBLty7YUtOMjxz-mM-5H_mXyoKKny9dHaAAvjo1fc,DIRECT
+APN-PROD-0040,Mass-Breach Response Packages,APN — Master Business Plan (Living Doc) v1,1G_lBLty7YUtOMjxz-mM-5H_mXyoKKny9dHaAAvjo1fc,DIRECT
+APN-PROD-0041,Social Mission — Elderly Care,APN — Master Business Plan (Living Doc) v1,1G_lBLty7YUtOMjxz-mM-5H_mXyoKKny9dHaAAvjo1fc,DIRECT
