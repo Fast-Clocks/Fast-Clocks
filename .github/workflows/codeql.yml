@@ -1,11 +1,14 @@
 name: CodeQL
 
-# GitHub's own static security analysis. Free on private repos for this org tier,
-# and it catches the class of defect a claims-linter cannot: injection, XSS,
-# unsafe deserialisation, path traversal, hardcoded credentials in logic.
+# GitHub's static security analysis. Catches the class of defect a claims-linter
+# cannot: injection, XSS, unsafe deserialisation, path traversal, hardcoded
+# credentials in logic.
 #
-# Adopt in every JS/TS repo. Results land in the Security tab and, with branch
-# protection on, block merges (§13 security baseline, §30 release gate).
+# GUARDED: CodeQL fails with "configuration error" when a repo contains no
+# analysable source. Several repos in this estate are static covers or profile
+# stubs with no JS/TS at all, so an unguarded CodeQL job would sit permanently
+# red on them — and a permanently-red check is worse than no check, because
+# people stop reading it. The detect job below skips cleanly instead.
 
 on:
   push:
@@ -22,8 +25,33 @@ permissions:
   security-events: write
 
 jobs:
+  detect:
+    name: Detect analysable source
+    runs-on: ubuntu-latest
+    outputs:
+      has-code: ${{ steps.check.outputs.has-code }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: check
+        run: |
+          COUNT=$(find . -path ./node_modules -prune -o -path ./.git -prune -o \
+            -type f \( -name '*.js' -o -name '*.jsx' -o -name '*.ts' -o -name '*.tsx' \
+            -o -name '*.mjs' -o -name '*.cjs' \) -print | wc -l)
+          echo "Found $COUNT analysable JS/TS files."
+          if [ "$COUNT" -gt 0 ]; then
+            echo "has-code=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has-code=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::No JS/TS source — CodeQL skipped. This is not a pass; nothing was analysed."
+            echo "### CodeQL skipped" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "No analysable JS/TS source in this repo. **Nothing was scanned** — this is a skip, not a pass." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
   analyze:
     name: Analyze (${{ matrix.language }})
+    needs: detect
+    if: needs.detect.outputs.has-code == 'true'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -35,8 +63,8 @@ jobs:
       - uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
-          # security-and-quality is the widest ruleset. Use it — the estate has
-          # enough half-finished code that quality findings are worth seeing.
+          # Widest ruleset. The estate has enough half-finished code that the
+          # quality findings are worth seeing alongside the security ones.
           queries: security-and-quality
 
       - uses: github/codeql-action/autobuild@v3
