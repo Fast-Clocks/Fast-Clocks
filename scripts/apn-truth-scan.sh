@@ -27,6 +27,8 @@ SCAN_DIRS=$(find "$ROOT" -type d \( -name node_modules -o -name .git -o -name di
   -o -name '*.html' -o -name '*.md' -o -name '*.json' -o -name '*.svelte' -o -name '*.vue' \) -print)
 
 say "=== APN TRUTH SCAN — $(date -u +%Y-%m-%dT%H:%M:%SZ) — ${ROOT} ==="
+say "Scanned $(printf '%s\n' "$SCAN_DIRS" | grep -c . || echo 0) source files."
+say "PASSED means these specific checks found nothing. It does NOT mean the product works."
 say ""
 
 # ── §25 PROHIBITED MARKETING CLAIMS ────────────────────────────────────────────
@@ -126,6 +128,10 @@ if printf '%s\n' "$SCAN_DIRS" | grep -qE '\.(html|tsx|jsx)$'; then
   else
     warn "no 'Australian Data Removal Pty Ltd' or 'ACN 695 272 836' found — required on public surfaces"
   fi
+else
+  # A skipped check must SAY it was skipped. A silent section reads as "covered"
+  # when nothing was covered — the exact failure this scanner exists to catch.
+  say "➖ N/A   no user-facing markup (.html/.tsx/.jsx) in this repo — check not applicable"
 fi
 
 # ── SUMMARY ────────────────────────────────────────────────────────────────────
