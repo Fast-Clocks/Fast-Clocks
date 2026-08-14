@@ -1,0 +1,198 @@
+name: APN Daily Estate Scan
+
+# The daily checkup across the WHOLE estate. Runs every repo through the truth scan,
+# then writes ONE issue — today's fix list — so the next session opens with a
+# prioritised list instead of re-discovering the estate from zero.
+#
+# This is the machinery the Constitution has always lacked: §4 pre-build gate and
+# §23 website quality become things that RUN, not things an agent may forget to read.
+#
+# The issue is UPDATED in place, never duplicated (§7 one canonical system).
+
+on:
+  schedule:
+    - cron: '0 20 * * *'   # 20:00 UTC = 04:00 AWST (Perth) — list ready before the day starts
+  workflow_dispatch:
+    inputs:
+      repos:
+        description: 'Space-separated repo names to scan (blank = all)'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: apn-daily-estate-scan
+  cancel-in-progress: false
+
+jobs:
+  discover:
+    name: Discover repos
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.list.outputs.matrix }}
+    steps:
+      - name: List all org repos
+        id: list
+        env:
+          # APN_ESTATE_TOKEN: fine-grained PAT, read-only Contents+Metadata on Fast-Clocks repos.
+          # Falls back to GITHUB_TOKEN, which can only see THIS repo — so without the PAT
+          # the estate scan silently becomes a single-repo scan. That is exactly the kind of
+          # silent narrowing that has cost months. It is called out loudly in the report.
+          GH_TOKEN: ${{ secrets.APN_ESTATE_TOKEN || github.token }}
+        run: |
+          if [ -n "${{ inputs.repos }}" ]; then
+            REPOS="${{ inputs.repos }}"
+          elif [ -n "${{ secrets.APN_ESTATE_TOKEN }}" ]; then
+            REPOS=$(gh repo list Fast-Clocks --limit 200 --json name -q '.[].name' | tr '\n' ' ')
+          else
+            REPOS="${{ github.event.repository.name }}"
+            echo "::warning::APN_ESTATE_TOKEN not set — scanning THIS REPO ONLY, not the estate."
+          fi
+          echo "Discovered: $REPOS"
+          JSON=$(printf '%s\n' $REPOS | jq -R . | jq -sc .)
+          echo "matrix=$JSON" >> "$GITHUB_OUTPUT"
+
+  scan:
+    name: Scan ${{ matrix.repo }}
+    needs: discover
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        repo: ${{ fromJson(needs.discover.outputs.matrix) }}
+    steps:
+      - name: Checkout scanner
+        uses: actions/checkout@v4
+
+      - name: Checkout target repo
+        id: target
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          repository: Fast-Clocks/${{ matrix.repo }}
+          token: ${{ secrets.APN_ESTATE_TOKEN || github.token }}
+          path: target
+          fetch-depth: 1
+
+      - name: Scan
+        if: steps.target.outcome == 'success'
+        run: |
+          chmod +x scripts/apn-truth-scan.sh
+          set +e
+          ./scripts/apn-truth-scan.sh target > "result-${{ matrix.repo }}.txt" 2>&1
+          echo "$?" > "code-${{ matrix.repo }}.txt"
+          cat "result-${{ matrix.repo }}.txt"
+
+      - name: Record unreachable
+        if: steps.target.outcome != 'success'
+        run: |
+          echo "UNREACHABLE — no access with the token in use. NOT a finding about the repo." \
+            > "result-${{ matrix.repo }}.txt"
+          echo "3" > "code-${{ matrix.repo }}.txt"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: scan-${{ matrix.repo }}
+          path: |
+            result-${{ matrix.repo }}.txt
+            code-${{ matrix.repo }}.txt
+          retention-days: 14
+
+  report:
+    name: Write today's fix list
+    needs: [discover, scan]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: results
+          merge-multiple: true
+
+      - name: Build report
+        id: build
+        run: |
+          BLOCKING=""; ADVISORY=""; CLEAN=""; UNREACHABLE=""
+          for f in results/code-*.txt; do
+            [ -f "$f" ] || continue
+            REPO=$(basename "$f" .txt); REPO=${REPO#code-}
+            CODE=$(cat "$f")
+            case "$CODE" in
+              0) CLEAN="$CLEAN $REPO" ;;
+              1) BLOCKING="$BLOCKING $REPO" ;;
+              2) ADVISORY="$ADVISORY $REPO" ;;
+              *) UNREACHABLE="$UNREACHABLE $REPO" ;;
+            esac
+          done
+
+          {
+            echo "_Generated $(date -u +%Y-%m-%dT%H:%M:%SZ) by APN Daily Estate Scan._"
+            echo ""
+            echo "**NO TEST = NO CLAIM.** This is a static scan of source. Nothing here was run,"
+            echo "deployed, or verified live. A clean scan does NOT mean a product works."
+            echo ""
+            echo "## Fix list — in priority order"
+            echo ""
+            if [ -n "$BLOCKING" ]; then
+              echo "### 🔴 Blocking — release-gate failures (§30)"
+              for r in $BLOCKING; do
+                echo "<details><summary><code>$r</code></summary>"
+                echo ""; echo '```'
+                sed -n '/❌ FAIL/,+4p' "results/result-$r.txt" | head -40
+                echo '```'; echo "</details>"
+              done
+              echo ""
+            else
+              echo "### 🔴 Blocking — none"
+              echo ""
+            fi
+            if [ -n "$ADVISORY" ]; then
+              echo "### 🟡 Advisory"
+              for r in $ADVISORY; do echo "- \`$r\`"; done
+              echo ""
+            fi
+            [ -n "$CLEAN" ] && { echo "### 🟢 Clean"; for r in $CLEAN; do echo "- \`$r\`"; done; echo ""; }
+            if [ -n "$UNREACHABLE" ]; then
+              echo "### ⚫ Unreachable — NOT a finding about these repos"
+              echo ""
+              echo "The scan could not read these. This says nothing about their state."
+              for r in $UNREACHABLE; do echo "- \`$r\`"; done
+              echo ""
+            fi
+            echo "---"
+            echo ""
+            echo "Canonical cleanup register: [\`apn-hub/EXECUTION_LEDGER.md\`](https://github.com/Fast-Clocks/apn-hub/blob/main/EXECUTION_LEDGER.md)."
+            echo "**Record outcomes there. Do not open a second tracking document (§7).**"
+          } > report.md
+          echo "blocking_count=$(printf '%s' "$BLOCKING" | wc -w)" >> "$GITHUB_OUTPUT"
+
+      - name: Open or update today's issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const body = fs.readFileSync('report.md', 'utf8').slice(0, 65000);
+            const title = 'APN Estate — daily fix list';
+            const { data: open } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner, repo: context.repo.repo,
+              state: 'open', labels: 'apn-estate-scan',
+            });
+            if (open.length) {
+              await github.rest.issues.update({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: open[0].number, body,
+              });
+              core.notice(`Updated issue #${open[0].number}`);
+            } else {
+              const { data: created } = await github.rest.issues.create({
+                owner: context.repo.owner, repo: context.repo.repo,
+                title, body, labels: ['apn-estate-scan'],
+              });
+              core.notice(`Opened issue #${created.number}`);
+            }

@@ -1,0 +1,164 @@
+name: APN Self-Heal
+
+# The difference between a scanner and a system: this one FIXES.
+#
+# Runs after the daily scan. Applies only fixes that are mechanically safe and
+# verifiable — never content, never claims, never anything requiring judgement —
+# then opens ONE PR per repo with the diff and the evidence.
+#
+# Design rule (§33 AI rule): the machine proposes a diff. A human merges it.
+# Nothing here pushes to main. Nothing here touches production.
+#
+# What it will NOT auto-fix, deliberately:
+#   · marketing claims       — replacing "military-grade" needs a human to decide the true claim
+#   · metric substantiation  — only Chris knows whether 22,400 operators is real
+#   · self-hosting fonts     — requires choosing and committing a binary asset
+# Those stay on the fix list as human work. Silently "fixing" them would be worse
+# than leaving them, because it would look finished.
+
+on:
+  schedule:
+    - cron: '30 20 * * *'   # 30 min after the daily scan
+  workflow_dispatch:
+    inputs:
+      repo:
+        description: 'Single repo to heal (blank = all)'
+        required: false
+        default: ''
+      dry-run:
+        description: 'Report the diff without opening a PR'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: apn-self-heal
+  cancel-in-progress: false
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.list.outputs.matrix }}
+    steps:
+      - id: list
+        env:
+          GH_TOKEN: ${{ secrets.APN_ESTATE_TOKEN || github.token }}
+        run: |
+          if [ -n "${{ inputs.repo }}" ]; then
+            REPOS="${{ inputs.repo }}"
+          elif [ -n "${{ secrets.APN_ESTATE_TOKEN }}" ]; then
+            REPOS=$(gh repo list Fast-Clocks --limit 200 --json name -q '.[].name' | tr '\n' ' ')
+          else
+            REPOS="${{ github.event.repository.name }}"
+            echo "::warning::APN_ESTATE_TOKEN not set — healing THIS REPO ONLY."
+          fi
+          echo "matrix=$(printf '%s\n' $REPOS | jq -R . | jq -sc .)" >> "$GITHUB_OUTPUT"
+
+  heal:
+    needs: discover
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        repo: ${{ fromJson(needs.discover.outputs.matrix) }}
+    steps:
+      - name: Checkout target
+        id: target
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          repository: Fast-Clocks/${{ matrix.repo }}
+          token: ${{ secrets.APN_ESTATE_TOKEN }}
+          fetch-depth: 0
+
+      - name: Apply safe fixes
+        if: steps.target.outcome == 'success'
+        id: fix
+        run: |
+          CHANGES=""
+
+          # ── FIX 1: .env tracked in git ──────────────────────────────────────
+          # Untrack it and add to .gitignore. The file stays on disk locally.
+          # If it holds non-public vars this does NOT make it safe — the secret is
+          # already in history and must be rotated. We say so in the PR body.
+          ROTATE_NEEDED=0
+          for ENVF in $(git ls-files | grep -E '(^|/)\.env($|\.)' || true); do
+            NONPUBLIC=$(grep -vE '^\s*(#|$)' "$ENVF" 2>/dev/null \
+              | grep -vE '^(VITE_|NEXT_PUBLIC_|PUBLIC_|REACT_APP_)' | cut -d= -f1 || true)
+            [ -n "$NONPUBLIC" ] && ROTATE_NEEDED=1
+            git rm --cached "$ENVF" -q
+            grep -qxF '.env' .gitignore 2>/dev/null || printf '\n# Local environment — never commit\n.env\n.env.*\n!.env.example\n' >> .gitignore
+            CHANGES="${CHANGES}- Untracked \`${ENVF}\` and added it to \`.gitignore\`\n"
+          done
+
+          # ── FIX 2: builder badges in shipped surface ────────────────────────
+          BADGED=$(grep -rlE 'Edit with Lovable|lovable-badge|Made with Lovable|Built with v0' \
+            --include='*.html' --include='*.tsx' --include='*.jsx' --include='*.vue' \
+            --exclude-dir=node_modules --exclude-dir=.git . 2>/dev/null || true)
+          for f in $BADGED; do
+            sed -i -E '/Edit with Lovable|lovable-badge|Made with Lovable|Built with v0/d' "$f"
+            CHANGES="${CHANGES}- Removed builder badge from \`${f}\`\n"
+          done
+
+          # ── FIX 3: missing .gitignore essentials ────────────────────────────
+          for entry in node_modules dist .DS_Store; do
+            if [ -f .gitignore ] && ! grep -qxF "$entry" .gitignore; then
+              echo "$entry" >> .gitignore
+              CHANGES="${CHANGES}- Added \`${entry}\` to \`.gitignore\`\n"
+            fi
+          done
+
+          if [ -z "$CHANGES" ]; then
+            echo "nothing_to_do=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "nothing_to_do=false" >> "$GITHUB_OUTPUT"
+            echo "rotate_needed=$ROTATE_NEEDED" >> "$GITHUB_OUTPUT"
+            printf "%b" "$CHANGES" > /tmp/changes.md
+          fi
+
+      - name: Open healing PR
+        if: steps.fix.outputs.nothing_to_do == 'false' && inputs.dry-run != true
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.APN_ESTATE_TOKEN }}
+          branch: apn/self-heal
+          delete-branch: true
+          commit-message: "chore: APN self-heal — mechanical hygiene fixes"
+          title: "APN Self-Heal — mechanical fixes"
+          labels: automated, apn-self-heal
+          body: |
+            Automated by **APN Self-Heal**. Only mechanically-safe fixes are applied here —
+            nothing requiring judgement, no content, no claims.
+
+            ### Applied
+            ${{ steps.fix.outputs.rotate_needed == '1' && '
+            > ### ⚠️ ROTATE CREDENTIALS
+            > A tracked `.env` held non-public variables. Untracking does **not** remove them
+            > from git history. Treat them as compromised: rotate the keys, then merge this.
+            ' || '' }}
+
+            <!-- changes -->
+
+            ### Deliberately NOT fixed
+            Left for a human because automating them would look finished without being correct:
+            - marketing/claim language (§25) — the true claim is a human decision
+            - unsubstantiated metrics — only the owner knows what is real
+            - self-hosting external fonts — requires committing a chosen asset
+
+            ### Evidence
+            **NO TEST = NO CLAIM.** This PR changes tracked files and ignore rules only.
+            No build was run and no deployment was verified. Check CI before merging.
+
+            _Constitution §7 one canonical system · §13 secrets · §23 finish quality · §33 AI proposes, humans authorise_
+
+      - name: Dry-run output
+        if: steps.fix.outputs.nothing_to_do == 'false' && inputs.dry-run == true
+        run: |
+          echo "### ${{ matrix.repo }} — proposed fixes" >> "$GITHUB_STEP_SUMMARY"
+          cat /tmp/changes.md >> "$GITHUB_STEP_SUMMARY"
+          git diff --stat >> "$GITHUB_STEP_SUMMARY"

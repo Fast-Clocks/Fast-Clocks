@@ -1,0 +1,45 @@
+# Dependabot — automated dependency and security updates.
+#
+# Grouped so it produces a few reviewable PRs per week, not forty. An estate with
+# one operator cannot absorb forty PRs; ungrouped Dependabot is how repos end up
+# with the bot disabled and the security updates lost with it.
+#
+# Copy this file into every APN repo. Ecosystem list per repo may vary.
+
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "20:00"
+      timezone: Australia/Perth
+    open-pull-requests-limit: 5
+    groups:
+      # Security patches: never grouped away, never delayed.
+      security:
+        applies-to: security-updates
+        patterns: ["*"]
+      # Everything else: batched to keep review load survivable.
+      minor-and-patch:
+        applies-to: version-updates
+        update-types: [minor, patch]
+        patterns: ["*"]
+    labels: [dependencies, automated]
+    commit-message:
+      prefix: "deps"
+      include: scope
+    # Majors need a human — they break builds and that breaks trust in the bot.
+    ignore:
+      - dependency-name: "*"
+        update-types: [version-update:semver-major]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns: ["*"]
+    labels: [dependencies, ci]

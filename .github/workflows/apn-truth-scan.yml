@@ -1,0 +1,110 @@
+name: APN Truth Scan
+
+# Mechanical enforcement of the Sovereign Engineering Constitution.
+# Two ways to use it:
+#   1. Directly — runs on this repo's PRs and pushes.
+#   2. As a reusable workflow — any APN repo can call it (see workflow_call below),
+#      so there is ONE canonical implementation, not 27 copies (§7 one canonical system).
+#
+# To adopt in another repo, add .github/workflows/truth.yml containing:
+#
+#   name: Truth
+#   on: [pull_request, push, workflow_dispatch]
+#   jobs:
+#     truth:
+#       uses: Fast-Clocks/Fast-Clocks/.github/workflows/apn-truth-scan.yml@main
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      fail-on-warn:
+        description: Treat advisories as blocking
+        type: boolean
+        default: false
+        required: false
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  truth-scan:
+    name: Claims, secrets, CDN, finish quality
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch canonical scanner
+        run: |
+          # Always use the canonical scanner, even when called from another repo.
+          if [ ! -f scripts/apn-truth-scan.sh ]; then
+            mkdir -p scripts
+            curl -fsSL -o scripts/apn-truth-scan.sh \
+              https://raw.githubusercontent.com/Fast-Clocks/Fast-Clocks/main/scripts/apn-truth-scan.sh
+          fi
+          chmod +x scripts/apn-truth-scan.sh
+
+      - name: Run truth scan
+        id: scan
+        run: |
+          set +e
+          APN_SCAN_REPORT=scan-report.txt ./scripts/apn-truth-scan.sh . | tee scan-output.txt
+          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+        continue-on-error: true
+
+      - name: Publish to job summary
+        if: always()
+        run: |
+          {
+            echo "## APN Truth Scan"
+            echo ""
+            echo '```'
+            cat scan-output.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Comment on PR
+        if: always() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const body = '## APN Truth Scan\n\n```\n'
+              + fs.readFileSync('scan-output.txt', 'utf8').slice(0, 60000)
+              + '\n```\n\n_Constitution §3 no test = no claim · §13 secrets · §23 website quality · §25 writing_';
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner, repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            const mine = comments.find(c => c.body.startsWith('## APN Truth Scan'));
+            if (mine) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                comment_id: mine.id, body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: context.issue.number, body,
+              });
+            }
+
+      - name: Enforce
+        if: always()
+        run: |
+          CODE="${{ steps.scan.outputs.exit_code }}"
+          if [ "$CODE" = "1" ]; then
+            echo "::error::Truth scan found BLOCKING issues. §30 release gate: do not release."
+            exit 1
+          fi
+          if [ "$CODE" = "2" ] && [ "${{ inputs.fail-on-warn }}" = "true" ]; then
+            echo "::error::Advisories present and fail-on-warn is enabled."
+            exit 1
+          fi
+          echo "Truth scan passed."
