@@ -1058,3 +1058,64 @@ that is right: self-hosting fonts changes rendering on six live surfaces and
 vendoring world-atlas is a bundle-size trade-off. **Nothing here is fixed. Nine
 files across eight repos currently send visitor IP addresses to Google or
 jsdelivr on page load**, on an estate whose product is privacy.
+
+## 24. pnpm settings migrated — the security property was resting on a coincidence
+
+§21 recorded that pnpm 11 ignores the `pnpm` field in `package.json`, and that
+`sovereign-tank` and `v0-sovereignty-lab-ui` only stayed clean because CI pins
+pnpm 10. That is now fixed at the source in both repos: settings moved to
+`pnpm-workspace.yaml`.
+
+**The regression is measured, not asserted.** Reverting one repo to the old shape
+and installing with pnpm 11.21.0:
+
+```
+[WARN] The "pnpm" field in package.json is no longer read by pnpm.
+       The following keys were ignored: "pnpm.onlyBuiltDependencies",
+       "pnpm.overrides".
+```
+
+→ **no `overrides` block in the regenerated lockfile at all**
+→ `pnpm audit --prod`: **13 vulnerabilities, 4 HIGH, back in the production tree**
+
+With `pnpm-workspace.yaml`, under **both** pnpm 10.15.1 and 11.21.0: overrides
+block intact, both audits clean, and `pnpm-lock.yaml` **byte-identical** after a
+pnpm 11 install — the two resolvers reach the same tree.
+
+**Why this mattered more than it looked.** The `version: 10` pin in both quality
+gates was added for an entirely unrelated reason: `pnpm/action-setup` erroring
+with *"No pnpm version is specified"* on `APN-Core-Site` (§15). It happened to be
+the only thing standing between this estate and four high-severity production
+advisories returning. Correct behaviour resting on a coincidence is not correct
+behaviour — it is a latent failure with good luck in front of it. The pin no
+longer carries the security property.
+
+### 🟠 NOT FIXED — pnpm 11 remains blocked, for a second and separate reason
+
+The migration does **not** make pnpm 11 usable, and the file says so at the line.
+
+`pnpm@11 install --frozen-lockfile` still exits **1** on
+`ERR_PNPM_IGNORED_BUILDS` (`unrs-resolver`, a native binary in the eslint
+toolchain). pnpm 10 treats the same condition as a warning and exits **0** —
+a behaviour change worth knowing about on its own.
+
+Adding `ignoredBuiltDependencies` did not clear it. pnpm 11 supersedes both
+build lists with a per-package `allowBuilds` setting that refuses to guess —
+`pnpm config list` literally reports `"unrs-resolver": "set this to true or
+false"` — and **`allowBuilds` is rejected as an unknown key in
+`pnpm-workspace.yaml` on both majors** (YAML schema error, tested).
+
+So the upgrade needs a real decision: allow `unrs-resolver`'s postinstall script
+to run, or route around it. **Enabling a postinstall build script on a privacy
+product is not a housekeeping change**, so it was not taken unilaterally.
+
+**Method note, because it nearly went wrong twice.** `npx pnpm@10` silently
+resolved to 11.21.0 earlier in this session because `corepack enable` had
+shimmed the binary — every measurement through that shim would have been against
+the wrong resolver. Both versions were confirmed with `--version` before every
+comparison in this section. And the first `allowBuilds` attempt was *written*
+and assumed correct; running it produced a YAML schema error on both majors.
+Written is not run.
+
+**VERIFIED AFTER**, both repos, pnpm 10 (what CI actually uses):
+`install --frozen-lockfile` 0 · `lint` 0 · `build` 0 · `audit --prod` clean.
