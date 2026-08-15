@@ -515,3 +515,60 @@ for this.**
 
 **NOT PROVEN:** the fail-closed webhook change has NOT been exercised against a
 real Stripe event. It needs `stripe listen` or a live test event before merge.
+
+## 18. 🔴 `account-audit` — checkout very likely broken, six colourless borders, 20 high → 0
+
+Third repo from §14. **BEFORE:** lint exit 2 · no typecheck script, `tsc` reports
+**8 real errors** · build 0 *because* `ignoreBuildErrors` · **40 vulnerabilities,
+20 HIGH, all production** · no CI.
+
+**Second repo with `typescript.ignoreBuildErrors: true`.** What it was hiding:
+
+1. **`app/api/checkout/route.ts` passed `customer_email_collection: 'required'`
+   to Stripe Checkout — not a parameter the API accepts.** Stripe rejects unknown
+   parameters with `400 Received unknown parameter`, which would drop every call
+   into the catch block and return a 500. **NOT VERIFIED against the live API**
+   (needs a real key), but no configuration makes an unknown parameter valid.
+   Removed; Stripe Checkout collects the email by default in `mode: 'payment'`.
+2. **`COLORS.muted` referenced six times, never defined.** Every one resolved to
+   `borderColor: undefined` — borders on `engagement-forms.tsx` (×5) and
+   `service-card.tsx` fell back to the browser default instead of a brand tone.
+   A visible defect on a live site. Added as navy at 25% alpha: **derived from
+   the palette, not invented**. Wants a design eye.
+3. **`lib/stripe.ts` pinned `apiVersion '2024-12-15.acacia'` against
+   `stripe@22.3.0`, which expects `'2026-06-24.dahlia'`** — ~18 months of drift.
+
+### `shadcn` belongs in devDependencies, not dependencies
+
+Refines §15. On `APN-Core-Site` shadcn was genuinely unused and deleting it was
+right. **Here it IS used** — `app/globals.css` does
+`@import 'shadcn/tailwind.css'` — but only at BUILD time. Moving it to
+devDependencies takes `ts-morph`, `hono` and `brace-expansion` out of the
+production tree while keeping the build working. That also made the repo's
+existing `pnpm.overrides.hono` pin redundant — someone had already hit one of
+these advisories and patched the symptom.
+
+**I got this wrong first.** I deleted `shadcn` outright after grepping for
+`from 'shadcn'` and finding nothing — a CSS import is invisible to that grep.
+The build caught it. Then the first devDependency attempt *also* failed, on a
+stale `.next` cache, which would have been an easy wrong conclusion ("devDeps
+don't work for this"). A clean `.next` proved it does. **Check CSS imports, and
+clear the build cache before concluding a dependency move failed.**
+
+**AFTER:** lint 0 · typecheck 0 · build 0 with `ignoreBuildErrors` gone ·
+`pnpm audit --prod` **no known vulnerabilities** (was 20 high).
+**`Fast-Clocks/account-audit` PR #1.** Added quality-gate + dependabot.
+
+**NOT PROVEN:** checkout fix not exercised against the live Stripe API — worth a
+single test-mode purchase before merge. `muted` not design-reviewed.
+
+### Estate scoreboard after three repos
+
+| repo | high advisories before → after | hidden defects found |
+|---|---|---|
+| `APN-Core-Site` | 21 → 0 prod | rules-of-hooks in Stripe checkout; unreachable duplicate branch |
+| `australian-data-removal` | 19 → 0 prod | unauthenticated webhook; Stripe apiVersion drift |
+| `account-audit` | 20 → 0 prod | invalid Stripe param; 6 undefined colours; 18mo apiVersion drift |
+
+Every one had **no CI at all** and a dead `lint` script. In all three the
+dependency bump was the *least* valuable part of the change.
