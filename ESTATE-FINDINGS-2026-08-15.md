@@ -1264,6 +1264,16 @@ worse coming from the person who wrote the gate.
 someone with Vercel dashboard access to disconnect or pause the three orphan
 projects. Per DELETE NEVER: **pause, do not delete.**
 
+**Superseded explanation, flagged rather than hidden.** PR comment
+`5301661662` (15 Aug, 09:45) explained these same three failures as the
+**misattached**-project problem of §10/§16 — "eight or more projects pointing at
+the wrong repo". That was wrong. They are not misattached to a repo that exists;
+they are **orphans whose repo was deleted while the Vercel project survived**.
+Comment `5302482437` carries the correct cause. GitHub comments cannot be edited
+through the tools available here, so the wrong one stays on the thread with the
+right one below it — noted here because a reader who stops at the first
+explanation gets a false one, and the register is where that gets corrected.
+
 ### Triage — the 15 PRs that predate this sweep
 
 Ages as of 2026-08-15. "Mergeable" is GitHub's computed state, freshly polled.
