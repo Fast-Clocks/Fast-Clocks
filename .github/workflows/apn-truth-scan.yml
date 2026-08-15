@@ -52,11 +52,41 @@ jobs:
 
       - name: Run truth scan
         id: scan
+        shell: bash
         run: |
           set +e
+          # $? after a pipeline is the exit code of the LAST element — `tee`, which
+          # essentially always exits 0. Reading $? here reported success no matter
+          # what the scanner found, so the Enforce step below never fired: a
+          # false green, on the very tool whose job is to stop false greens.
+          # PIPESTATUS[0] is the scanner's own status. Requires bash, hence the
+          # explicit `shell:` above (GitHub's default `sh` has no PIPESTATUS).
           APN_SCAN_REPORT=scan-report.txt ./scripts/apn-truth-scan.sh . | tee scan-output.txt
-          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+          CODE=${PIPESTATUS[0]}
+          echo "exit_code=$CODE" >> "$GITHUB_OUTPUT"
+          echo "Scanner exited $CODE"
         continue-on-error: true
+
+      - name: Self-test the gate
+        shell: bash
+        run: |
+          # Proves the enforcement wiring actually fails on a blocking finding.
+          # Without this, "the gate works" is an assumption, not a tested property.
+          set +e
+          TMP=$(mktemp -d)
+          git -C "$TMP" init -q .
+          printf 'DATABASE_PASSWORD="x"\n' > "$TMP/.env.local"
+          git -C "$TMP" add -A
+          git -C "$TMP" -c user.email=t@t -c user.name=t commit -qm t
+          ./scripts/apn-truth-scan.sh "$TMP" > /dev/null 2>&1
+          SEEDED=$?
+          rm -rf "$TMP"
+          if [ "$SEEDED" != "1" ]; then
+            echo "::error::Gate self-test FAILED — a seeded blocking finding returned $SEEDED, expected 1."
+            echo "The scanner is not detecting blocking findings. Do not trust a green run."
+            exit 1
+          fi
+          echo "Gate self-test passed: seeded blocking finding correctly returned exit 1."
 
       - name: Publish to job summary
         if: always()
