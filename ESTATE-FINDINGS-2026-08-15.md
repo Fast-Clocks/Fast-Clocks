@@ -314,3 +314,70 @@ still not been run on either.
 
 **Open question for the estate:** how many of the other Next.js repos are on a
 vulnerable version? Only these two were checked. Nothing else has Dependabot either.
+
+## 14. 🔴 ESTATE-WIDE SWEEP — 9 repos on vulnerable Next.js, not 2
+
+The open question from §13 ("how many of the other repos?") is now answered. All
+27 repos were swept by reading `package.json` directly. **Seven more repos carry
+the same 9 high-severity Next.js advisories.** Every version below is inside the
+vulnerable range `>=16.0.0 <16.2.11`.
+
+| repo | `next` | lint | ships | status |
+|---|---|---|---|---|
+| `privacy-scan` | 16.2.6 | ❌ exit 127 | Stripe | ✅ **FIXED** — PR #8 |
+| `trace` | 16.2.6 | ❌ exit 2 | Stripe | ✅ **FIXED** — PR #1 |
+| `apn-hub` | **16.2.7** | ✅ eslint pinned | Supabase | 🔴 open |
+| `APN-Core-Site` | **16.2.6** | ❌ dead | Stripe | 🔴 open |
+| `account-audit` | **16.2.6** | ❌ dead | Stripe | 🔴 open |
+| `v0-claude-api-access` | **16.2.6** | ❌ dead | — | 🔴 open |
+| `australian-data-removal` | **16.2.0** | ❌ dead | Stripe + Resend | 🔴 open |
+| `v0-sovereignty-lab-ui` | **16.1.6** | ❌ `next lint` | — | 🔴 open |
+| `sovereign-tank` | **16.1.6** | ❌ `next lint` | — | 🔴 open · **PUBLIC REPO** |
+
+`next@16.3.1` fixes all nine and npm reports it `isSemVerMajor: false` — a minor
+bump inside 16.x, verified non-breaking on two repos already.
+
+**The dead-lint pattern is 8 repos, not 1.** Every Next.js repo in the estate
+except `apn-hub` has a `lint` script with no `eslint` dependency. Two variants:
+- six declare `"lint": "eslint ."` with eslint absent → exit 127, or worse,
+  silently picks up whatever eslint is on the machine's PATH;
+- `v0-sovereignty-lab-ui` and `sovereign-tank` declare `"lint": "next lint"`,
+  **removed in Next 16**. Dead by a different route, same result.
+
+`apn-hub` is the counter-example and the model: eslint + `eslint-config-next`
+both pinned, and it has real tests (`node --test`). It is still on a vulnerable
+`next` — being well-configured did not save it, because nothing was watching.
+
+**Not affected (14 repos):** every Vite/TanStack app —`sovereign-suite-hub`,
+`perthsafepet`, `filewitness`, `signal-trail-vault`, `sovereign-showcase`,
+`apn-hub-connect`, `inbox-flow-agent`, `product-archetype`, `apn-surgery-suite`,
+`pet-site-url-builder`, `your-next-best-step`, `sovereign-forge`,
+`privacy-widget`, `apn-provenance-keeper`. No `next` dependency, and **all of them
+have eslint correctly in devDependencies**. The Lovable/TanStack template is
+better configured than the v0/Next one.
+
+`sovereign-evidence-factory` remains the best-engineered repo: **zero runtime
+dependencies**, `node --test`, no lint theatre. Nothing to patch.
+
+`apn-vault` and `apn-certification-machine` have **no `package.json`** —
+confirming §9, they are static shells, not applications.
+
+**Dependency automation: 3 of 27 repos.** Only `Fast-Clocks`, `trace` and
+`privacy-scan` have `.github/dependabot.yml`, and two of those were added today.
+That is the actual root cause. The version bumps fix today; Dependabot is what
+stops the estate drifting back.
+
+**METHOD / LIMITS — read before acting.** This was a static read of each
+`package.json` on the default branch. Nothing was installed, built, or run.
+`npm audit` was NOT executed on these seven — the advisory-to-version mapping is
+carried across from the two repos where it *was* verified. Transitive
+vulnerabilities beyond `next` are unknown for all seven. Deliberately did **not**
+mass-open PRs: a version bump that has not been built is exactly the kind of
+unverified change this register exists to prevent. Each needs `npm ci`, bump,
+then lint/typecheck/test/build before a PR — the same treatment `trace` and
+`privacy-scan` got.
+
+**Priority if working through them:** `APN-Core-Site` (the core site, ships
+Stripe), then `australian-data-removal` (oldest version, ships Stripe + Resend),
+then `account-audit`, then `apn-hub`, then `sovereign-tank` (public), then the
+two v0 repos.
