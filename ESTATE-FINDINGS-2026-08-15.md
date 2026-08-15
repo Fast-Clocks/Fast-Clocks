@@ -1194,7 +1194,13 @@ Pushing these revealed further project↔repo pairings worth an eye:
 recounting more necessary, not less. **No number should be quoted until someone
 lists the actual set.**
 
-**VERIFIED:** `sovereign-tank`, `APN-Core-Site`, `account-audit`,
-`v0-claude-api-access` gates all green after the change. `trace`,
-`privacy-scan`, `australian-data-removal`, `v0-sovereignty-lab-ui` pushed and
-running at time of writing — **not yet confirmed**, and not claimed as such.
+**VERIFIED — all eight, now closed.** `sovereign-tank` (log-verified: the
+deprecation warning went from three actions to one), `APN-Core-Site`,
+`account-audit`, `v0-claude-api-access`, and — confirmed on the following
+check-in rather than assumed — `trace`, `privacy-scan`,
+`australian-data-removal`, `v0-sovereignty-lab-ui`. Every `validate` job
+`success`.
+
+This paragraph originally read "not yet confirmed, and not claimed as such" for
+the last four. It is updated only because they were then actually checked. An
+open claim in this register gets closed by evidence or not at all.
