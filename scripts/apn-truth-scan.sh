@@ -66,7 +66,14 @@ fi
 say ""
 say "--- §13 Tracked .env / exposed credentials ---"
 if git -C "$ROOT" rev-parse --git-dir >/dev/null 2>&1; then
-  for ENVF in $(git -C "$ROOT" ls-files | grep -E '(^|/)\.env($|\.)' || true); do
+  # .env.example / .sample / .template are TEMPLATES. They are supposed to be
+  # committed — they document which vars an operator must supply. Flagging them
+  # as exposures fails CI on exactly the repos that did it right
+  # (sovereign-evidence-factory, privacy-scan, trace all use .env.example).
+  # A scanner that punishes good practice gets switched off, and then it protects
+  # nothing. Templates are still checked for real-looking values further down.
+  for ENVF in $(git -C "$ROOT" ls-files | grep -E '(^|/)\.env($|\.)' \
+                | grep -vE '\.(example|sample|template|dist)$' || true); do
     BAD=$(grep -vE '^\s*(#|$)' "$ROOT/$ENVF" 2>/dev/null \
           | grep -vE '^(VITE_|NEXT_PUBLIC_|PUBLIC_|REACT_APP_)' \
           | cut -d= -f1 || true)
@@ -125,8 +132,13 @@ fi
 # ── §23 UNFINISHED SURFACE ─────────────────────────────────────────────────────
 say ""
 say "--- §23 Placeholder / builder badges in shipped surface ---"
+# NOTE: "placeholder" as a bare word is NOT a signal. It is a legitimate HTML
+# attribute (placeholder="your@email.com") and a Tailwind utility class
+# (placeholder:text-muted-foreground). Matching it produced 10 false hits in a
+# single repo — pure noise, and noise is how a scanner gets ignored. Match only
+# strings that genuinely indicate unfinished work.
 BADGE=$(printf '%s\n' "$SCAN_DIRS" | grep -E '\.(html|tsx|jsx|vue|svelte)$' \
-  | xargs -r grep -rniE 'Edit with Lovable|lovable-badge|Made with Lovable|Built with v0|Lorem ipsum|TODO:|FIXME:|PLACEHOLDER|Your Company Name|example\.com' 2>/dev/null || true)
+  | xargs -r grep -rniE 'Edit with Lovable|lovable-badge|Made with Lovable|Built with v0|Lorem ipsum|TODO:|FIXME:|Your Company Name|YOUR_[A-Z_]+_HERE|https?://example\.com' 2>/dev/null || true)
 if [ -n "$BADGE" ]; then
   warn "placeholder text or builder badge in user-facing surface:"
   printf '%s\n' "$BADGE" | head -10 | sed 's/^/        /' | tee -a "$REPORT"
