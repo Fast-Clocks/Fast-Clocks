@@ -450,3 +450,68 @@ two Vercel projects point at a repo that is not their source.
 about the first three is still unanswered. But the count is now **8 known
 misattached or orphaned Vercel projects**, not 3, and every one of them runs a
 build on every push to a repo it should not be watching.
+
+## 17. 🔴 `australian-data-removal` — unauthenticated Stripe webhook, and a build told to ignore type errors
+
+Second repo from §14's list. **Measured BEFORE**, clean clone, pnpm (what Vercel picks):
+
+| check | result |
+|---|---|
+| `lint` | exit 2 — eslint not a dependency |
+| `typecheck` | **FAILED** — no script existed; `tsc` reports a real error |
+| `build` | 0 — **because `next.config.mjs` set `ignoreBuildErrors`** |
+| `pnpm audit` | **35 vulnerabilities, 19 HIGH, all in the PRODUCTION tree** |
+| CI | none |
+
+### The serious finding is not a dependency
+
+`app/api/webhooks/stripe/route.ts` fell back to `JSON.parse(body)` whenever
+`STRIPE_WEBHOOK_SECRET` was unset **or** the `stripe-signature` header was
+missing, logging *"processing without verification"*. A forged
+`checkout.session.completed` POST would then be written as a member record at an
+**attacker-chosen tier**, and trigger an **APN-branded confirmation email via
+Resend to an attacker-chosen address**.
+
+**Exploitability depends on configuration and I could not verify it.** The unsafe
+branch only executes when `STRIPE_WEBHOOK_SECRET` is absent from the environment.
+If it is set in Vercel production, the path was never reachable there. This
+session cannot read Vercel environment variables, so the honest statement is: the
+**code** contained an unauthenticated write path into payment fulfilment; whether
+production ever executed it is **UNKNOWN**. Chris should confirm the secret is
+set in production *and* preview.
+
+Fixed to fail closed — missing secret → 500, missing signature → 400.
+**This is a behaviour change:** any environment without the secret now errors
+instead of silently succeeding.
+
+### A third distinct false-green shape
+
+`next.config.mjs` carried `typescript: { ignoreBuildErrors: true }`. The build
+reported green for months while `tsc` failed — on that same webhook file:
+`apiVersion` pinned to `"2024-12-18.acacia"` while `stripe@17.7.0` expects
+`"2025-02-24.acacia"`. On a webhook the API version governs the payload shape
+being parsed, so this is not cosmetic. `QUALITY-GATE.md` lists "no ignored TS
+errors" as mandatory; the flag was overriding it silently.
+
+**Running tally of false-green mechanisms in this estate — four now:**
+1. `$?` after a pipeline reading `tee`'s status (`Fast-Clocks` truth-scan gate)
+2. `continue-on-error: true` on checks documented as mandatory (`trace`)
+3. `typescript.ignoreBuildErrors: true` (this repo)
+4. a lint script whose binary is not a dependency — silently resolving to
+   whatever is on PATH, or nothing (8 repos)
+
+Each was invisible to reading and only appeared by running the thing.
+
+### Two lockfiles
+
+Both `package-lock.json` and `pnpm-lock.yaml`, committed in the same 10 July
+commit. Two lockfiles can resolve different trees and which wins depends on the
+tool. Kept pnpm (Vercel's choice); removed the npm one. **Check the other repos
+for this.**
+
+**AFTER:** lint 0 · typecheck 0 · build 0 with `ignoreBuildErrors` GONE ·
+`pnpm audit --prod` **0 high** (was 19), 1 moderate.
+**`Fast-Clocks/australian-data-removal` PR #2.** Added quality-gate + dependabot.
+
+**NOT PROVEN:** the fail-closed webhook change has NOT been exercised against a
+real Stripe event. It needs `stripe listen` or a live test event before merge.
