@@ -254,3 +254,49 @@ states results.
 **NOT PROVEN:** none of this has run in CI yet against the full 27-repo estate —
 that needs `APN_ESTATE_TOKEN`, which is not set. Without it the daily scan silently
 narrows to this one repo. The workflow warns loudly when that happens.
+
+## 13. 🔴 9 high-severity Next.js advisories, live in both copies — FIXED, PRs open
+
+Found by reading the `npm ci` output that the repaired `privacy-scan` build finally
+produced. Nearly dismissed as "transitive and unreachable" — that assumption was
+wrong, and checking it took two minutes.
+
+`next@16.2.6` in **both** `privacy-scan` and `trace` carried 9 high advisories,
+all fixed in 16.2.11. npm reports the fix (16.3.1) as **`isSemVerMajor: false`** —
+a minor bump inside 16.x, not the breaking upgrade the caution assumed.
+
+Reachable, on a privacy product:
+
+- **GHSA-68g3-v927-f742 / GHSA-4633-3j49-mh5q — cache confusion of response bodies
+  for requests WITH bodies.** Both repos have **13 POST route handlers**, including
+  `/api/breach` and `/api/scan/{breach,email,domain,wallet}`. On a breach-scanning
+  endpoint that is one person's breach results served to another. That is a privacy
+  incident shape, not a theoretical CVE.
+- GHSA-q8wf-6r8g-63ch — DoS in Image Optimization via SVGs (`trace` ships
+  `public/brand/apn-primary.svg`).
+- GHSA-p9j2-gv94-2wf4 SSRF in rewrites; GHSA-955p-x3mx-jcvp unauthenticated
+  disclosure of internal Server Function endpoints; GHSA-4c39-4ccg-62r3 unbounded
+  Server Action payload in the Edge runtime (`app/opengraph-image.tsx` sets
+  `runtime = 'edge'`).
+
+Transitive `postcss` and `sharp` highs resolve through the same bump.
+
+Fixed in **`trace` PR #1** and **`privacy-scan` PR #8**. Both repos also gained
+`.github/dependabot.yml`, copied verbatim from `Fast-Clocks` — **neither had any
+dependency automation**, which is the actual reason 9 highs sat unnoticed. That is
+the recurrence fix; the version bump is only today's fix.
+
+**Deliberately not fixed:** 1 LOW remains in both — esbuild arbitrary file read
+running the DEV server ON WINDOWS. Not reachable in this deployment (Linux/Vercel,
+production build). Left rather than churn the lockfile.
+
+**Verified, both repos, after the bump:** lint 0, typecheck 0, 59 tests passing,
+build 0, `npm audit` 0 high / 0 critical. CI `validate` **success** on both PR heads
+(`trace` d6d9ae1, `privacy-scan` 1565469). Vercel Ready: `sovereign-markets`,
+`trace-by-apn`, `executive-privacy`.
+
+**NOT PROVEN:** no live deployment was tested. QUALITY-GATE's product checks have
+still not been run on either.
+
+**Open question for the estate:** how many of the other Next.js repos are on a
+vulnerable version? Only these two were checked. Nothing else has Dependabot either.
