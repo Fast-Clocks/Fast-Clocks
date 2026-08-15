@@ -708,3 +708,141 @@ typecheck 11, all accounted. **`Fast-Clocks/sovereign-tank` PR #1.**
 
 **89 high advisories cleared.** Four of the five repos with no CI hid real
 defects; the one with CI hid nothing. The correlation has held for every repo.
+
+## 21. `v0-sovereignty-lab-ui` — 46 vulnerabilities to zero; and a pnpm trap that would have silently undone the last two repos
+
+Sixth repo of the §14 sweep. Same v0 template as `sovereign-tank`, same damage.
+
+**Measured BEFORE, clean clone, pnpm 10.15.1:**
+
+| check | result |
+|---|---|
+| `pnpm run lint` | **exit 1** — `next lint`, removed in Next 16 |
+| `pnpm run typecheck` | *no such script*; `tsc` reports **32 errors** |
+| `pnpm run build` | 0 — **only because** `ignoreBuildErrors` was on |
+| `pnpm audit --prod` | **46 vulnerabilities, 23 HIGH, all production** |
+| CI | **none** |
+
+**AFTER, verified from a clean `--frozen-lockfile` install:** lint **0** (first
+time this repo has ever linted) · build 0 · `pnpm audit` **0 vulnerabilities,
+production AND dev** · typecheck **11**, all the deferred `useChat` migration.
+**`Fast-Clocks/v0-sovereignty-lab-ui` PR #4.** Vercel deployed **Ready**.
+
+### 🔴 pnpm 11 silently ignores `pnpm.overrides` in `package.json`
+
+The single most important finding here, and it is **retroactive**. Running
+`pnpm install` under pnpm 11 emits:
+
+> The "pnpm" field in package.json is no longer read by pnpm. The following keys
+> were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides".
+
+Settings moved to `pnpm-workspace.yaml`. The consequence is not cosmetic: the
+`pnpm.overrides` block is what pins `picomatch`, `lodash` and `d3-color` to
+patched versions in **both this repo and `sovereign-tank`**, because those
+arrive through `tailwindcss-animate`, `recharts@2` and `react-simple-maps` —
+packages that cannot be upgraded without a major migration each. Under pnpm 11
+those pins vanish, the tree resolves differently, and `pnpm audit` would find
+vulnerabilities again.
+
+**The `version: 10` pin in both quality gates is therefore load-bearing, not
+housekeeping.** It was originally added for a completely different reason — the
+`pnpm/action-setup@v4` "No pnpm version is specified" failure on `APN-Core-Site`
+(§15). It happens to be the thing standing between this estate and a silent
+regression. That is luck, not design, and it should be replaced by an actual
+migration to `pnpm-workspace.yaml`.
+
+Also worth recording: `npx pnpm@10` did **not** give pnpm 10. A `corepack
+enable` earlier in the session shimmed the `pnpm` binary, and the shim resolved
+to 11.21.0 regardless of the requested version. Every measurement taken through
+that shim would have been against the wrong resolver. Caught only by running
+`--version` and reading it.
+
+### `postcss` pinned stale in the lockfile — third occurrence
+
+`postcss` sat at 8.5.6 while the declared range `^8.5` already permitted the
+patched 8.5.23+. Same drift as `APN-Core-Site` and `account-audit`. This is now
+a pattern, not a coincidence: **a lockfile can hold a vulnerable version that
+the manifest never asked for**, and no version-range audit of `package.json`
+would ever reveal it.
+
+### Real bugs the first-ever lint and typecheck found
+
+- **`adr-dashboard.tsx` exported `ADRDashboard` twice** — `export function` plus
+  a trailing `export { ADRDashboard }` (TS2323 + TS2484).
+- **`adr-dashboard.tsx` keyed hotspot state on `h.region`**; `Region` declares
+  `name`. Every key was `undefined`, collapsing six hotspots into one. **Stated
+  honestly: that state is neither read nor written elsewhere, so this is latent,
+  not visible today.** The same bug in `sovereign-tank` *was* live — the
+  distinction matters and was checked, not assumed.
+- **`analytics/surface/route.ts`** assigned `spfRecord` inside a `forEach`,
+  which TS flow analysis cannot track → narrowed to `never`, failed at `.trim()`.
+- **Five `/api/ai/*` routes** called `maxTokens` and `toDataStreamResponse()`,
+  neither of which exists in the installed AI SDK v6.
+- **`document-analyzer.tsx`** called `processFile` from two `useCallback` hooks
+  while it was still in its temporal dead zone — identical to `sovereign-tank`.
+- **`brokers/route.ts`** had an evolving implicit `any[]` read by `.includes()`.
+
+### Lint fixes removed hazards rather than messages
+
+`displayedBrokers` was a pure slice mirrored into state by an effect → derived
+during render with `useMemo`. `attackVectors` was state populated from a mount
+effect though `generateAttackVectors()` is fully deterministic → module constant.
+`use-mobile` and `data-collection-notice` → `useSyncExternalStore` with server
+snapshots.
+
+**One near-regression worth recording.** Rewriting the consent notice to
+`useSyncExternalStore` initially dropped the old `catch` branch's
+`setIsVisible(false)`. That would have meant a visitor whose `localStorage`
+throws — private mode, blocked cookies — could **never dismiss the privacy
+notice**, because the write fails, the snapshot stays `true`, and Accept does
+nothing. Trapping a modal on screen for exactly the privacy-conscious visitors
+the notice exists for. Caught by re-reading the old error path rather than the
+happy path, and fixed with a session-level fallback.
+
+**Exactly one suppression remains**, documented at the line: `generateBrokers()`
+builds 4,200 records with `Math.random()`, so it cannot run during render
+without a hydration mismatch.
+
+### Removed: `@tailwindcss/postcss`
+
+The Tailwind **v4** PostCSS plugin, in a Tailwind **v3** project — `globals.css`
+uses `@tailwind base/components/utilities` and `postcss.config.mjs` loads the
+`tailwindcss` plugin. **Verified by building without it, not by grepping.** The
+`shadcn` removal on `account-audit` (§18) was a grep that said "unused" and a
+build that disagreed.
+
+### 🟠 Flagged, deliberately NOT fixed: third-party CDN on a privacy product
+
+`components/global-threat-map.tsx` fetches its world map at runtime from
+`https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json`. Every visitor's
+IP address goes to a third-party CDN. On a **privacy** product that is a
+substantive issue, not a performance note, and my own truth scan flags exactly
+this class under §23. Vendoring the file is a real change with a bundle-size
+trade-off, so it is recorded for a decision rather than done quietly. Worth
+sweeping the whole estate for the same pattern.
+
+### Sweep scoreboard, six of seven
+
+| repo | high before → after | CI before | hidden defects |
+|---|---|---|---|
+| `APN-Core-Site` | 21 → 0 prod | none | hooks bug in Stripe checkout; dead branch |
+| `australian-data-removal` | 19 → 0 prod | none | **unauthenticated Stripe webhook** |
+| `account-audit` | 20 → 0 prod | none | invalid Stripe param; 6 undefined colours |
+| `apn-hub` | 6 → **0 total** | **two workflows** | **none** |
+| `sovereign-tank` | 23 → **0 total** | none | 32 type errors incl. 5 dead API routes |
+| `v0-sovereignty-lab-ui` | 23 → **0 total** | none | 32 type errors; duplicate export |
+
+**112 high advisories cleared.** Five of the six repos with no CI hid real
+defects; the one with CI hid nothing. The correlation has held for every repo in
+the sweep without exception.
+
+### Remaining
+
+`v0-claude-api-access` (next 16.2.6, has `shadcn`) is the last of the seven.
+
+### New estate-wide item
+
+GitHub is deprecating Node 20 on Actions runners. `actions/checkout@v4`,
+`actions/setup-node@v4` and `pnpm/action-setup@v4` all target it and are being
+force-run on Node 24 with a warning. Every quality gate added in this sweep uses
+those three. Not urgent, not broken, but it will become both.
