@@ -92,9 +92,17 @@ if git -C "$ROOT" rev-parse --git-dir >/dev/null 2>&1; then
     # because of the VITE_ prefix — a silent pass on a live payments credential.
     # Prefix tells you it is BUNDLED into the browser. It does not tell you the
     # provider intended it to be public. Those are different questions.
+    # pk_live_ is DELIBERATELY excluded. A Stripe publishable key is designed to
+    # ship in the browser and is not a secret — flagging it is noise, and noise is
+    # how a scanner gets ignored. rk_live_ (restricted) and sk_live_ ARE secret and
+    # stay in scope; sk_ is also caught by the private-key check below.
+    # Confirmed in the wild: perthsafepet ships pk_live_ (benign), while
+    # sovereign-suite-hub ships a bare live_-prefixed token of unknown provider —
+    # that second shape is exactly what this check exists to surface.
     LIVEISH=$(grep -vE '^\s*(#|$)' "$ROOT/$ENVF" 2>/dev/null \
               | grep -E '^(VITE_|NEXT_PUBLIC_|PUBLIC_|REACT_APP_)' \
-              | grep -iE '=\s*"?(live_|prod_|pk_live|rk_live|shpat_|xoxb-|ghp_)' \
+              | grep -iE '=\s*"?(live_|prod_|rk_live|sk_live|shpat_|xoxb-|ghp_|AIza)' \
+              | grep -viE '=\s*"?pk_live_' \
               | cut -d= -f1 || true)
     if [ -n "$LIVEISH" ]; then
       warn "$ENVF has PUBLIC-PREFIXED vars holding live-looking credentials (names only):"
