@@ -90,19 +90,26 @@ jobs:
 
       - name: Scan
         if: steps.target.outcome == 'success'
+        shell: bash
         run: |
           chmod +x scripts/apn-truth-scan.sh
           set +e
-          ./scripts/apn-truth-scan.sh target > "result-${{ matrix.repo }}.txt" 2>&1
+          APN_SCAN_JSON="evidence-${{ matrix.repo }}.json" \
+            ./scripts/apn-truth-scan.sh target > "result-${{ matrix.repo }}.txt" 2>&1
           echo "$?" > "code-${{ matrix.repo }}.txt"
           cat "result-${{ matrix.repo }}.txt"
 
       - name: Record unreachable
         if: steps.target.outcome != 'success'
+        shell: bash
         run: |
           echo "UNREACHABLE — no access with the token in use. NOT a finding about the repo." \
             > "result-${{ matrix.repo }}.txt"
           echo "3" > "code-${{ matrix.repo }}.txt"
+          # Still emit evidence, so the report can distinguish "we looked and it was
+          # clean" from "we never looked". Those are not the same claim.
+          printf '{"root":"%s","files_inspected":0,"head_sha":"unknown","head_age_days":null,"blocking":0,"advisory":0,"unreachable":true,"checks":[]}\n' \
+            "${{ matrix.repo }}" > "evidence-${{ matrix.repo }}.json"
 
       - uses: actions/upload-artifact@v4
         if: always()
@@ -111,6 +118,7 @@ jobs:
           path: |
             result-${{ matrix.repo }}.txt
             code-${{ matrix.repo }}.txt
+            evidence-${{ matrix.repo }}.json
           retention-days: 14
 
   report:
@@ -126,60 +134,17 @@ jobs:
 
       - name: Build report
         id: build
+        shell: bash
+        env:
+          # THE ALARM BUDGET. A daily list of 200 correct findings across 27 repos
+          # is not a working system — nobody reads it, so nothing gets fixed, and
+          # the scan has failed even though every single finding was accurate.
+          # This caps how many ADVISORY repos are written up in full per run.
+          # Blocking failures are never budgeted away; suppressed items are always
+          # named and counted, never silently dropped.
+          ALARM_BUDGET: ${{ vars.APN_ALARM_BUDGET || 10 }}
         run: |
-          BLOCKING=""; ADVISORY=""; CLEAN=""; UNREACHABLE=""
-          for f in results/code-*.txt; do
-            [ -f "$f" ] || continue
-            REPO=$(basename "$f" .txt); REPO=${REPO#code-}
-            CODE=$(cat "$f")
-            case "$CODE" in
-              0) CLEAN="$CLEAN $REPO" ;;
-              1) BLOCKING="$BLOCKING $REPO" ;;
-              2) ADVISORY="$ADVISORY $REPO" ;;
-              *) UNREACHABLE="$UNREACHABLE $REPO" ;;
-            esac
-          done
-
-          {
-            echo "_Generated $(date -u +%Y-%m-%dT%H:%M:%SZ) by APN Daily Estate Scan._"
-            echo ""
-            echo "**NO TEST = NO CLAIM.** This is a static scan of source. Nothing here was run,"
-            echo "deployed, or verified live. A clean scan does NOT mean a product works."
-            echo ""
-            echo "## Fix list — in priority order"
-            echo ""
-            if [ -n "$BLOCKING" ]; then
-              echo "### 🔴 Blocking — release-gate failures (§30)"
-              for r in $BLOCKING; do
-                echo "<details><summary><code>$r</code></summary>"
-                echo ""; echo '```'
-                sed -n '/❌ FAIL/,+4p' "results/result-$r.txt" | head -40
-                echo '```'; echo "</details>"
-              done
-              echo ""
-            else
-              echo "### 🔴 Blocking — none"
-              echo ""
-            fi
-            if [ -n "$ADVISORY" ]; then
-              echo "### 🟡 Advisory"
-              for r in $ADVISORY; do echo "- \`$r\`"; done
-              echo ""
-            fi
-            [ -n "$CLEAN" ] && { echo "### 🟢 Clean"; for r in $CLEAN; do echo "- \`$r\`"; done; echo ""; }
-            if [ -n "$UNREACHABLE" ]; then
-              echo "### ⚫ Unreachable — NOT a finding about these repos"
-              echo ""
-              echo "The scan could not read these. This says nothing about their state."
-              for r in $UNREACHABLE; do echo "- \`$r\`"; done
-              echo ""
-            fi
-            echo "---"
-            echo ""
-            echo "Canonical cleanup register: [\`apn-hub/EXECUTION_LEDGER.md\`](https://github.com/Fast-Clocks/apn-hub/blob/main/EXECUTION_LEDGER.md)."
-            echo "**Record outcomes there. Do not open a second tracking document (§7).**"
-          } > report.md
-          echo "blocking_count=$(printf '%s' "$BLOCKING" | wc -w)" >> "$GITHUB_OUTPUT"
+          python3 scripts/apn-estate-report.py results report.md >> "$GITHUB_OUTPUT"
 
       - name: Open or update today's issue
         uses: actions/github-script@v7
