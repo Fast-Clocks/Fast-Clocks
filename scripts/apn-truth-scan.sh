@@ -78,6 +78,23 @@ if git -C "$ROOT" rev-parse --git-dir >/dev/null 2>&1; then
       warn "$ENVF is git-tracked (public-prefixed vars only — not an exposure, but untidy)"
       say "        → add .env to .gitignore; keep the file locally."
     fi
+
+    # A public prefix is a CONVENTION, not a guarantee. Found in the wild:
+    # sovereign-suite-hub/.env.production carried VITE_PAYMENTS_CLIENT_TOKEN with a
+    # live_-prefixed value. The earlier version of this check waved it through purely
+    # because of the VITE_ prefix — a silent pass on a live payments credential.
+    # Prefix tells you it is BUNDLED into the browser. It does not tell you the
+    # provider intended it to be public. Those are different questions.
+    LIVEISH=$(grep -vE '^\s*(#|$)' "$ROOT/$ENVF" 2>/dev/null \
+              | grep -E '^(VITE_|NEXT_PUBLIC_|PUBLIC_|REACT_APP_)' \
+              | grep -iE '=\s*"?(live_|prod_|pk_live|rk_live|shpat_|xoxb-|ghp_)' \
+              | cut -d= -f1 || true)
+    if [ -n "$LIVEISH" ]; then
+      warn "$ENVF has PUBLIC-PREFIXED vars holding live-looking credentials (names only):"
+      printf '%s\n' "$LIVEISH" | sed 's/^/        /' | tee -a "$REPORT"
+      say "        → these ARE shipped in the browser bundle. Confirm with the provider that"
+      say "          each is genuinely publishable. If any is not, it is compromised — rotate."
+    fi
   done
   [ -z "$(git -C "$ROOT" ls-files | grep -E '(^|/)\.env($|\.)' || true)" ] && pass "no tracked .env files"
 fi
