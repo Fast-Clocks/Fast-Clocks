@@ -1472,3 +1472,102 @@ possibly never being told about a major-only security fix.
 **Confidence: MEDIUM.** This is documented Dependabot behaviour, not something
 reproduced here — no advisory requiring a major bump has been observed being
 suppressed in this estate. Verify before acting on it.
+
+---
+
+## 28. PR-BRANCH SWEEP — the CDN grep found nothing new, and reading the code found a receipt travelling in a URL
+
+§23 swept **main** across 27 repos. Open PR branches were never swept, so unmerged
+code is an entirely separate surface. This is a **partial** sweep of it.
+
+**Scope, stated before the findings.** `get_files` returns full patches, and three
+open PRs exceed 8,000 additions (`Fast-Clocks#4`, `apn-hub#11`, `filewitness#1`).
+Pulling those would have flooded the context and produced a worse read of
+everything else. **Swept: `apn-hub#7`, `apn-provenance-keeper#1`,
+`perthsafepet#2`.** Not swept: the remaining twelve. This is a sample that found
+something, not a clean bill of health.
+
+### CDN result: nothing new
+
+No `jsdelivr`, `googleapis`, `gstatic`, `unpkg` or `cdnjs` reference in any of the
+three diffs. The only previously-known PR-branch CDN dependency remains
+`apn-certification-machine#3` (§26), established from its own PR body.
+
+### 🔴 The real finding: a full S1 receipt is passed cross-domain in a URL query string
+
+Two PRs, written separately, form one data path. **Neither shows it alone.**
+
+**Producer** — `perthsafepet#2`, `src/routes/proof.tsx`:
+
+```
+https://apn-provenance-keeper.lovable.app/verify?receipt=${encodeURIComponent(data.receipt)}
+```
+
+**Consumer** — `apn-provenance-keeper#1`, `src/pages/VerifyIndex.tsx`:
+
+```js
+const receipt = searchParams.get("receipt");
+```
+
+**And the same `perthsafepet#2` diff widened what a receipt contains.** Before, a
+receipt carried `verificationId`, `recordType`, `contentHash`, `keyId`, `sealedAt`,
+`publicUrl`. This PR adds **`fields`** (the record content itself), **`subjectId`**,
+`prevHash`, `signature`, and `publicKeySpki`. So the payload that now travels in a
+query string is materially larger than the one that used to — the change that
+expanded it and the change that puts it in a URL are the same change.
+
+**Why a query string is the wrong carrier for record content.** URLs are the least
+private part of an HTTP request. They are written to server access logs and proxy
+logs by default, retained in browser history and sync, and sent onward in the
+`Referer` header of subsequent requests from the destination page. A request body
+is none of those things. This is a cross-origin, same-tab navigation to a
+third-party-hosted domain (`*.lovable.app`), so the receipt crosses an
+organisational boundary in the most loggable position available.
+
+**Scope, honestly.** Both PRs label this demonstration data — *"test data only ·
+no production ledger write"*, and *"This demonstration receipt is not persisted in
+The Ledger."* **No real personal data goes through this path today.**
+
+**But this is the path that is meant to go live.** `perthsafepet#2`'s own README
+marks `S1-PET-01` a **candidate**, explicitly *"do not promote to a verified
+reusable variant until the public route and cross-product verification path pass
+end-to-end testing"* — and the cross-product verification path *is* this URL. The
+time to change the carrier is before promotion, not after.
+
+**Not fixed.** Both are other repos' unmerged branches; the standing instruction
+is to close and change nothing. Recorded so the decision happens deliberately
+rather than by merging.
+
+**Confidence: HIGH** on the mechanism — both halves are quoted literally from the
+diffs. **Not established:** whether the receipt would carry personal data in
+production. `fields` is typed `Record<string, unknown>`, so it is
+content-agnostic; what a real pet-rehoming record puts in it is a question for
+whoever promotes the variant.
+
+### 🟡 `verify.sovereignledger.au` — a default that should be checked
+
+`sovereign-engine.server.mjs` defaults every receipt's `publicUrl` to
+`https://verify.sovereignledger.au/<verificationId>`. Whether that domain is
+registered, owned by the company, and serving anything is **not verified here** —
+this environment has no outbound HTTP. It is worth one look, because a receipt is
+a durable artefact and the URL printed on it is a promise about where proof can be
+resolved. A receipt pointing at a domain nobody owns is worse than one with no URL
+at all.
+
+### ✅ Worth recording: `apn-provenance-keeper#1` is good work
+
+The verifier does the whole check in the browser with `crypto.subtle` — SHA-256
+recompute plus Ed25519 signature verify, no library, no network call, no key
+material held. Its own disclaimer is properly bounded: *"It does not prove that
+the underlying event is true, lawful, complete or approved."* That is the claims
+discipline this register keeps asking for, written by someone else, before anyone
+asked. The URL-carrier problem above is a transport choice, not a flaw in the
+cryptography.
+
+### What this sweep did NOT do
+
+- **Twelve of fifteen pre-existing PRs remain unswept**, including all three large
+  ones. A finding rate of one real issue in three diffs is not a reason to assume
+  the other twelve are clean — it is a reason to think they are not.
+- No branch was checked out, built, or run. Everything above is read from diffs.
+- The CDN grep result covers only the three swept diffs.
