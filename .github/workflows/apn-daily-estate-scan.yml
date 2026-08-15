@@ -37,7 +37,16 @@ jobs:
       - name: List all org repos
         id: list
         env:
-          # APN_ESTATE_TOKEN: fine-grained PAT, read-only Contents+Metadata on Fast-Clocks repos.
+          # APN_ESTATE_TOKEN must be READ-ONLY: Contents:read + Metadata:read, nothing else.
+          # This job only ever reads. It must never hold write, and it is a different
+          # credential from whatever self-heal uses — self-heal opens PRs, this does not.
+          #
+          # Preferred: a GitHub App installed on an explicit list of repositories, so
+          # revocation and scope are managed in one place and the token is short-lived.
+          # Acceptable: a fine-grained PAT restricted to selected repositories.
+          # Not acceptable: a classic PAT with `repo` scope — that grants write to
+          # everything the account can reach, for a job that only needs to read.
+          #
           # Falls back to GITHUB_TOKEN, which can only see THIS repo — so without the PAT
           # the estate scan silently becomes a single-repo scan. That is exactly the kind of
           # silent narrowing that has cost months. It is called out loudly in the report.

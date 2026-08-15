@@ -46,21 +46,58 @@ jobs:
       - id: list
         env:
           GH_TOKEN: ${{ secrets.APN_ESTATE_TOKEN || github.token }}
+          # Explicit allowlist of repos self-heal may open PRs against, space
+          # separated, set as an Actions *variable* (not a secret) so it is
+          # readable in the log and auditable in the UI.
+          #
+          # This is defence in depth, and it is the important half. A token wide
+          # enough to push to 27 repos is too much blast radius for an unattended
+          # nightly job — external review flagged exactly this. Even if the token
+          # stays broad, the workflow refuses to touch anything not named here.
+          # Empty (the default) means heal NOTHING but the repo it runs in.
+          ALLOWLIST: ${{ vars.APN_HEAL_ALLOWLIST }}
         run: |
+          set -euo pipefail
+          SELF="${{ github.event.repository.name }}"
+
           if [ -n "${{ inputs.repo }}" ]; then
-            REPOS="${{ inputs.repo }}"
+            CANDIDATES="${{ inputs.repo }}"
           elif [ -n "${{ secrets.APN_ESTATE_TOKEN }}" ]; then
-            REPOS=$(gh repo list Fast-Clocks --limit 200 --json name -q '.[].name' | tr '\n' ' ')
+            CANDIDATES=$(gh repo list Fast-Clocks --limit 200 --json name -q '.[].name' | tr '\n' ' ')
           else
-            REPOS="${{ github.event.repository.name }}"
-            echo "::warning::APN_ESTATE_TOKEN not set — healing THIS REPO ONLY."
+            CANDIDATES="$SELF"
+            echo "::warning::APN_ESTATE_TOKEN not set — considering THIS REPO ONLY."
           fi
-          echo "matrix=$(printf '%s\n' $REPOS | jq -R . | jq -sc .)" >> "$GITHUB_OUTPUT"
+
+          # The repo the workflow lives in is always permitted; anything else must
+          # be named in the allowlist. Fail closed, and say what was refused.
+          PERMITTED=""; REFUSED=""
+          for r in $CANDIDATES; do
+            if [ "$r" = "$SELF" ]; then PERMITTED="$PERMITTED $r"; continue; fi
+            case " ${ALLOWLIST:-} " in
+              *" $r "*) PERMITTED="$PERMITTED $r" ;;
+              *)        REFUSED="$REFUSED $r" ;;
+            esac
+          done
+
+          echo "Allowlist: ${ALLOWLIST:-<empty>}"
+          echo "Permitted:$PERMITTED"
+          if [ -n "$REFUSED" ]; then
+            # Never silent. A job that quietly skipped 20 repos reads as
+            # "estate healed" when it healed one.
+            echo "::notice::Self-heal skipped (not in APN_HEAL_ALLOWLIST):$REFUSED"
+          fi
+          if [ -z "$(printf '%s' "$PERMITTED" | tr -d ' ')" ]; then
+            echo "::warning::No repos permitted — nothing to heal."
+            echo "matrix=[]" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          echo "matrix=$(printf '%s\n' $PERMITTED | jq -R . | jq -sc .)" >> "$GITHUB_OUTPUT"
 
   heal:
     needs: discover
     runs-on: ubuntu-latest
     continue-on-error: true
+    if: needs.discover.outputs.matrix != '[]'
     strategy:
       fail-fast: false
       max-parallel: 5
