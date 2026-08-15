@@ -1119,3 +1119,82 @@ Written is not run.
 
 **VERIFIED AFTER**, both repos, pnpm 10 (what CI actually uses):
 `install --frozen-lockfile` 0 · `lint` 0 · `build` 0 · `audit --prod` clean.
+
+## 25. Node 20 deprecation cleared across the gates — and one comment retired
+
+Every run of every gate added in this sweep ended with:
+
+> `Node.js 20 is deprecated. The following actions target Node.js 20 but are
+> being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4,
+> pnpm/action-setup@v4`
+
+Nothing was broken — the runner was already forcing Node 24. But a permanent
+warning on a green run is precisely the noise that teaches people to stop reading
+logs, which is the failure this whole sweep exists to correct. A gate nobody
+reads is a gate that has stopped working.
+
+**`checkout` and `setup-node` → v6, SHA-PINNED rather than tagged.** A tag is
+mutable and a SHA is not, so a retagged or compromised action cannot silently
+enter a build. The two SHAs are lifted from `apn-hub/route-verification.yml` —
+the healthiest repo in the estate, whose own operating law asks for SHA pinning,
+and where those exact SHAs already run green. Trusted, not newly introduced.
+
+**PROVEN ON ONE REPO FIRST.** `sovereign-tank` was changed alone and its job log
+read before anything else was touched. The warning went from listing **three**
+deprecated actions to listing **one**, with every step still green — checkout,
+setup-node, install, lint, build, blocking production audit.
+
+Then rolled to: `APN-Core-Site`, `australian-data-removal`, `account-audit`,
+`v0-sovereignty-lab-ui`, `v0-claude-api-access`, `trace`, `privacy-scan`.
+
+### `pnpm/action-setup` deliberately NOT bumped
+
+It sits outside this session's repository scope — `get_latest_release` returns
+`Access denied` — so whether a major beyond v4 exists **could not be verified**.
+Bumping an action to a version nobody confirmed exists is how a gate breaks.
+Left at v4; the `github-actions` Dependabot ecosystem configured in each repo
+will propose it when there is one, with a diff a human can read. It is the sole
+remaining entry in that warning, by choice rather than oversight.
+
+### 🔴 A comment of mine had become a lie, one commit after I wrote it
+
+`v0-sovereignty-lab-ui`'s gate said the `version: 10` pin was **LOAD-BEARING for
+security**, because pnpm 11 ignores the `pnpm` field and would silently drop the
+picomatch/lodash/d3-color overrides. True when written. **False one commit
+later**, when §24 moved those settings to `pnpm-workspace.yaml`.
+
+Leaving it would have been a comment warning about a danger that had already been
+removed — a false statement sitting in the exact place someone would look to
+understand why the pin exists. Corrected to say what is now true: the pin remains,
+for a *different* and still-live reason (pnpm 11 exits 1 on
+`ERR_PNPM_IGNORED_BUILDS` where pnpm 10 exits 0), and it names what clearing that
+would require.
+
+**Fixing my own comment matters as much as fixing my own scanner.** Both get
+believed by whoever reads them next. A stale comment is the same defect class as
+a vacuous check: something that looks like evidence and is not.
+
+### Mistake made and corrected in this pass
+
+I pushed six repos assuming a single branch name and **two failed**: `trace` is on
+`claude/quality-gate-lint` and `privacy-scan` on
+`claude/fix-package-json-conflict-markers`. The commits existed locally; only the
+push refspec was wrong. Fixed by pushing to each repo's actual branch — the ones
+their existing PRs already track. Recorded because "the estate is uniform" is an
+assumption that has now been wrong twice, after the template-family assumption
+in §23.
+
+### 🟠 More Vercel project sprawl surfaced — still DO NOT quote a count
+
+Pushing these revealed further project↔repo pairings worth an eye:
+`trace` → **`sovereign-markets`**; `privacy-scan` → **`trace-by-apn`** *and*
+**`executive-privacy`**; `APN-Core-Site` → five projects, four reporting
+*Ignored*. Whether each is misattached or intentional is **not established**.
+§22 already warned the "8 misattached projects" figure is unverified; this makes
+recounting more necessary, not less. **No number should be quoted until someone
+lists the actual set.**
+
+**VERIFIED:** `sovereign-tank`, `APN-Core-Site`, `account-audit`,
+`v0-claude-api-access` gates all green after the change. `trace`,
+`privacy-scan`, `australian-data-removal`, `v0-sovereignty-lab-ui` pushed and
+running at time of writing — **not yet confirmed**, and not claimed as such.
