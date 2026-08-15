@@ -627,3 +627,84 @@ dependency bump.
 **66 high advisories cleared.** The three repos with no CI each hid a real defect
 in payment-handling code. The one repo with CI hid nothing. That correlation is
 the finding.
+
+## 20. `sovereign-tank` (PUBLIC) — 23 high → 0, a fifth dead-lint mechanism, 32 hidden bugs
+
+Fifth repo from §14, and the only **public** one. **BEFORE:** lint exit 1 ·
+no typecheck script, `tsc` **43 errors** · build 0 *because* `ignoreBuildErrors`
+(third repo with it) · **46 vulnerabilities, 23 HIGH, all production** · no CI.
+
+### A fifth way to have a dead lint
+
+`next lint` is **removed in Next 16**, and Next parses `lint` as a positional
+*directory* argument:
+`Invalid project directory provided, no such directory: .../lint`.
+
+Running tally of dead-lint mechanisms in this estate:
+1. eslint not a dependency → exit 127 (`privacy-scan`)
+2. eslint not a dependency but resolved from PATH at a **different major** (`trace`)
+3. `continue-on-error` on a mandatory check (`trace` CI)
+4. `next lint`, removed in Next 16 (`sovereign-tank`, `v0-sovereignty-lab-ui`)
+5. …and one that **looked** dead and was fine — bare `eslint` (`apn-hub`, §19)
+
+### Real runtime bugs behind `ignoreBuildErrors`
+
+- `adr-dashboard.tsx` keyed hotspot state on `h.region`, but `Region` has
+  `name`. **Every key was `undefined`** — all six hotspots collapsed into one
+  `"undefined"` entry and shared a single state.
+- `document-analyzer.tsx` — two `useCallback`s referenced `processFile` in its
+  temporal dead zone. Declaration moved above them.
+- `analytics/surface/route.ts` — `spfRecord` assigned inside a `forEach`
+  callback, which TS flow analysis cannot track → stayed `null`, narrowed to
+  `never` at `.trim()`. Converted to `for…of`.
+- **all five `/api/ai/*` routes** used `maxTokens` and `toDataStreamResponse()`,
+  neither of which exists in the installed AI SDK v6.
+- `system-health-panel.tsx` rendered literal `//` separators.
+
+### The mistake worth recording
+
+Ten functions in `lib/` were marked `async` with non-Promise return
+annotations. I "fixed" them by wrapping the annotations in `Promise<>` — and
+the error count went **UP**, 28 → 31, because the call sites in `api/scan` and
+`api/security/threats` then correctly complained they were using a Promise as a
+value. **None of those functions contain `await`.** The right fix was removing
+the spurious `async`, which cleared functions and callers together. Making an
+error message disappear is not the same as fixing the thing it points at.
+
+I also botched the eslint-disable placement first: I ran a single-pass inserter
+three times, and each inserted comment shifted the next reported line, stacking
+16 unused-disable warnings. Reverted and did one pass. Recorded because the
+failure mode — a fix loop that reacts to output it is itself changing — will
+recur.
+
+### Bounded, not clean
+
+`ignoreBuildErrors` **stays**, hiding exactly **11** errors: the AI SDK v5→v6
+`useChat` migration in two chat components. v6 removed
+`input`/`handleInputChange`/`handleSubmit`, replaced `isLoading` with `status`
+and `append` with `sendMessage`, moved `api` into a transport, and changed
+`message.content` to a `parts` array. That is a behavioural rewrite of the chat
+UI; a green typecheck would **not** prove it works, and it cannot be validated
+without running the app against a live model. The flag now carries a comment
+naming exactly what it hides and when to remove it.
+
+`typecheck` is deliberately **not** a CI step yet — adding it as
+`continue-on-error` would be a check that cannot fail, the anti-pattern this
+sweep exists to remove. It becomes blocking when the migration lands.
+
+**AFTER:** lint **0** (first time this repo has ever linted) · build 0 ·
+`pnpm audit` **0 vulnerabilities, production AND dev** (was 46 / 23 high) ·
+typecheck 11, all accounted. **`Fast-Clocks/sovereign-tank` PR #1.**
+
+### Sweep scoreboard, five of seven
+
+| repo | high before → after | CI before | hidden defects |
+|---|---|---|---|
+| `APN-Core-Site` | 21 → 0 prod | none | hooks bug in Stripe checkout; dead branch |
+| `australian-data-removal` | 19 → 0 prod | none | **unauthenticated Stripe webhook** |
+| `account-audit` | 20 → 0 prod | none | invalid Stripe param; 6 undefined colours |
+| `apn-hub` | 6 → **0 total** | **two workflows** | **none** |
+| `sovereign-tank` | 23 → **0 total** | none | 32 type errors incl. 5 dead API routes |
+
+**89 high advisories cleared.** Four of the five repos with no CI hid real
+defects; the one with CI hid nothing. The correlation has held for every repo.
