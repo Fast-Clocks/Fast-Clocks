@@ -1864,3 +1864,56 @@ did not reach for it until after I had already reported.
 
 All queries read-only: `information_schema`, `has_function_privilege`, and two
 `count(*)`s. No DDL, no DML, no config change, no secret value selected.
+
+### §31 addendum — resolved: what closed the hole, and what that does to §26 vs §29
+
+§31 left open *"whether migration `4112` was applied — the effect is confirmed, the
+cause is not."* Now established from `supabase_migrations.schema_migrations`:
+
+| `privacy-widget#3` migration | In production? |
+|---|---|
+| `4110` `safepet_price_shield` | ✅ **applied** — `20260726003342` |
+| `4111` `safepet_price_shield_verify_scope` | ✅ **applied** — `20260726003844` |
+| `4112` `lockdown_internal_definer_functions` | ❌ **never applied** |
+
+**So what revoked the grant?** A different migration entirely:
+**`20260807080825 apn_p0_safe_audit_and_spine`**, applied **7 August**. It is the
+only migration in the database containing a `REVOKE` naming
+`apn_assert_same_org` — confirmed by counting matching statements, not inferred
+from its title. The three neighbouring `p0` migrations contain none.
+
+**Timeline, fully closed:**
+
+| Date | Event |
+|---|---|
+| 26 Jul | `#3` opened; `4110` + `4111` applied to production the same day |
+| 30 Jul | The audit *inside* `#3` finds S1 — so the hole was genuinely open then |
+| **7 Aug** | **`apn_p0_safe_audit_and_spine` revokes the grant** — hole closed, by other work |
+| 15 Aug | Confirmed shut: `has_function_privilege` false for `anon` and `authenticated` |
+
+### I over-corrected, and §26 was nearer right than §29
+
+- **§26** called `#3` *"bookkeeping — the record trailing reality."*
+- **§29** rejected that: *"Not 20 days of stale bookkeeping… the single
+  highest-value unmerged PR in the estate,"* with a live security hole inside.
+- **The truth is closer to §26.** Two of three migrations were already in
+  production. The third was overtaken by other work eight days later and is now a
+  **no-op** — `REVOKE` on an already-revoked grant does nothing. The PR really is
+  mostly a record catching up with a database that moved on without it.
+
+§29 was right that the *content* is valuable — the audit findings, the ledger
+claims limit, the cron mechanism. It was wrong about the **urgency**, and the
+wrongness came from the same place both times: **reading a document and reporting
+what it said, instead of asking the database what is true.** §26 inferred from the
+PR body. §29 inferred harder from the same body. Only the query settled it.
+
+**Merging `#3` remains worth doing** — for the audit document and the record — but
+it ships **no security fix**, and nobody should treat it as urgent on that basis.
+That is the opposite of what I told Chris an hour ago, and it is the second
+correction to the same section in one session.
+
+**What this says about the estate, and it is the durable point:** production moved
+three times (26 Jul, 27 Jul, 7 Aug) while the PR describing it sat still. The
+repository is not a reliable account of what the database is. **Any statement of
+the form "this PR contains the fix for X" is unverified until someone asks the
+database whether X is still broken.**
