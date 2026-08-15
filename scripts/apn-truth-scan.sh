@@ -263,14 +263,88 @@ CDN_HOSTS='fonts\.googleapis\.com|fonts\.gstatic\.com|cdn\.jsdelivr\.net|cdnjs\.
 # .ts/.js/.css count as shipped — a runtime fetch does not have to live in JSX.
 CDN_CODE_FILES=$(printf '%s\n' "$SCAN_DIRS" | grep -vE '\.(md|json)$' || true)
 N_CDN_CODE=$(count "$CDN_CODE_FILES")
-CDN=$(printf '%s\n' "$CDN_CODE_FILES" | xargs -r grep -rniE "$CDN_HOSTS" 2>/dev/null | grep -v 'apn-truth-scan' || true)
+
+# COMMENT-STRIPPED matching. §22 split docs from shipped code, which stopped the
+# scanner failing on its own findings register. It did NOT stop it failing on a
+# hostname inside a SOURCE comment — and §23 proved that case is real, not
+# theoretical: sovereign-suite-hub/src/routes/__root.tsx is CLEAN, and its only
+# match is a comment reading "do NOT re-add fonts.googleapis.com /
+# fonts.gstatic.com". Blocking a repo for documenting its own fix is the worst
+# incentive a gate can carry, so comments are removed before matching.
+#
+# Line numbers are PRESERVED (comment text is blanked, the line is not deleted),
+# so reported file:line still points at the real location.
+#
+# THE TRAP, and why `//` is not simply cut: every URL this check hunts for
+# contains `//` in `https://`. Naively stripping from the first `//` would erase
+# the URL itself and turn every real finding into a silent pass — a false
+# NEGATIVE on a security check, which is far worse than the false positive being
+# fixed. So `//` only starts a comment when it is NOT preceded by `:`.
+#
+# KNOWN LIMIT, stated rather than hidden: a protocol-relative URL (`src="//host"`)
+# would be read as a comment and missed. None exist in this estate — every hit
+# was opened and read during the §23 sweep — but the gap is real.
+strip_comments() {
+  awk '
+    BEGIN { inblk = 0 }
+    {
+      line = $0
+      # Continue/close a /* ... */ block carried over from an earlier line.
+      if (inblk) {
+        p = index(line, "*/")
+        if (p == 0) { print ""; next }
+        line = substr(line, p + 2); inblk = 0
+      }
+      # Same-line and opening /* ... */ blocks.
+      while ((p = index(line, "/*")) > 0) {
+        rest = substr(line, p + 2)
+        q = index(rest, "*/")
+        if (q == 0) { line = substr(line, 1, p - 1); inblk = 1; break }
+        line = substr(line, 1, p - 1) substr(rest, q + 2)
+      }
+      # HTML <!-- ... --> on a single line.
+      while ((p = index(line, "<!--")) > 0) {
+        rest = substr(line, p + 4)
+        q = index(rest, "-->")
+        if (q == 0) { line = substr(line, 1, p - 1); break }
+        line = substr(line, 1, p - 1) substr(rest, q + 3)
+      }
+      # `//` to end of line, but NEVER the `//` in a scheme (`https://`).
+      n = length(line)
+      for (i = 1; i < n; i++) {
+        if (substr(line, i, 2) == "//") {
+          prev = (i > 1) ? substr(line, i - 1, 1) : ""
+          if (prev != ":") { line = substr(line, 1, i - 1); break }
+        }
+      }
+      print line
+    }' "$1"
+}
+
+# Scan each file through the stripper, re-attaching path and line number so the
+# output shape stays identical to a plain `grep -n`.
+CDN=""
+while IFS= read -r f; do
+  [ -n "$f" ] || continue
+  hits=$(strip_comments "$f" | grep -niE "$CDN_HOSTS" 2>/dev/null || true)
+  [ -n "$hits" ] && CDN="${CDN}${CDN:+$'\n'}$(printf '%s\n' "$hits" | sed "s|^|${f}:|")"
+done <<< "$CDN_CODE_FILES"
+CDN=$(printf '%s' "$CDN" | grep -v 'apn-truth-scan' || true)
+
 CDN_DOCS=$(printf '%s\n' "$DOCS" | xargs -r grep -rniE "$CDN_HOSTS" 2>/dev/null | grep -v 'apn-truth-scan' || true)
 
 if [ -n "$CDN" ]; then
-  fail "external CDN reference in SHIPPED code — a privacy leak on a privacy product, and a July fix that regressed:"
+  # Wording covers BOTH shapes this check legitimately catches. A fetch
+  # (<script src>, <link rel=stylesheet>, @import, a URL constant) leaks the
+  # visitor's IP. A CSP directive naming the same host does NOT fetch anything —
+  # but it permits one, and on a privacy product that deserves the same look.
+  # Calling both "a privacy leak" would over-claim on the second; saying nothing
+  # about the second would under-report it. Verified against a real repo:
+  # v0-sovereignty-lab-ui has one of each.
+  fail "external CDN reference in SHIPPED code — a fetch leaks the visitor's IP; a CSP directive naming the host permits one:"
   printf '%s\n' "$CDN" | head -15 | sed 's/^/        /' | tee -a "$REPORT"
   say "        → self-host the asset. Known offenders: apn-certification-machine (qrcodejs, html2canvas)."
-  record external-cdn FAIL "$N_CDN_CODE" MEDIUM "$(count "$CDN")" "literal hostnames over shipped code; a hit inside a source comment is the remaining false-positive shape"
+  record external-cdn FAIL "$N_CDN_CODE" MEDIUM "$(count "$CDN")" "literal hostnames over comment-stripped shipped code; remaining blind spot is a protocol-relative //host URL"
 else
   pass "no external CDN references in shipped code"
   record external-cdn PASS "$N_CDN_CODE" MEDIUM 0 "vacuous if 0 code files inspected"
@@ -283,6 +357,44 @@ if [ -n "$CDN_DOCS" ]; then
 else
   pass "no CDN hostnames in documentation"
   record external-cdn-docs PASS "$N_DOCS" LOW 0 ""
+fi
+
+# ── §23 THIRD-PARTY ASSET HOSTS (advisory) ─────────────────────────────────────
+# ADVISORY BY DESIGN, and the design is the point.
+#
+# The §23 sweep found the blocking check's five-hostname list is too short: the
+# estate also reaches storage.googleapis.com (sovereign-suite-hub OG image) and
+# pub-*.r2.dev (sovereign-showcase OG image). A privacy product's egress surface
+# is not five hostnames long.
+#
+# But these are NOT the same defect, and folding them into the blocking check
+# would have been wrong. An `og:image` on a third-party bucket is fetched by
+# social-media crawlers, not by the visitor's browser on page load — so it leaks
+# nothing about the visitor, unlike a font or script tag. Promoting it to
+# blocking would fail live repos over a non-leak and teach people to switch the
+# gate off. That is the alarm budget: a system raising more alarms than an
+# operator can act on has failed even when every alarm is correct.
+#
+# So: named, counted, never silent — and never blocking on its own.
+say ""
+say "--- §23 Third-party asset hosts (advisory — egress surface, not a page-load leak) ---"
+ASSET_HOSTS='storage\.googleapis\.com|[a-z0-9-]+\.r2\.dev|[a-z0-9-]+\.lovable\.app|[a-z0-9.-]*amazonaws\.com|[a-z0-9-]+\.cloudfront\.net'
+ASSETS=""
+while IFS= read -r f; do
+  [ -n "$f" ] || continue
+  hits=$(strip_comments "$f" | grep -niE "$ASSET_HOSTS" 2>/dev/null || true)
+  [ -n "$hits" ] && ASSETS="${ASSETS}${ASSETS:+$'\n'}$(printf '%s\n' "$hits" | sed "s|^|${f}:|")"
+done <<< "$CDN_CODE_FILES"
+ASSETS=$(printf '%s' "$ASSETS" | grep -v 'apn-truth-scan' || true)
+
+if [ -n "$ASSETS" ]; then
+  warn "third-party asset hosts in shipped code — confirm each is a crawler-only asset (og:image) and not something the visitor's browser fetches:"
+  printf '%s\n' "$ASSETS" | head -10 | sed 's/^/        /' | tee -a "$REPORT"
+  say "        → an <img src> or <script src> on these hosts IS a visitor leak and should be self-hosted."
+  record asset-hosts WARN "$N_CDN_CODE" LOW "$(count "$ASSETS")" "advisory by design; og:image on a bucket is not a page-load leak, an img/script tag is"
+else
+  pass "no third-party asset hosts in shipped code"
+  record asset-hosts PASS "$N_CDN_CODE" LOW 0 "vacuous if 0 code files inspected"
 fi
 
 # ── §23 UNFINISHED SURFACE ─────────────────────────────────────────────────────
