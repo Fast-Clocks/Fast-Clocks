@@ -78,15 +78,23 @@ jobs:
           printf 'DATABASE_PASSWORD="x"\n' > "$TMP/.env.local"
           git -C "$TMP" add -A
           git -C "$TMP" -c user.email=t@t -c user.name=t commit -qm t
-          ./scripts/apn-truth-scan.sh "$TMP" > /dev/null 2>&1
-          SEEDED=$?
+          # Run it through the SAME pipeline shape the real step uses. Testing the
+          # scanner directly would prove detection but not the wiring — and the
+          # wiring is what broke. `| tee` is what silently swallowed the status.
+          ./scripts/apn-truth-scan.sh "$TMP" 2>&1 | tee /dev/null > /dev/null
+          SEEDED=${PIPESTATUS[0]}
+          NAIVE=$?   # what the old buggy code read — kept to prove the trap is real
           rm -rf "$TMP"
           if [ "$SEEDED" != "1" ]; then
             echo "::error::Gate self-test FAILED — a seeded blocking finding returned $SEEDED, expected 1."
             echo "The scanner is not detecting blocking findings. Do not trust a green run."
             exit 1
           fi
-          echo "Gate self-test passed: seeded blocking finding correctly returned exit 1."
+          if [ "$NAIVE" = "1" ]; then
+            echo "::warning::\$? now equals PIPESTATUS[0]; the pipeline shape may have changed."
+          fi
+          echo "Gate self-test passed: seeded blocking finding returned exit 1 through the real pipeline."
+          echo "(For the record, bare \$? on that same pipeline returned $NAIVE — the original bug.)"
 
       - name: Publish to job summary
         if: always()
