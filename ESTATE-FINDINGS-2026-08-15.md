@@ -1204,3 +1204,117 @@ check-in rather than assumed — `trace`, `privacy-scan`,
 This paragraph originally read "not yet confirmed, and not claimed as such" for
 the last four. It is updated only because they were then actually checked. An
 open claim in this register gets closed by evidence or not at all.
+
+---
+
+## 26. PR TRIAGE — 26 open, and proof that three orphan Vercel projects redden every Fast-Clocks PR
+
+**Numbering note, because it is the same defect class this register keeps
+catching.** Commit `6aa0b23`'s message says "and §26 the ledger merge". No §26
+was ever written into this file — that work landed in `apn-hub#13`'s
+`EXECUTION_LEDGER.md`, not here. A commit message naming a section that does not
+exist is a stale comment by another route. **This is the real §26.**
+
+Nothing was closed, merged, or pushed to any of these branches. This section is a
+list and a set of recommendations. Every merge decision below is Chris's.
+
+### 🔴 THE FINDING: every `Fast-Clocks` PR is permanently red, and its own code is fine
+
+`Fast-Clocks` PRs show a red ✗. The red is not from any check in this repo. It is
+three **orphan Vercel projects** attached to this repository, failing on every
+commit they see. Measured on three separate commits, weeks apart:
+
+| Vercel project | FC#4 (23 Jul) | FC#5 (14 Aug) | FC#6 (15 Aug) |
+|---|---|---|---|
+| `fast-clocks` — the correct one | ✅ success | ✅ success | ✅ success |
+| `public-access-hub` | ❌ failure | ❌ failure | ❌ failure |
+| `apn-privacy-atlas` | ❌ failure | ❌ failure | ❌ failure |
+| `apn-hub-restored` | ❌ failure | ❌ failure | ❌ failure |
+| **PR combined status** | **failure** | **failure** | **failure** |
+
+These are exactly the three orphans §25 flagged and could not explain.
+`apn-privacy-atlas` appears in the ledger's own **Deleted Repositories** table.
+`public-access-hub` and `apn-hub-restored` are in **neither** the live 27 **nor**
+the deleted list. A Vercel project outlives the deletion of the repo it was built
+for, keeps its GitHub connection, and keeps building against whatever repo it can
+still reach — which is this one.
+
+**The cost is not the wasted build. It is the alarm budget.** Since at least
+23 July, every pull request in this repository has carried a red ✗ that means
+nothing. That is the precise mechanism this register has been dismantling all
+week — a signal that renders identically whether or not anything is wrong — except
+here it fails *red* rather than green. A permanently red repo trains everyone to
+stop looking, and the day a real check fails it will look exactly the same.
+
+### 🔴 Correction to my own reporting
+
+**I have been reporting `Fast-Clocks#6` as green. That was half the picture.**
+
+The checks I own are genuinely green — `Claims, secrets, CDN, finish quality` =
+`success`, `Detect analysable source` = `success` (CodeQL `Analyze` correctly
+`skipped`; there is no analysable source). But the PR's **combined status is
+`failure`**, and anyone opening it sees a red ✗.
+
+Both statements are true. I only reported the one I was responsible for. Stating
+"the gate is green" about a PR that displays as failing is exactly the kind of
+technically-true-but-misleading report the standard exists to prevent, and it is
+worse coming from the person who wrote the gate.
+
+**This is not fixable from code.** No commit to any branch clears it. It needs
+someone with Vercel dashboard access to disconnect or pause the three orphan
+projects. Per DELETE NEVER: **pause, do not delete.**
+
+### Triage — the 15 PRs that predate this sweep
+
+Ages as of 2026-08-15. "Mergeable" is GitHub's computed state, freshly polled.
+`dirty` = genuine merge conflict. All are drafts **except `filewitness#1`**.
+
+| PR | Age | What it does | Size | Mergeable | Recommendation |
+|---|---|---|---|---|---|
+| **filewitness#1** | 16d | Removes "Public preview" banner, adds company footer/disclaimer, untracks `.env` | 8,774+ / 7 files | 🔴 **dirty** | **The only one actually waiting on you.** Only non-draft PR in the estate; its own body says "Do not merge/deploy without sign-off." Needs conflict resolution first. |
+| **privacy-widget#4** | 20d | Adds CI to a repo with none — migration hygiene + verifier self-tests, credential-free | 133+ / 2 files | ✅ clean | **Best value-to-risk on the list.** Negative-tested (a deliberately bad migration produced 3 failures). Same class of work as this week's sweep. |
+| **apn-hub#7** | 26d | Product-network section on the public front door | 39+ / 1 file | ✅ clean | Smallest item here. One file, one read. Check first whether `apn-hub#11`/`#13` superseded it. |
+| **apn-provenance-keeper#1** | 26d | Ed25519 + SHA-256 verifier for external S1 receipts | 176+ / 1 file | ✅ clean | Real product capability, in the repo CLAUDE.md records as the one a session wrongly declared absent. Wants a test before merge. |
+| **privacy-widget#3** | 20d | SafePet Price Shield no-surge invariant + export worker | 700+ / 11 files | ✅ clean | ⚠️ **The migration is already applied to production.** Merging is bookkeeping, not deployment — the record is trailing reality by 20 days. |
+| **privacy-widget#5** | 20d | Wires `/contact` to existing `public.inquiries`, insert-only | 348+ / 4 files | ✅ clean | Carefully bounded (no service-role key, no new table). Its own body names an unresolved gap: **consent is required to submit but not stored**. |
+| **privacy-widget#6** | 15d | Read-only forensic audit of the Sovereign ledger | 68+ / 1 file | ✅ clean | Docs only. Its verdict matters: 16,867 rows recompute correctly, **but the chain forks at 54 points** — tamper-evident, *not* "tamper-proof". |
+| **apn-certification-machine#3** | 25d | Certificate Studio — centred seal, logo options, compose-from-description | 138+ / 1 file | ✅ clean | 🟠 **New CDN finding** — see below. |
+| **v0-sovereignty-lab-ui#3** | 32d | New `[BOT.FACTORY]` third nav view | 516+ / 2 files | ✅ clean | Oldest open PR. Merge my `#4` (security) first, then rebase this. |
+| **perthsafepet#4** | 1d | Installs APN operating law at repo root (`AGENTS.md` + `CLAUDE.md`) | 134+ / 2 files | ✅ clean | Docs only, preserves the existing Lovable notice verbatim. Draft pending your review **of the wording of the law itself**. |
+| **perthsafepet#3** | 8d | LICENSE + README route table 8→23 routes | 46+ / 2 files | ✅ (Vercel green) | **Authored by Copilot, not a Claude session** — the only non-Claude PR here. Low risk. |
+| **perthsafepet#2** | 26d | Proof journey → Ledger and Hub | 45+ / 5 files | 🔴 **dirty** | Needs a rebase before it can be judged at all. |
+| **Fast-Clocks#5** | 1d | Cloudflare agent setup doc | 152+ / 1 file | ⚠️ false red | Docs only. Red is the orphan-Vercel issue above, not this PR. |
+| **Fast-Clocks#4** | 23d | APN File Brain — local-first substrate | 8,142+ / 34 files | ⚠️ false red | **Self-declared WIP**; its own body lists missing CLI, tests, docs and packaging. Largest unfinished thing in the estate. Decide: continue or park. |
+| **apn-hub#11** | 1d | Sovereign GitHub "finishing factory" gate | 8,374+ / 24 files | ✅ clean | Its own body says **keep draft, do not merge** — `release_decision_allowed=false`, and it names an unmet requirement: *a distinct eligible reviewer*. Respect that. |
+
+### 🟠 A CDN dependency the §23 sweep never saw
+
+`apn-certification-machine#3`'s own body states the QR and PNG export "rely on
+jsdelivr CDN scripts". §23 swept **merged/main** code across 27 repos and found
+jsdelivr in three files. It did not read open PR branches, so this is a
+**fourth occurrence**, sitting in unmerged code, in a product that mints
+certificates.
+
+Merging that PR would reintroduce a dependency the estate has been removing.
+Not a blocker — a thing to fix *in* the PR before it lands, not after.
+
+### The 11 PRs from this week's sweep
+
+`Fast-Clocks#6`, `privacy-scan#8`, `trace#1`, `APN-Core-Site#7`,
+`australian-data-removal#2`, `account-audit#1`, `apn-hub#12`, `sovereign-tank#1`,
+`v0-sovereignty-lab-ui#4`, `v0-claude-api-access#3`, `apn-hub#13`. All draft, all
+with a green `validate`/gate job, all documented in §14–§25. They are ready for
+review as a group; the security content is the reason to look, and the dependency
+bumps are consistently the least valuable part.
+
+### What this triage did NOT do
+
+- **Nothing was closed.** Not one PR, however stale.
+- **No branch was pushed to, rebased, or force-updated.**
+- I did **not** read the diffs. Every "what it does" above is drawn from the PR's
+  own title, body and file statistics — MEDIUM confidence, not HIGH. A body can
+  be wrong or stale; three of them already disagree with their own age.
+- I did **not** verify the two `dirty` PRs' conflicts are trivial. `dirty` says a
+  conflict exists, not how bad it is.
+- The orphan Vercel projects are **still live and still failing.** Identified and
+  evidenced here; not fixed, because fixing needs dashboard access.
