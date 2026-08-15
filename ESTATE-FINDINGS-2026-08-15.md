@@ -572,3 +572,58 @@ single test-mode purchase before merge. `muted` not design-reviewed.
 
 Every one had **no CI at all** and a dead `lint` script. In all three the
 dependency bump was the *least* valuable part of the change.
+
+## 19. `apn-hub` — the counter-example, and what it proves
+
+Fourth repo from §14, and the one that needed no repair. **BEFORE:** lint 0 *and
+real* · test 0 · test:routes 0 · build 0 · tsc 0 · 6 high advisories · **two
+substantial CI workflows already**.
+
+**The lint here is genuinely working — do not "fix" it.** `"lint": "eslint"` with
+no path argument looks exactly like the dead-lint pattern found in eight other
+repos, so I checked rather than assumed: ESLint 9 defaults to the current
+directory, and **70 files were inspected with zero messages** by both the bare
+and explicit forms. Recorded so a later session does not "repair" something that
+works.
+
+**What this repo proves.** It is the only Next.js repo in the estate with eslint
+correctly pinned AND real tests — and it was **still on a vulnerable `next`**.
+Being well-configured did not save it, because nothing was watching. The lesson
+of the whole sweep is not "configure better", it is **"something must run on a
+schedule"**. That is the case for Dependabot, not for tidier config.
+
+**Its governance is the estate's best and should be the model:**
+- `operating-law.yml` verifies canonical instruction entrypoints exist as
+  non-empty regular files (not symlinks) and **forbids shadow instruction
+  files** — `AGENTS.override.md`, `CLAUDE.local.md`, `.claude/**`, `.codex/**`,
+  `.gemini/**` — unless explicitly allowlisted.
+- Actions are **SHA-pinned**, and checkouts use `persist-credentials: false`.
+- It carries `docs/APN-OPERATING-CONSTITUTION.md`, `.github/CODEOWNERS`, issue
+  and PR templates.
+
+**Changes (`Fast-Clocks/apn-hub` PR #12):** next 16.2.7 → 16.3.1; `npm audit fix`
+for two dev-only advisories → **0 vulnerabilities, dev included**; added a
+`typecheck` script; added Lint / Type-check / blocking prod audit / advisory full
+audit **to the existing `route-verification.yml`**, not a new file — this repo's
+own §7 is one canonical system, and adding a competing `quality-gate.yml` would
+violate the rule the repo exists to enforce. Added dependabot.
+
+**No instruction files touched**, checked against `operating-law.yml`'s rules
+before committing.
+
+**`EXECUTION_LEDGER.md` deliberately untouched.** Merging these findings into it
+is Chris's call and a separate change — not something to slip inside a
+dependency bump.
+
+### Sweep scoreboard, four of seven
+
+| repo | high before → after | CI before | hidden defects |
+|---|---|---|---|
+| `APN-Core-Site` | 21 → 0 prod | none | rules-of-hooks in Stripe checkout; unreachable branch |
+| `australian-data-removal` | 19 → 0 prod | none | **unauthenticated Stripe webhook**; apiVersion drift |
+| `account-audit` | 20 → 0 prod | none | invalid Stripe param; 6 undefined colours; 18mo drift |
+| `apn-hub` | 6 → **0 total** | **two workflows** | **none** |
+
+**66 high advisories cleared.** The three repos with no CI each hid a real defect
+in payment-handling code. The one repo with CI hid nothing. That correlation is
+the finding.
