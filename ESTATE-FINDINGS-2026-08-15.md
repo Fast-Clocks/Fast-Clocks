@@ -1790,3 +1790,77 @@ distinguishes them.** Asked rather than assumed.
 No project paused, deleted, restored, or modified. No new cost created. Per DELETE
 NEVER, the action on any genuine stray is **pause**, never delete — and only after
 confirming nothing points at it, and only with Chris's say-so.
+
+---
+
+## 31. 🔴 CORRECTION — I re-measured §29 against the live backbone. Two of its three findings are already fixed.
+
+§29 said *"re-measure before acting on any specific number."* I then got read-only
+access to the backbone and did exactly that. **I was wrong on the two things that
+mattered most, and I told Chris both of them as live problems.**
+
+All figures below are live reads at **2026-08-15 ~15:25 UTC**, not quoted.
+
+| §29 said (from the 30 July audit) | Live now | Verdict |
+|---|---|---|
+| `domain-watch` **frozen 22 days**, 0 domains checked in 20 days, last check 2026-07-08 | **Last check `2026-08-15 12:16 UTC` — 0 days stale.** 216 domains, **0 never-checked**, 4 LIVE | ✅ **FIXED — not frozen** |
+| **S1 security: `apn_assert_same_org()` EXECUTE-able by anon** via `/rest/v1/rpc/` | `has_function_privilege('anon', …)` → **false**. `authenticated` → **false** | ✅ **FIXED — hole is closed** |
+| `link-audit` degraded, **221 of 1009** resources unchecked | **240 of 1029** unchecked | ⚠️ **Still degraded** — and total grew by 20, so some of the rise is new arrivals |
+
+### What I got wrong, precisely
+
+Under an hour ago I told Chris, in plain words, that there was **a live security
+hole with its fix sitting unmerged**. There is not. The `EXECUTE` grant has been
+revoked. Whether by migration `4112` being applied outside the PR, or by another
+change, I cannot tell from here — but **the hole is shut**, and my statement that
+merging the PR is "what would ship it" was wrong.
+
+I also told him a production cron had been silently dead for twenty days. It has
+not been dead since at least today, and probably longer.
+
+### The failure mode, named honestly
+
+§29 *did* carry the caveat: *"HIGH confidence the PR says this; MEDIUM that it is
+still true… re-measure before acting on any specific number."* That caveat was
+correct and it was not enough.
+
+**A hedge in the footnotes does not cancel a headline.** I wrote "the hole is
+live", "frozen 22 days", "the evidence store is being fed runs that did not run" —
+present tense, declarative — and then disclaimed currency at the bottom. A reader
+takes the headline. **The caveat protected me, not Chris.** That is the wrong way
+round, and it is a subtler version of the exact defect this register exists to
+catch: a signal that looks like evidence and isn't.
+
+The rule that follows, and it binds from here: **if a finding's currency is
+MEDIUM, the uncertainty belongs in the claim itself, not in a note beneath it.**
+"As at 30 July, `domain-watch` had been frozen 22 days; not re-measured since" is
+the same length as what I wrote and is true. I had the access to re-measure and
+did not reach for it until after I had already reported.
+
+### What stands from §29
+
+- **`link-audit` is still degraded** — 240 of 1029 unchecked. Real, current, and
+  the only one of the three still open.
+- **The architectural point stands and is untouched by any of this:** cron
+  wrappers that log `succeeded` regardless of outcome, feeding `audit` events into
+  the ledger, mean the evidence store can record work that did not happen.
+  Append-only proves nobody altered a record; it proves nothing about whether the
+  record was true when written. **That the specific instances got fixed does not
+  fix the mechanism that let them look fine while broken.**
+- The **ledger claims limit** (47 duplicate hashes, 2 nulls, hash is a colliding
+  per-row digest) was never a live/stale question — it is a statement about what
+  the data structure can support, and it stands.
+
+### Not established
+
+- **Why** the two fixes landed, or when. Nothing in this session did it.
+- Whether migration `4112` was applied to the backbone — the *effect* is confirmed;
+  the cause is not. `privacy-widget#3` may therefore be more merged-in-effect than
+  its draft status suggests, which is its own kind of drift worth checking.
+- `link-audit`'s current failure rate. I measured the backlog, not the HTTP
+  outcomes.
+
+### Nothing was written
+
+All queries read-only: `information_schema`, `has_function_privilege`, and two
+`count(*)`s. No DDL, no DML, no config change, no secret value selected.
