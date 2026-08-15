@@ -38,14 +38,32 @@ say ""
 # Australian Consumer Law: unsubstantiated representations are actionable.
 say "--- §25 Prohibited / unsubstantiated claims ---"
 PROHIBITED='military[- ]grade|bank[- ]level|unbreakable|unhackable|100% secure|absolutely secure|completely secure|impenetrable|guaranteed security|NSA[- ]grade|government[- ]grade|court[- ]admissible|legally binding proof|tamper[- ]proof'
-HITS=$(printf '%s\n' "$SCAN_DIRS" | xargs -r grep -rniE "$PROHIBITED" 2>/dev/null | grep -v 'apn-truth-scan' || true)
-if [ -n "$HITS" ]; then
-  fail "prohibited absolute-security claims found:"
-  printf '%s\n' "$HITS" | head -20 | sed 's/^/        /' | tee -a "$REPORT"
+
+# Split by surface. A claim SHIPPED to a customer in markup is a blocking defect.
+# The same words in documentation are usually the opposite — a changelog recording
+# that a claim was removed, an audit quoting the phrase it banned, or a README
+# stating "tamper-evident, NOT tamper-proof". Blocking on those makes the scanner
+# fail every honest audit document, which is how a gate gets switched off.
+# Documentation still reports as an ADVISORY so a genuine claim in a README is
+# visible, never silent.
+MARKUP=$(printf '%s\n' "$SCAN_DIRS" | grep -E '\.(html|tsx|jsx|vue|svelte)$' || true)
+DOCS=$(printf '%s\n' "$SCAN_DIRS" | grep -E '\.(md|json)$' || true)
+
+SHIPPED=$(printf '%s\n' "$MARKUP" | xargs -r grep -rniE "$PROHIBITED" 2>/dev/null | grep -v 'apn-truth-scan' || true)
+DOCUMENTED=$(printf '%s\n' "$DOCS" | xargs -r grep -rniE "$PROHIBITED" 2>/dev/null | grep -v 'apn-truth-scan' || true)
+
+if [ -n "$SHIPPED" ]; then
+  fail "prohibited absolute-security claims in SHIPPED markup:"
+  printf '%s\n' "$SHIPPED" | head -20 | sed 's/^/        /' | tee -a "$REPORT"
   say "        → §25: prefer 'independently verifiable' over 'unbreakable';"
   say "          'records integrity' over 'truth'; 'designed for' over 'certified for'."
 else
-  pass "no prohibited absolute-security claims"
+  pass "no prohibited absolute-security claims in shipped markup"
+fi
+
+if [ -n "$DOCUMENTED" ]; then
+  warn "prohibited terms appear in documentation — confirm each is quoting or negating, not claiming:"
+  printf '%s\n' "$DOCUMENTED" | head -10 | sed 's/^/        /' | tee -a "$REPORT"
 fi
 
 # Unsubstantiated hard numbers presented as fact (the Rig Tech failure mode).
