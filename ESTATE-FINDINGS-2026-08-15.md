@@ -1917,3 +1917,95 @@ three times (26 Jul, 27 Jul, 7 Aug) while the PR describing it sat still. The
 repository is not a reliable account of what the database is. **Any statement of
 the form "this PR contains the fix for X" is unverified until someone asks the
 database whether X is still broken.**
+
+---
+
+## 32. The cron findings resolved properly — the lying jobs were switched off and rebuilt
+
+§31 said the architectural point *"stands and is untouched."* **I asserted that
+rather than checked it** — the same habit §31 had just finished criticising. So I
+checked. Live reads, ~15:27 UTC.
+
+### The two jobs §29 caught lying are both DISABLED
+
+| jobid | job | schedule | active | runs in 7d |
+|---|---|---|---|---|
+| 4 | `sovereign-domain-watch` | `0 */2 * * *` | ❌ **false** | **0** |
+| 5 | `apn-link-audit` | `*/10 * * * *` | ❌ **false** | **0** |
+
+**Both of the crons that reported `succeeded` while doing nothing have been turned
+off.** Neither has run in seven days.
+
+### And `link-audit` was rebuilt as a queue, not patched
+
+| jobid | job | schedule | runs in 7d | last run |
+|---|---|---|---|---|
+| 1 | `apn-link-audit-enqueue` | every 6h | 28 | 15 Aug 12:13 |
+| 2 | `apn-link-audit-collect` | every 5 min | **2,016** | 15 Aug 15:25 |
+| 3 | `apn-retention-purge` | daily 03:30 | 7 | 15 Aug 03:30 |
+
+2,016 runs is exactly 7 days × 288 five-minute slots — **it has not missed a
+single scheduled execution.**
+
+This is the *right* repair, and worth naming as such. The original design made a
+synchronous outbound HTTP call from inside a cron and reported the cron's exit
+status as the result, so a timeout or a 401 in the call vanished behind a green
+wrapper. The replacement splits it: **enqueue** work on a slow cycle, **collect**
+results on a fast one. The success of the scheduler is now decoupled from the
+success of the network call, which is precisely the coupling that produced the
+false green.
+
+**Someone in this estate diagnosed the defect class and fixed it structurally,
+without being asked and without writing it down anywhere I have found.** That
+deserves recording as much as any failure does.
+
+### 🔴 But I must not now cite "2,016 succeeded" as proof, and neither should anyone else
+
+The whole of §29 rested on this: **the old `domain-watch` also reported 36
+consecutive `succeeded` runs while checking zero domains.** A cron wrapper's status
+tells you the scheduler fired, not that the work happened. Quoting 2,016/2,016 as
+evidence of health would be committing the exact error this register spent the day
+documenting.
+
+**The trustworthy evidence is different and independent:** the `domains` table has
+`live_checked_at` **0 days stale**, 0 never-checked of 216. *Data freshness* is
+proof of work; *job status* is not. Where those two disagree, the data wins.
+
+### 🟠 Genuinely open: nothing is scheduled to check domains
+
+`sovereign-domain-watch` is **disabled with no visible replacement** in `cron.job`.
+Yet domains were checked at **12:16 today**. Something is doing it — but it is not
+a scheduled job in this database.
+
+`apn-link-audit-enqueue` ran at 12:13, three minutes before. **That correlation is
+suggestive and I am explicitly not treating it as proof** — it would be exactly the
+kind of plausible inference that has already caught me twice today.
+
+The risk is concrete: **if that freshness came from a manual run or an external
+trigger, the domain register will silently go stale again** — and this time no
+cron will even be lying about it, because there is no cron. The failure would be
+invisible rather than merely misreported. Worth one look by someone who can see
+what else can reach this database.
+
+Also unresolved: `net._http_response` holds **zero rows for the last 24 hours**,
+while `link-audit-collect` ran 288 times in that window. Either collection uses a
+path other than `pg_net`, or responses are being purged (there *is* now a daily
+`apn-retention-purge`). Not chased; noted so nobody reads the empty table as
+"nothing ran".
+
+### Net position on §29's three findings
+
+| §29 finding | Final status |
+|---|---|
+| `domain-watch` frozen, lying about it | ✅ **Job disabled.** Data currently fresh — but **no scheduled replacement** |
+| `link-audit` ~90% failure, lying about it | ✅ **Rebuilt as enqueue/collect**, no missed slots in 7 days. Backlog still 240/1029 |
+| S1 security hole | ✅ **Closed 7 Aug** by `apn_p0_safe_audit_and_spine` (§31 addendum) |
+
+All three are addressed. **None of it was done by the PR that documented them, and
+none of it was written down.** The estate repaired itself faster than its own
+records — which is the §31 point again, from the encouraging side: the drift
+between repo and reality has been running in the *estate's favour* here, not
+against it.
+
+All queries read-only: `cron.job`, `cron.job_run_details`, `net._http_response`.
+No DDL, no DML, nothing enabled, disabled or modified.
