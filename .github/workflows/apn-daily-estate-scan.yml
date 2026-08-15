@@ -76,12 +76,12 @@ jobs:
         repo: ${{ fromJson(needs.discover.outputs.matrix) }}
     steps:
       - name: Checkout scanner
-        uses: actions/checkout@v4
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
 
       - name: Checkout target repo
         id: target
         continue-on-error: true
-        uses: actions/checkout@v4
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           repository: Fast-Clocks/${{ matrix.repo }}
           token: ${{ secrets.APN_ESTATE_TOKEN || github.token }}

@@ -1328,3 +1328,147 @@ bumps are consistently the least valuable part.
   conflict exists, not how bad it is.
 - The orphan Vercel projects are **still live and still failing.** Identified and
   evidenced here; not fixed, because fixing needs dashboard access.
+
+---
+
+## 27. ALARM BUDGET, measured — and a green tick that builds nothing
+
+Method: `get_status` on one open PR in each of the 15 repos that has one. This
+reads the **commit statuses** GitHub shows on the PR, which is what a human
+actually sees. It is not a Vercel dashboard listing and does not replace one.
+
+### ✅ THE ANSWER: the false red is contained to ONE repo
+
+**`Fast-Clocks` is the only repo in the estate with a failing status.** Every
+other sampled repo reports `success` or has no deployment integration at all.
+
+This is the good version of the answer. The alarm-budget damage §26 documented is
+real but **bounded** — it does not generalise, no other repo has orphan projects
+attached, and **one dashboard action fixes the estate's entire false-red
+problem**. Worth stating plainly because the opposite result was the working
+assumption an hour ago.
+
+### 🔴 The mirror image: five green ticks at `APN-Core-Site` that built nothing
+
+`APN-Core-Site` carries **six** Vercel statuses. One is a real deployment. The
+other five report:
+
+> `state: success` · *"Canceled by Ignored Build Step"*
+
+| Vercel project | Reported | Actually did |
+|---|---|---|
+| `apn-core-site` | ✅ success | deployed |
+| `v0-apn-hub-deploy-prep` | ✅ success | **nothing — build skipped** |
+| `apn-vault` | ✅ success | **nothing — build skipped** |
+| `apn-core-site-c932` | ✅ success | **nothing — build skipped** |
+| `v0-project` | ✅ success | **nothing — build skipped** |
+| `apn-vault-cover` | ✅ success | **nothing — build skipped** |
+
+**This is the vacuous pass, in the deployment layer.** §14 established the defect
+class in CI: *a check that inspected 0 objects renders identically to one that
+inspected 400.* Here five projects that compiled nothing render identically to
+the one that shipped the site — same green tick, same `success` state, and the
+"Canceled" wording lives in a description field nobody reads.
+
+Fast-Clocks fails **loudly and wrongly**. APN-Core-Site passes **quietly and
+emptily**. The second is worse: a red mark eventually gets investigated, and five
+false greens never do. §25 noted these as "four reporting *Ignored*" and treated
+it as sprawl. It is five, and it is not merely sprawl — it is five green ticks
+that mean nothing, on the repo behind the public front door.
+
+Not fixed. Dashboard-only, same as the orphans.
+
+### Observed project↔repo pairings — a LOWER BOUND, still not a count
+
+**21 distinct Vercel projects** are visible from PR statuses alone. §26 said not
+to quote a count until someone lists the real set from the dashboard. That still
+stands — this is what leaks through pull requests, and projects with no open PR
+in their repo are invisible to it. **Treat 21 as a floor, not a total.**
+
+| Repo | Vercel projects seen |
+|---|---|
+| `APN-Core-Site` | 6 — one real, **five build-skipped** |
+| `Fast-Clocks` | 4 — one real, **three orphans failing** |
+| `perthsafepet` | 3 — `perthsafepet`, `pet-safe-perth`, `pet-safe-perth-2c`, all deploying |
+| `privacy-scan` | 2 — `trace-by-apn`, `executive-privacy` |
+| `trace` | 1 — `sovereign-markets` |
+| `apn-hub` | 1 — `apn-hub-1h` |
+| `v0-sovereignty-lab-ui`, `account-audit`, `sovereign-tank` | 1 each, same-named |
+| `v0-claude-api-access` | 1 — **`under-construction`** |
+| `apn-provenance-keeper`, `apn-certification-machine`, `privacy-widget`, `filewitness`, `australian-data-removal` | **none — no status at all** |
+
+Two of these want an eye. `perthsafepet` deploys the same repo to **three**
+projects simultaneously, all succeeding — triple hosting of one product.
+`v0-claude-api-access` deploys to a project called **`under-construction`**,
+which is relevant to the open question about renaming that repo.
+
+### 🟠 `australian-data-removal` shows NO deployment status — check before the Stripe step
+
+There is an open action to set `STRIPE_WEBHOOK_SECRET` in that repo's Vercel
+**production and preview** environments before `#2` merges. Its PR shows **zero
+Vercel statuses**.
+
+Stated precisely, because the distinction matters: this proves **no Vercel Git
+integration is reporting on that PR**. It does **not** prove no Vercel project
+exists — a project can exist, hold the environment variables, and simply not be
+connected to this repo's pull requests. Worth confirming the project is findable
+before going looking for the settings screen, rather than discovering it midway.
+
+### 🔴 Correction to §25 — Node 20 was NOT cleared here, and I said it was
+
+§25 recorded the Node 20 deprecation as cleared, with `pnpm/action-setup@v4` the
+**"sole remaining entry in that warning, by choice rather than oversight."**
+
+**That is false for this repository.** Reading the actual job log of Fast-Clocks'
+own truth-scan run — rather than its green tick — surfaced:
+
+> `Node.js 20 is deprecated. The following actions target Node.js 20 but are being
+> forced to run on Node.js 24: actions/checkout@v4, actions/github-script@v7`
+
+§25 swept the **eight quality-gate workflows in other repos** and never touched
+Fast-Clocks' own four. The repo that hosts the enforcement machinery was the
+least-hardened in the estate — every action on a mutable tag, none SHA-pinned,
+while the gates it exports to everyone else were pinned. The cobbler's children.
+
+**Fixed:** all six `actions/checkout@v4` occurrences across the four workflows
+pinned to `d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0` — the exact SHA
+already CI-verified green in eight repos under §25.
+
+**NOT fixed, and deliberately not guessed:** `actions/github-script@v7`,
+`actions/upload-artifact@v4`, `actions/download-artifact@v4`,
+`github/codeql-action/*@v3`, `peter-evans/create-pull-request@v6`. Bumping these
+needs their target versions and SHAs **verified**, and those repos are outside
+this session's scope to read. Writing a version number I have not confirmed is
+the same error as a green tick I have not read. The `github-actions` Dependabot
+ecosystem is configured here and will propose them monthly with a readable diff.
+
+**Also note:** two of the four workflows (`apn-self-heal.yml`,
+`apn-daily-estate-scan.yml`) **have never executed once**, and still cannot until
+`#6` merges. Their checkout pin is changed but **unexercised**. Changed ≠ run.
+
+### 🟠 Dependabot's major-version ignore also suppresses SECURITY updates
+
+`.github/dependabot.yml` ends its npm block with:
+
+```yaml
+ignore:
+  - dependency-name: "*"
+    update-types: [version-update:semver-major]
+```
+
+The comment above it reads *"Majors need a human — they break builds and that
+breaks trust in the bot."* Sound reasoning. But Dependabot applies `ignore`
+conditions to **security updates as well as version updates** — so an advisory
+whose only remedy is a major bump is dropped silently, and the `security:` group
+above it does not rescue it.
+
+In an estate where this entire week was spent clearing 133 high advisories, a
+rule that can silently withhold exactly the ones needing a major bump is worth
+knowing about. **Not changed** — it is a deliberate policy choice with a stated
+rationale, and reversing it unilaterally would trade one failure mode for
+another. Flagged for a decision, with the trade named: fewer broken builds versus
+possibly never being told about a major-only security fix.
+
+**Confidence: MEDIUM.** This is documented Dependabot behaviour, not something
+reproduced here — no advisory requiring a major bump has been observed being
+suppressed in this estate. Verify before acting on it.
