@@ -194,6 +194,20 @@ on 14 Aug and left unanswered.**
   27 Jun plus `APN_REVENUE_MACHINE.md`, `SOVEREIGN_TANK_DEPLOYMENT.md`.
 - The estate-wide daily scan currently wants one broad cross-repo PAT. External
   review flagged the blast radius; per-repo or an allowlisted GitHub App is right.
+  **Partly addressed:** `apn-self-heal.yml` now refuses any repo not named in
+  `vars.APN_HEAL_ALLOWLIST` (fail-closed, default empty, refusals announced). The
+  daily scan documents the required read-only token shape. Neither replaces the
+  App; both narrow the damage a broad token can do.
+- 🟥 **`apn-self-heal.yml` and `apn-daily-estate-scan.yml` have NEVER EXECUTED.**
+  Both are `schedule`/`workflow_dispatch` only, and neither file exists on `main`
+  yet — GitHub will not dispatch a workflow that is not on the default branch, so
+  they cannot even be triggered manually until PR #6 merges. What has actually been
+  proven is narrower than it looks: the YAML parses, and the allowlist shell logic
+  was dry-run by hand across three cases (empty allowlist permits only self; a
+  two-repo allowlist permits exactly those; `privacy-scan` does not match
+  `privacy-scan-old`). **Dry-running the logic is not running the workflow.** Do
+  not describe this automation as working. First real evidence will be the first
+  scheduled run after #6 merges, and it should be read sceptically.
 - `scripts/apn-truth-scan.sh` is a low-level detector, **not** the scanner/risk
   engine of the architecture. The four gaps named here on 15 Aug — no
   inspected-object counts, no confidence, no evidence age, no estate alarm budget —
