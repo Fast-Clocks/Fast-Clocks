@@ -243,15 +243,46 @@ fi
 # 464d0f5, 2d1bddf, 180d324). Fixes regress silently without a check.
 say ""
 say "--- §23 External CDN dependencies (CSP / privacy regression) ---"
-CDN=$(printf '%s\n' "$SCAN_DIRS" | xargs -r grep -rniE 'fonts\.googleapis\.com|fonts\.gstatic\.com|cdn\.jsdelivr\.net|cdnjs\.cloudflare\.com|unpkg\.com' 2>/dev/null | grep -v 'apn-truth-scan' || true)
+CDN_HOSTS='fonts\.googleapis\.com|fonts\.gstatic\.com|cdn\.jsdelivr\.net|cdnjs\.cloudflare\.com|unpkg\.com'
+
+# Split by surface, exactly as §25 does — and for the same reason.
+#
+# This guard is not theoretical. The unsplit version of this check FAILED
+# Fast-Clocks#6 on 15 Aug because ESTATE-FINDINGS §21 *documents* a jsdelivr URL
+# found in v0-sovereignty-lab-ui and recommends vendoring it. The scanner could
+# not tell "reporting a CDN dependency" from "shipping one", so writing down a
+# privacy finding broke the gate that exists to catch privacy findings.
+#
+# The record note on the old check even predicted this — "a hit in a comment or
+# doc is the only false-positive shape" — and did nothing about it. A predicted
+# false positive left unguarded is just a bug with a comment on it.
+#
+# What blocks is a CDN reference on SHIPPED surface, which is what this check's
+# own title claims to be about. Documentation reports as an ADVISORY: never
+# silent, because a real CDN URL pasted into a README still deserves an eye.
+# .ts/.js/.css count as shipped — a runtime fetch does not have to live in JSX.
+CDN_CODE_FILES=$(printf '%s\n' "$SCAN_DIRS" | grep -vE '\.(md|json)$' || true)
+N_CDN_CODE=$(count "$CDN_CODE_FILES")
+CDN=$(printf '%s\n' "$CDN_CODE_FILES" | xargs -r grep -rniE "$CDN_HOSTS" 2>/dev/null | grep -v 'apn-truth-scan' || true)
+CDN_DOCS=$(printf '%s\n' "$DOCS" | xargs -r grep -rniE "$CDN_HOSTS" 2>/dev/null | grep -v 'apn-truth-scan' || true)
+
 if [ -n "$CDN" ]; then
-  fail "external CDN reference — a privacy leak on a privacy product, and a July fix that regressed:"
+  fail "external CDN reference in SHIPPED code — a privacy leak on a privacy product, and a July fix that regressed:"
   printf '%s\n' "$CDN" | head -15 | sed 's/^/        /' | tee -a "$REPORT"
   say "        → self-host the asset. Known offenders: apn-certification-machine (qrcodejs, html2canvas)."
-  record external-cdn FAIL "$N_ALL" MEDIUM "$(count "$CDN")" "literal hostnames; a hit in a comment or doc is the only false-positive shape"
+  record external-cdn FAIL "$N_CDN_CODE" MEDIUM "$(count "$CDN")" "literal hostnames over shipped code; a hit inside a source comment is the remaining false-positive shape"
 else
-  pass "no external CDN references"
-  record external-cdn PASS "$N_ALL" MEDIUM 0 ""
+  pass "no external CDN references in shipped code"
+  record external-cdn PASS "$N_CDN_CODE" MEDIUM 0 "vacuous if 0 code files inspected"
+fi
+
+if [ -n "$CDN_DOCS" ]; then
+  warn "CDN hostnames appear in documentation — confirm each is reporting the problem, not introducing one:"
+  printf '%s\n' "$CDN_DOCS" | head -10 | sed 's/^/        /' | tee -a "$REPORT"
+  record external-cdn-docs WARN "$N_DOCS" LOW "$(count "$CDN_DOCS")" "most hits here are expected to be findings quoting the offending URL"
+else
+  pass "no CDN hostnames in documentation"
+  record external-cdn-docs PASS "$N_DOCS" LOW 0 ""
 fi
 
 # ── §23 UNFINISHED SURFACE ─────────────────────────────────────────────────────
