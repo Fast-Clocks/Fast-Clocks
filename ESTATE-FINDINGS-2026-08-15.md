@@ -381,3 +381,72 @@ then lint/typecheck/test/build before a PR — the same treatment `trace` and
 Stripe), then `australian-data-removal` (oldest version, ships Stripe + Resend),
 then `account-audit`, then `apn-hub`, then `sovereign-tank` (public), then the
 two v0 repos.
+
+## 15. `APN-Core-Site` — 21 high advisories cleared; the cause was not Next.js
+
+First repo worked through from §14's priority list, fully verified rather than
+bumped blind. **Measured BEFORE, on a clean clone:**
+
+| check | result |
+|---|---|
+| `pnpm run lint` | **exit 2** — eslint not a dependency; fell through to a different major on PATH |
+| `pnpm run typecheck` | *no such script* |
+| `pnpm run build` | 0 |
+| `pnpm audit` | **45 vulnerabilities, 21 HIGH** |
+| CI | **none — no workflows at all** |
+
+**The dominant cause was `shadcn` in RUNTIME dependencies.** It is the CLI
+scaffolding tool, imported nowhere in `app/`, `components/` or `lib/`, and it
+dragged `hono`, `ajv`/`fast-uri`, `ip-address`, `js-yaml` and `brace-expansion`
+into the shipped tree — **6 of the 9 distinct high-severity packages**. Removed;
+`components.json` stays, since that is config for `npx shadcn add`.
+
+Also: `postcss` sat pinned at 8.5.6 in the lockfile while the declared range
+`^8.5` already permitted the patched 8.5.23. A stale lockfile entry, not a
+version constraint. Worth checking for elsewhere.
+
+**Two real bugs from the first-ever lint run, both in the Stripe checkout**
+(`components/apn/checkout-button.tsx`):
+1. `useEffect` called **after an early return** — a render taking the
+   `!isStripeConfigured` branch ran one fewer hook than one that did not. Does
+   not crash today only because `isStripeConfigured` is a module constant; the
+   moment it became reactive React would throw "rendered fewer hooks than
+   expected" and take the checkout button down. Hoisted, behaviour-neutral.
+2. A **second, unreachable** `if (!isStripeConfigured)` block rendering a
+   different "Payments temporarily unavailable" design. Two competing designs
+   for one state, only one of which could ever display. Dead one removed.
+
+**AFTER:** lint 0 · typecheck 0 · build 0 · `pnpm audit --prod` **no known
+vulnerabilities** (was 21 high). Three high remain in `pnpm audit` overall, all
+`brace-expansion` via the eslint toolchain — dev-only, never shipped, left
+deliberately. Vercel `apn-core-site` deployed **Ready** from the PR.
+
+**`Fast-Clocks/APN-Core-Site` PR #7.** Added `.github/workflows/quality-gate.yml`
+(all checks blocking) and `.github/dependabot.yml`.
+
+**My own new workflow failed on its first run** — `pnpm/action-setup@v4` errors
+with "No pnpm version is specified" unless given `version:` or a
+`packageManager` field, and this repo has neither. Fixed by pinning major 10.
+Recording it because it is the same lesson as the `$?`/`PIPESTATUS` bug: a
+workflow that has been written is not a workflow that has run. **Any repo in
+this estate using pnpm needs that `version:` pin** — `account-audit`,
+`v0-sovereignty-lab-ui` and `sovereign-tank` also carry pnpm config.
+
+**NOT PROVEN:** no deployment tested beyond Vercel reporting Ready; QUALITY-GATE
+product checks not run; 11 lint warnings remain unaddressed.
+
+## 16. Vercel sprawl is worse than the three known orphans
+
+§10 recorded 3 orphaned Vercel projects building from `Fast-Clocks/Fast-Clocks`.
+Opening a PR on `APN-Core-Site` revealed **five more** wired to that one repo:
+`apn-core-site-c932`, `apn-vault`, `apn-vault-cover`, `v0-apn-hub-deploy-prep`,
+`v0-project` — all reporting *Ignored* on the PR.
+
+`apn-vault` and `apn-vault-cover` deploying from `APN-Core-Site` is wrong on its
+face: §9 records `apn-vault` as a static shell with its own repo. So at least
+two Vercel projects point at a repo that is not their source.
+
+**Not acting on this** — Vercel project wiring is Chris's call and §10's question
+about the first three is still unanswered. But the count is now **8 known
+misattached or orphaned Vercel projects**, not 3, and every one of them runs a
+build on every push to a repo it should not be watching.
