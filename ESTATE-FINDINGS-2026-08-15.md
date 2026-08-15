@@ -846,3 +846,115 @@ GitHub is deprecating Node 20 on Actions runners. `actions/checkout@v4`,
 `actions/setup-node@v4` and `pnpm/action-setup@v4` all target it and are being
 force-run on Node 24 with a warning. Every quality gate added in this sweep uses
 those three. Not urgent, not broken, but it will become both.
+
+## 22. `v0-claude-api-access` — the sweep closes; and a repo whose name is a lie
+
+Seventh and **last** repo of the §14 sweep.
+
+**Measured BEFORE, clean clone, pnpm 10.15.1:**
+
+| check | result |
+|---|---|
+| `pnpm run lint` | **exit 2** — `eslint .` with eslint not a dependency |
+| `pnpm run typecheck` | *no such script*; `tsc` reports **0 errors** |
+| `pnpm run build` | 0, with `Skipping validation of types` |
+| `pnpm audit --prod` | **45 vulnerabilities, 21 HIGH, all production** |
+| CI | **none** |
+
+**AFTER, verified from a clean `--frozen-lockfile` install:** lint **0** · typecheck
+**0** · build **0** · `pnpm audit --prod` **no known vulnerabilities**.
+**`Fast-Clocks/v0-claude-api-access` PR #3.**
+
+### `shadcn` again — and the reason the checklist step exists
+
+Six of the nine distinct high-severity packages (`fast-uri`, `hono`,
+`ip-address`, `js-yaml`, `brace-expansion`, `postcss`) came through `shadcn` in
+**runtime** dependencies, dragging `@modelcontextprotocol/sdk`, `express`,
+`ts-morph` and `cosmiconfig` into the production graph. Identical to §17.
+
+**But deleting it would have broken the build**, and checking that FIRST is the
+entire lesson carried forward from `account-audit`: `app/globals.css` does
+`@import 'shadcn/tailwind.css'`, which no `grep "from 'shadcn'"` will ever find.
+It is required at BUILD time and ships no browser code, so the correct move is
+`dependencies` → `devDependencies`. Production graph cleared; CSS import intact.
+
+Verified on a **clean `.next`**. A stale Turbopack cache previously made this
+exact change look broken on `account-audit` when it was fine, and re-running
+without clearing it would have reproduced that false conclusion.
+
+### The one repo where `ignoreBuildErrors` was DELETED, not bounded
+
+Every other repo in this sweep needed the flag kept and documented because real
+errors hid behind it. This one measured **zero** type errors both before and
+after — the flag was suppressing nothing. It came with the v0 template and sat
+one commit away from silently swallowing the first real type error anyone
+introduced.
+
+Proof the check is now genuinely running, not merely configured: the build log
+prints `Running TypeScript ... Finished TypeScript` where it previously printed
+`Skipping validation of types`. This is also the **first repo in the sweep where
+`typecheck` is a BLOCKING CI step from day one** rather than a documented
+backlog.
+
+### `postcss` stale in the lockfile — FOURTH occurrence
+
+8.5.6 while `^8.5` already permitted 8.5.26. Four of seven repos. This is not
+drift, it is the default outcome of never re-resolving a lockfile.
+
+### 🟠 Three names for one artifact
+
+- **Repo name:** `v0-claude-api-access`
+- **Repo description:** *"Internal utility — browser-based Claude API access tool"*
+- **Actual contents:** a marketing site — `HeroSection`, `FounderSection`,
+  `PhilosophySection`, `DomainPortfolio`, `TransparencySection`,
+  `NetworkSection`, `FirstProduct`, `Footer`. **No API access of any kind.**
+- **Vercel project it deploys to:** `under-construction`
+
+**Checked, because the name demanded it: there is NO credential in this repo.**
+The only `process.env` reference in the whole tree is `NODE_ENV`. No `sk-ant`,
+no `*_API_KEY`, no tracked `.env`. Clean.
+
+That check had to be run rather than assumed, and it points at the real cost of
+the naming: a repo called "claude-api-access" is exactly where anyone auditing
+for a leaked Anthropic key would look first, and exactly where someone in a
+hurry might one day put one. A name that describes something the repo is not is
+a trap set for a future reader. Renaming is a decision for Chris, not a quiet
+fix — recorded here.
+
+### ✅ SWEEP COMPLETE — all seven repos of §14
+
+| repo | high before → after (prod) | CI before | hidden defects |
+|---|---|---|---|
+| `APN-Core-Site` | 21 → 0 | none | hooks bug in Stripe checkout; dead branch |
+| `australian-data-removal` | 19 → 0 | none | **unauthenticated Stripe webhook** |
+| `account-audit` | 20 → 0 | none | invalid Stripe param; 6 undefined colours |
+| `apn-hub` | 6 → **0 total** | **two workflows** | **none** |
+| `sovereign-tank` | 23 → **0 total** | none | 32 type errors incl. 5 dead API routes |
+| `v0-sovereignty-lab-ui` | 23 → **0 total** | none | 32 type errors; duplicate export |
+| `v0-claude-api-access` | 21 → 0 | none | false-green `ignoreBuildErrors` |
+
+**133 high-severity production advisories cleared across seven repos.**
+**Seven quality gates and seven Dependabot configs added where there were two.**
+
+**The correlation held without a single exception.** Six of the seven repos had
+no CI; all six hid at least one real defect. The one repo that had CI —
+`apn-hub` — hid nothing, despite running a vulnerable Next.js. Being
+well-configured did not protect it; being *watched* is what protected it.
+
+**The dependency bump was the least valuable part of every single repo.** The
+advisories were the reason to look; the bugs found while looking were the
+return. Two of them were in live payment paths.
+
+### What this sweep did NOT do — stated plainly
+
+- **No deployment was functionally tested.** Vercel reporting *Ready* is a build
+  result, not a working site. No page was opened, no checkout attempted.
+- **No product check from QUALITY-GATE.md was run** — live domain, responsive,
+  keyboard, contrast, metadata, conversion path. All seven gates check code
+  only, and each one says so in its own header comment.
+- **11 type errors remain** in each of `sovereign-tank` and
+  `v0-sovereignty-lab-ui`: the AI SDK v5→v6 `useChat` migration. Deliberately
+  not attempted — it is a behavioural rewrite a green typecheck would not prove.
+- **Every one of the seven PRs is a DRAFT and none is merged.** Nothing in this
+  sweep is live. The estate is not fixed; it is *ready to be fixed*, pending
+  review.
