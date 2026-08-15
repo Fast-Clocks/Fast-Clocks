@@ -1723,3 +1723,70 @@ because quoting a banned phrase in order to ban it is the opposite of claiming i
 §13's credentials: **documentation still blocks**, because the cost of being wrong
 is unrecoverable. A check is not "too strict" merely because it caught you. The
 question is always what happens when it is right.
+
+---
+
+## 30. 🔴 STOP THE LINE — Chris reports 13 billable Supabase projects. I can see 2.
+
+Chris, 2026-08-15: *"there's 13 billables in superbase now under me 13 different
+ones"*.
+
+**Queried live via the Supabase MCP, not inferred:**
+
+| What I asked | What came back |
+|---|---|
+| `list_organizations` | **ONE** — `Australian Privacy Network` (`upzwwfqvxuijrldohzwv`) |
+| `list_projects` | **TWO** — `apn-backbone-sydney` (Sydney, ACTIVE_HEALTHY) · `Fast-Clocks's Project` (Tokyo, **INACTIVE**) |
+| `get_cost(project)` | **$0/month** → this organization is on the **Free** plan |
+
+**2 ≠ 13. I am not seeing what Chris is seeing, and I will not guess which of us
+is looking at the wrong thing.**
+
+### What this means about my own visibility
+
+`list_organizations` returned exactly one org. That is the whole world my token
+can reach. If eleven more projects exist, the overwhelmingly likely explanation is
+that **they live in organizations this connection is not a member of** — and every
+Supabase statement in this register has therefore been made from one org's worth
+of a possibly much larger estate.
+
+**That includes §29.** It says *"The audit lists two projects"* and treats that as
+the picture. The 30 July audit was almost certainly reading the same single org I
+am. Neither of us was looking at the whole account. §29's finding about the Tokyo
+project stands; its implied completeness does not.
+
+This is the failure mode CLAUDE.md names directly — *"a remote session is scoped
+to one repo by default and that scope is NOT the estate"* — recurring in a
+different tool. The lesson generalises: **an inventory is only ever as wide as the
+credential that produced it, and the credential's scope is part of the finding.**
+
+### Correction: the Tokyo project has already paused itself
+
+§29 recorded it as `ACTIVE_HEALTHY`, *"still billable"*, quoting the 30 July audit.
+**It is now `INACTIVE`.** On the Free plan Supabase auto-pauses a project after a
+period idle, which is consistent with an empty database nobody queries. So the
+specific cost concern §29 raised about *that* project appears to have resolved
+itself without anyone acting — and on a **$0/month** org it was likely never a cash
+cost in the first place.
+
+Recording this because §29 is 40 minutes old and already needed correcting on a
+number it inherited rather than measured. **A quoted figure ages exactly as fast as
+the system it describes.**
+
+### The distinction that probably matters
+
+**"13 billables" and "13 projects" are not the same claim.** Supabase bills an
+*organization*, and a single org's invoice itemises compute, storage, egress,
+bandwidth, and any add-ons (PITR, custom domains, read replicas, branching)
+separately. **One org with two projects can show many billable line items.**
+Equally, 13 genuinely separate projects across several orgs would be a serious
+ONE-CANONICAL-BUILD breach and a real recurring cost.
+
+Those two situations need opposite responses, and **nothing in my reach
+distinguishes them.** Asked rather than assumed.
+
+### Nothing was touched
+
+No project paused, deleted, restored, or modified. No new cost created. Per DELETE
+NEVER, the action on any genuine stray is **pause**, never delete — and only after
+confirming nothing points at it, and only with Chris's say-so.
