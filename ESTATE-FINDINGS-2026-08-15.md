@@ -958,3 +958,103 @@ return. Two of them were in live payment paths.
 - **Every one of the seven PRs is a DRAFT and none is merged.** Nothing in this
   sweep is live. The estate is not fixed; it is *ready to be fixed*, pending
   review.
+
+## 23. ESTATE-WIDE CDN SWEEP — all 27 repos, and a correction to §21
+
+Method: `list_repos` unfiltered confirmed **27 repos**. GitHub code search across
+`user:Fast-Clocks` for all five hosts the §23 scanner knows, then **every hit
+opened and read** to separate a real fetch from a mention. Counting hits without
+reading them is how the scanner itself got this wrong (§22).
+
+**`cdnjs.cloudflare.com`: ZERO. `unpkg.com`: ZERO.**
+
+### 🔴 Google Fonts — six repos still fetch it at page load
+
+The July fix (§23 scanner header cites commits 35e46c6, 19bf649, 464d0f5,
+2d1bddf, 180d324) did not cover these, or they regressed:
+
+| repo | file | shape |
+|---|---|---|
+| `privacy-widget` | `index.html` | preconnect ×2 + `<link rel=stylesheet>` |
+| `signal-trail-vault` | `src/routes/__root.tsx` | preconnect gstatic + stylesheet |
+| `apn-hub-connect` | `src/routes/__root.tsx` | preconnect gstatic + stylesheet |
+| `sovereign-showcase` | `src/routes/__root.tsx` | preconnect ×2 + stylesheet |
+| `product-archetype` | `src/routes/__root.tsx` | stylesheet only, no preconnect |
+| `sovereign-evidence-factory` | `app/audit-machine-original.html` | **CSS `@import url(...)` inside `<style>`** |
+
+Five are the same TanStack/Lovable `__root.tsx` template — one template defect
+replicated five times, which is why §14's "the Lovable/TanStack template is
+better configured than the v0/Next one" was only true about *eslint*. On fonts
+it is the worse template.
+
+`preconnect` is not a lesser problem than the stylesheet: it opens DNS + TLS to
+Google **earlier**, before anything is even needed. And the
+`sovereign-evidence-factory` hit is a CSS `@import` inside an inline `<style>`
+block — invisible to any check that only looks at `<link>`/`<script>` tags.
+
+### 🟠 jsdelivr — three files, and §21 was incomplete
+
+| repo | file | what |
+|---|---|---|
+| `sovereign-tank` | `components/global-threat-map.tsx` | world-atlas topojson · **PUBLIC REPO** |
+| `v0-sovereignty-lab-ui` | `components/global-threat-map.tsx` | byte-identical `geoUrl` line |
+| `apn-certification-machine` | `index.html` | `<script src>` qrcodejs + html2canvas |
+
+**CORRECTION TO §21.** I recorded the jsdelivr finding against
+`v0-sovereignty-lab-ui` only. It is in **`sovereign-tank` too — the same file,
+the same line** — and I had that exact file open to fix its type errors without
+noticing the CDN in it. Two lessons, both mine: a defect found in one repo of a
+template family must be checked against the whole family immediately, and
+reading a file for one purpose does not mean it was reviewed for another.
+
+### ✅ `sovereign-suite-hub` is the MODEL, not an offender
+
+It appears in the raw grep for both `fonts.googleapis.com` and
+`fonts.gstatic.com`, and it is **clean**. Both hits are prose:
+
+- `src/routes/__root.tsx` — a comment: *"self-host the WOFF2 files under
+  /public/fonts and add @font-face in index.css — do NOT re-add
+  fonts.googleapis.com / fonts.gstatic.com."*
+- `PROJECT_LINEAGE.md` — the decision recorded in full, naming the data-residency
+  rule it protects and stating plainly *"this is a decision, not an oversight."*
+
+That is exactly the standard this register asks for, written by someone else,
+before this sweep existed.
+
+### 🟡 `v0-sovereignty-lab-ui/middleware.ts` — a header, not a fetch
+
+`fonts.gstatic.com` appears in a CSP **`font-src` allowlist**. It permits Google
+Fonts; it does not load them. Not a leak.
+
+It is, however, **internally inconsistent**: `font-src` allows `fonts.gstatic.com`
+while `style-src` does NOT allow `fonts.googleapis.com` — so a Google Fonts
+stylesheet would be blocked by this policy anyway, and the `font-src` entry
+protects nothing. Its twin `sovereign-tank` already removed it (its README:
+*"Google Fonts CDN removed from CSP middleware"*). The twins have drifted.
+
+### 🔴 MY SCANNER STILL HAS TWO GAPS — found by using it, not by reading it
+
+1. **A hostname in a source comment still blocks.** §22 fixed docs-vs-shipped by
+   moving `.md`/`.json` to advisory. `sovereign-suite-hub/src/routes/__root.tsx`
+   is a `.tsx` file whose only match is a comment saying *do not do this* — so
+   the fixed check would **still fail a clean repo for documenting its own fix**.
+   I wrote "a hit inside a source comment is the remaining false-positive shape"
+   into that check's own record note. It is no longer hypothetical; it is here.
+2. **The host list is too short.** The scanner knows five hosts. This sweep
+   surfaced third-party asset egress from hosts it would never see:
+   - `storage.googleapis.com` — OG image, `sovereign-suite-hub` (per its own doc)
+   - `pub-*.r2.dev` — OG image, `sovereign-showcase` (Cloudflare R2)
+   - `*.lovable.app` — referenced in `privacy-widget`'s structured data
+   A privacy product's egress surface is not five hostnames long.
+
+**Neither gap is fixed here.** Both are recorded rather than patched, because a
+scanner change needs its own before/after test (§22) and this pass was scoped to
+finding, not fixing.
+
+### NOT DONE, deliberately
+
+No file was changed by this sweep. The instruction was report, not mass-fix, and
+that is right: self-hosting fonts changes rendering on six live surfaces and
+vendoring world-atlas is a bundle-size trade-off. **Nothing here is fixed. Nine
+files across eight repos currently send visitor IP addresses to Google or
+jsdelivr on page load**, on an estate whose product is privacy.
