@@ -1571,3 +1571,155 @@ cryptography.
   the other twelve are clean — it is a reason to think they are not.
 - No branch was checked out, built, or run. Everything above is read from diffs.
 - The CDN grep result covers only the three swept diffs.
+
+---
+
+## 29. `privacy-widget#3` — the false green reaches production, and a security fix has sat unmerged for 20 days
+
+§26's triage said of this PR: *"the migration is already applied to production."*
+**Correct for one of three migrations, and the imprecision hid the important
+part.** The PR carries `4110`, `4111` and `4112`. Only `4110` is evidenced as
+applied. Corrected below.
+
+### 🔴 The false-green pattern has a FOURTH instance — this one in production
+
+This register has now found the same defect in four layers. The pattern: **a
+success signal that is emitted by the wrapper, not earned by the work.**
+
+| Layer | Instance | Recorded |
+|---|---|---|
+| CI | `$?` reading `tee`, `continue-on-error` on mandatory checks, `ignoreBuildErrors`, a lint whose binary wasn't installed | §14–§22 |
+| Deployment | `APN-Core-Site` — five Vercel projects reporting `success` / *"Canceled by Ignored Build Step"* | §27 |
+| **Scheduled jobs** | **`domain-watch` and `link-audit` crons** | **here** |
+| **Evidence store** | **the ledger records those runs as `audit` events** | **here** |
+
+**F1 — `sovereign-domain-watch`: 36 "succeeded" runs in 72h, 0 domains checked in
+20 days.** The cron builds its header as
+`'Bearer ' || current_setting(<the service-role GUC>, true)` — the literal setting
+name is deliberately not reproduced here; see §29's closing note. That GUC is
+unset, so the header is NULL, so the function returns **401 before running**. The
+401s land in `net._http_response` on exactly the 2-hour cadence. The cron wrapper
+logs `succeeded` regardless. The domain register has been frozen since
+**2026-07-08** at a last-known **3 LIVE of 216**.
+
+**F2 — `link-audit`: ~90% failure, still logging `succeeded`.** Last 24h of
+outbound HTTP at audit time: **34 timeouts, 3× 401, 2× 200**. 221 of 1009
+resources remain `unchecked`.
+
+**The fourth layer is the one that matters most.** Both crons keep appending
+`audit` events to the sovereign ledger while their actual work fails. So the
+evidence system — the thing whose entire purpose is trustworthy record — is being
+fed "this ran successfully" for runs that did not run. **Tamper-evident storage of
+false data is still false data.** An append-only chain guarantees nobody *altered*
+the record; it guarantees nothing about whether the record was true when written.
+For a company whose product is provenance, that distinction is the whole game.
+
+None of this is new information. It was written down on **2026-07-30** and has sat
+in an unmerged draft ever since.
+
+### 🔴 A security fix, written and not applied, for 20 days
+
+**S1:** `apn_assert_same_org()` is `SECURITY DEFINER`, attached to six triggers,
+and holds `EXECUTE` for **anon and authenticated** — i.e. any visitor can call it
+directly via `/rest/v1/rpc/`. A trigger helper should never be callable that way.
+The audit notes the born-locked default-privilege migration didn't cover this
+pre-existing function, and that revoking `EXECUTE` does **not** affect the triggers,
+which run as table owner. Low-risk, reversible.
+
+The fix exists in this very PR:
+`supabase/migrations/20260725_4112_lockdown_internal_definer_functions.sql`.
+
+**It is not evidenced as applied.** The PR body evidences only `4110`
+(`{"success":true}`, 15/15 transactional tests). `4111` and `4112` carry no apply
+evidence. So the position today is: **the vulnerability is live, the remedy is
+written, and merging the PR is what would ship it.**
+
+Precise correction to §26: *"the migration is already applied"* was true of `4110`
+only. Saying it unqualified implied the whole PR was bookkeeping. It is not — it
+contains an unapplied security fix, which is the opposite of bookkeeping.
+
+### 🟠 A SECOND Supabase project exists, empty and billable
+
+The audit lists two projects:
+
+| Project | Region | State |
+|---|---|---|
+| `apn-backbone-sydney` | Sydney | ACTIVE_HEALTHY — the real backbone |
+| `Fast-Clocks's Project` (`tyorcdwpwoxaqwsbgybm`) | **Tokyo** | ACTIVE_HEALTHY, **0 public tables — empty and unused** |
+
+The audit's own words: *"Still billable; violates the 'one backbone' rule."* This
+is a **cost disclosure** and a ONE-CANONICAL-BUILD breach, and it has been known
+since 30 July. **Per DELETE NEVER the action is pause, not delete** — and only
+after confirming nothing points at it. I have not touched it; the exact monthly
+figure is not visible from here, so no dollar amount is claimed.
+
+### 🟡 The ledger hash is NOT a unique fingerprint — a claims-discipline finding
+
+- **16,598 events, chain intact** — `orphan_prev = 0`, every `prev_event_id`
+  resolves.
+- **47 duplicate `hash` values and 2 null hashes.** All 47 duplicates are
+  `machine=audit`, `event_type=security.ddl`, each group sharing an identical
+  `occurred_at`. The `hash` column is a **per-row content digest that collides**
+  for identical DDL in the same instant. **This is not tampering.**
+- **Therefore:** tamper-evidence rests on `prev_event_id` linkage plus the
+  no-update trigger — **not** on hash uniqueness. The audit's own conclusion:
+  *do not market a "tamper-evident hash chain" as though the hash alone were a
+  unique fingerprint.* It isn't, and two rows have no hash at all.
+- **Composition:** 99.6% is `audit` (16,536 of 16,598). Products barely emit —
+  filing 53, ops 7, safepet 1, widgets 1. Only **2 `sovereign_receipts`** have ever
+  been recorded, and there is **no public verify door**. It is an internal audit
+  journal, not yet a product spine.
+
+This is consistent with `privacy-widget#6`'s later audit (§26) and sharpens it.
+#6 found the chain forks at 54 points and recomputes correctly; #3 explains *why*
+the hash column cannot carry the uniqueness claim. **Two independent audits, both
+unmerged, both saying the sovereign claim must stay narrower than the marketing
+instinct.**
+
+### Where this leaves `privacy-widget#3`
+
+**Not** 20 days of stale bookkeeping. It is a live audit of the production backbone
+containing two production reliability failures, one live security hole with its fix
+attached, a billable orphan project, and the evidence for a claims-discipline limit.
+It is a **draft** and it is the single highest-value unmerged PR in the estate.
+
+**Nothing changed, nothing merged, nothing applied.** All of the above is read from
+the PR's own diff and body. I did not query the backbone — this environment has no
+access to it, and the numbers above are the auditor's as at 2026-07-30. **They are
+20 days old and should be re-measured before anyone acts on a specific figure.**
+
+**Confidence: HIGH** that the PR says these things; **MEDIUM** that they are still
+true today, precisely because nothing has been merged or re-measured since.
+
+### 🔴 My own scanner blocked this section, and I changed the writing, not the check
+
+Writing §29 tripped the **§13 secrets check** — `FAILED — do not release`, exit 1.
+Cause: I quoted the cron's `current_setting(...)` call verbatim, and the GUC's name
+contains the literal token the check hunts for. A configuration **setting name**,
+not a credential value. No secret was ever in the file.
+
+**The tempting fix was to give §13 the docs-vs-shipped split** that §23 and §25
+already have — documentation warns, shipped code blocks. That is what I did for
+the CDN check in §23 when it flagged this same file, and it was right there.
+
+**It is wrong here, and I did not do it.** §23's split is safe because *describing*
+a CDN cannot leak anything. §13 is different: a real service-role key pasted into
+a markdown file is at least as dangerous as one in code — docs get copied, pasted
+into chat, and published. A rule of "downgrade to advisory when the match is in a
+`.md`" would mean the estate's most important check stops blocking in one of the
+places a credential is most likely to end up. And the discriminator I'd have to
+write — *"ignore it if the surrounding prose looks like it's describing a setting"*
+— is precisely the reasoning that lets a real key through.
+
+So the check kept its teeth and the prose changed: the setting name is now
+described rather than reproduced. The finding is unaffected — the mechanism is
+"the GUC is unset, so the header is NULL, so it 401s", and the exact identifier
+adds nothing a reader needs.
+
+**Three times now this scanner has flagged this register, and the split has gone a
+different way each time — correctly.** §23's CDN hostnames: documentation warns,
+because naming a host is harmless. §25's prohibited claims: documentation warns,
+because quoting a banned phrase in order to ban it is the opposite of claiming it.
+§13's credentials: **documentation still blocks**, because the cost of being wrong
+is unrecoverable. A check is not "too strict" merely because it caught you. The
+question is always what happens when it is right.
