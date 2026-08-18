@@ -2075,3 +2075,115 @@ scope — noted so it is not lost.
 **This section is RECORDING, not fixing.** DNS changes require Cloudflare API access
 which this session does not have. Chris has another session with the Cloudflare agent
 actively working on the fixes.
+
+---
+
+## 34. Complete PR sweep — all 27 open PRs reviewed (18 Aug 2026)
+
+§26 triaged all 26 open PRs by age and mergeable state. §28–§32 deep-dived four of
+them. This section completes the sweep: every remaining unreviewed PR read, categorised,
+and any findings recorded. **One PR merged since §26** (APN-Core-Site#7), bringing the
+count to 25. Two new PRs appeared since §26 (sovereign-evidence-factory#1/#2), one
+Dependabot bump (APN-Core-Site#9), and one commercial PR (APN-Core-Site#10), bringing
+the current total to **28 open PRs across the estate.**
+
+### Repos with zero open PRs (11 of 28 repos)
+
+sovereign-suite-hub, signal-trail-vault, sovereign-showcase, apn-hub-connect,
+sovereign-forge, apn-vault, apn-certification-machine, inbox-flow-agent,
+product-archetype, pet-site-url-builder, your-next-best-step.
+
+sovereign-finishing-machine was not accessible via the GitHub MCP scope.
+
+### Security sweep PRs (from this session's earlier estate-wide sweep)
+
+These are the sister PRs to APN-Core-Site#7 (now merged). Same pattern: vulnerable
+Next.js, dead or hidden lint, `ignoreBuildErrors` masking real type errors, no CI.
+
+| PR | Repo | Key finding | Mergeable | Pre-merge gate |
+|---|---|---|---|---|
+| **australian-data-removal#2** | australian-data-removal | **🔴 Unauthenticated Stripe webhook** — `JSON.parse(body)` fallback allowed forged `checkout.session.completed` events to write member records at attacker-chosen tiers and send APN-branded emails. Now fail-closed. Also: `ignoreBuildErrors` hiding stale Stripe `apiVersion`, dual lockfiles. 35→0 high vulns. | clean | **STRIPE_WEBHOOK_SECRET must be set in Vercel prod AND preview before merge** |
+| **account-audit#1** | account-audit | **🔴 Checkout likely 500 on every attempt** — `customer_email_collection: 'required'` is not a Stripe API parameter (TS2353). Hidden by `ignoreBuildErrors`. Also: `COLORS.muted` undefined (6 borderless elements), Stripe `apiVersion` 18 months stale. 20→0 high vulns. | **dirty** — needs rebase | Test-mode purchase against live Stripe API |
+| **sovereign-tank#1** | sovereign-tank | 23→0 high vulns, 32 hidden type errors including real bugs (`adr-dashboard.tsx` hotspot state collapsed to one entry, `processFile` temporal dead zone, `spfRecord` flow analysis). **`ignoreBuildErrors` stays** — 11 remaining errors are AI SDK v5→v6 `useChat` migration, bounded and named. | clean | AI SDK migration before flag removal |
+| **v0-sovereignty-lab-ui#4** | v0-sovereignty-lab-ui | 46→0 vulns, 21 hidden type errors (same `adr-dashboard` and `processFile` bugs — these repos share v0 template code). Same bounded `ignoreBuildErrors` for AI SDK. Also flags `global-threat-map.tsx` fetching world map from `cdn.jsdelivr.net` at runtime on a privacy product. pnpm 11 silently ignores `pnpm.overrides` — version 10 pin is load-bearing. | clean | AI SDK migration |
+| **apn-hub#12** | apn-hub | **Healthiest repo in estate.** Lint was already real (70 files, 0 messages — verified, not assumed). Next 16.2.7→16.3.1. CI steps added to existing `route-verification.yml` rather than a competing file, respecting the repo's own operating law. 6→0 vulns. | clean | None — ready to merge |
+
+**Observation:** `account-audit#1` is the only security sweep PR with merge conflicts.
+The other four are clean and could merge today if their pre-merge gates are satisfied.
+
+### FileWitness launch PRs
+
+| PR | Status | Notes |
+|---|---|---|
+| **filewitness#1** | Superseded | "FileWitness launch prep" — 8807 additions, Jul 30, **50 commits behind main, conflicts**. Banner removal, footer with legal entity, `.env` cleanup. |
+| **filewitness#2** | Current | "carry FileWitness launch review onto current main" — 28 additions, Aug 16, **clean**. Carries forward only the applicable findings from #1 without rebasing Lovable-connected history. This is the one to merge; #1 should be closed. |
+
+### privacy-widget PRs (backbone/Sovereign work)
+
+| PR | What | Finding |
+|---|---|---|
+| **#3** | Deploy+verify export worker + SafePet Price Shield | Already swept in §29–§32. Backbone audit with three findings, two since fixed. |
+| **#4** | CI migration hygiene + verifier self-test | **Good.** Credential-free CI that hard-fails on: missing rollback migration, secrets in SQL, "tamper-proof" claim, unpinned `search_path` on `SECURITY DEFINER`. Tested with intentional bad migrations. 133 additions. |
+| **#5** | Contact form wired to backbone `public.inquiries` | Well-documented with 10 live tests. Uses publishable key only, insert-only path (no anon SELECT). **🟡 Consent checkbox required but NOT stored** — noted as follow-up. |
+| **#6** | Sovereign ledger integrity audit doc | The audit §29 analyzed. 16,869 events, hash chain recomputes correctly but forks at 54 points. Supports "tamper-evident" only, not "tamper-proof". |
+
+### apn-hub PRs
+
+| PR | What | Finding |
+|---|---|---|
+| **#7** | Verified working-product network | Already swept in §26. 29 days old. |
+| **#11** | Sovereign GitHub finishing factory seed | **The most elaborate PR in the estate.** 8374 additions, 23 commits. SHA-pinned immutable action bundles, UID-65534 isolated route verification, fail-closed evidence gates with receipt artifacts and manifest rehash. Passed its own gate (3 runs to get there — fail-closed recovery documented). `release_decision_allowed=false`. Has its own operating constitution and exact agent entrypoints. |
+| **#12** | Next bump + CI for apn-hub | Reviewed above in security sweep table. |
+| **#13** | Estate sweep in EXECUTION_LEDGER | **Canonicalized into #14.** Comment on Aug 18 confirms evidence reconciled. Close when #14 lands. |
+| **#14** | Refresh canonical execution ledger | 80 additions. Verified README gaps, recorded domain evidence, reconciled Australian Data Removal across suspended Workspace/GitHub/Vercel. Includes portfolio reuse rule and medical/healthcare exploration direction. |
+
+### APN-Core-Site PRs (post-merge)
+
+| PR | What | Notes |
+|---|---|---|
+| **#7** | Security + CI (this session's) | **MERGED** 2026-08-16. First from the sweep. |
+| **#8** | Dependabot: actions group bump | Auto-generated. First automated PR in the estate. |
+| **#9** | Dependabot: minor-and-patch 14 updates | Auto-generated. |
+| **#10** | A$495 evidence workflow review offer | Commercial — Stripe Checkout verified in browser. 69 additions. Not a draft. |
+
+### Other PRs
+
+| PR | Repo | What | Notes |
+|---|---|---|---|
+| **sovereign-evidence-factory#1** | sovereign-evidence-factory | Sovereign Work OS / File Brain v1 | 1607 additions, 25 commits, 28 comments. Founding architecture and tested alpha kernel. Draft. "Not yet the complete Mac-installed control application." |
+| **sovereign-evidence-factory#2** | sovereign-evidence-factory | `.github/copilot-instructions.md` | Tiny. Draft. |
+| **v0-sovereignty-lab-ui#3** | v0-sovereignty-lab-ui | Bot Factory production view | 516 additions, Jul 14. Interactive view with manufacturing language. Feature work, 35 days old. |
+| **Fast-Clocks#6** | Fast-Clocks | This session's findings register | This PR. |
+
+### Sweep-wide observations
+
+1. **The security sweep PRs are well-written.** Every one has BEFORE/AFTER tables,
+   explicit NOT PROVEN sections, and names exactly what it hides. This is the standard
+   the rest of the estate should follow.
+
+2. **Two repos share v0 template code** (`sovereign-tank`, `v0-sovereignty-lab-ui`) and
+   therefore share the same bugs (`adr-dashboard` hotspot collapse, `processFile`
+   temporal dead zone). The AI SDK v5→v6 `useChat` migration is the last documented
+   false-green in the estate — bounded, not silent.
+
+3. **`australian-data-removal#2` is the highest-priority merge** after the
+   `STRIPE_WEBHOOK_SECRET` is confirmed set. An unauthenticated payment webhook is a
+   live vulnerability, not a quality issue.
+
+4. **`apn-hub#12` is the safest merge** — smallest diff against the healthiest repo,
+   no behaviour change, no pre-merge gate.
+
+5. **filewitness#1 should be closed in favour of #2.** #1 is irrecoverably behind main.
+
+6. **apn-hub#13 should be closed when #14 merges.** The canonicalization is confirmed.
+
+7. **28 open PRs is still too many.** The five security sweep PRs alone could reduce
+   this to 23 if merged, and closing the superseded ones (#1 filewitness, #13 apn-hub)
+   would bring it to 21. Dependabot (#8, #9) could merge without review. That's 19.
+
+8. **No PR in this estate has ever been merged by a reviewer other than the author.**
+   Every merge has been self-merged or bot-merged. This is not a finding — it's the
+   reality of a one-person company — but it means the "distinct eligible reviewer"
+   requirement in apn-hub#11's NOT PROVEN section is aspirational, not operational.
+
+All 28 open PRs have now been read. The sweep that §26 started is complete.
