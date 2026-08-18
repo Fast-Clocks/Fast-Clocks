@@ -2009,3 +2009,69 @@ against it.
 
 All queries read-only: `cron.job`, `cron.job_run_details`, `net._http_response`.
 No DDL, no DML, nothing enabled, disabled or modified.
+
+---
+
+## 33. PR lifecycle events and domain inventory — 16–18 Aug 2026
+
+### APN-Core-Site#7 merged — first merge from this sweep
+
+`APN-Core-Site#7` was merged 2026-08-16 15:44 UTC. This is the **first PR from the
+§26 sweep to reach production.** It cleared 21 high-severity npm advisories from the
+production dependency tree and added a CI audit gate.
+
+§26 said *"NOTHING from the sweep is merged."* That is now false. **Open PR count:
+25** (was 26). The count may have changed further — I have not re-polled all repos
+since §26.
+
+### apn-hub#13 canonicalization — evidence reconciled into PR#14
+
+A comment on `apn-hub#13` (2026-08-18 00:32 UTC) states that evidence from this
+draft has been reconciled into PR#14. **Do not merge both ledger branches
+independently** — #13 is now an evidence source, not a standalone merge candidate.
+The unique content from #13 is in #14; #13 should be closed once #14 lands.
+
+### Domain and DNS inventory — from Chris, 18 Aug 2026
+
+Chris shared live Cloudflare data for **5 domains on 1 account**, all Free plan:
+
+| Domain | Status | Added | Notes |
+|---|---|---|---|
+| `apnfinancial.com` | Active | 2026-08-15 | Zero DNS records |
+| `apnledger.com` | Active | 2026-08-15 | Zero DNS records |
+| `filewitness.com.au` | Active | 2026-08-05 | 10 records, issues below |
+| `safepet.com.au` | Active | 2026-08-18 | No SPF/DMARC |
+| `scriptbyrd.com` | Active | 2026-08-15 | Zero DNS records |
+
+**filewitness.com.au DNS issues (from Cloudflare UI paste):**
+
+1. **🔴 Duplicate SPF records** — `v=spf1 -all` (reject everything) AND
+   `v=spf1 include:spf.messagingengine.com ?all` (allow Fastmail). These conflict;
+   receiving mail servers may reject legitimate mail. Remove the `-all` record, keep
+   the Fastmail include, and tighten `?all` to `~all` or `-all` after the include.
+2. **🔴 DMARC `rua` typo** — `rua=mailto:evidence@filkewitness.com.au` (note
+   `filk` not `file`). Reports are going nowhere. Fix: `evidence@filewitness.com.au`.
+3. **🔴 Broken DKIM** — `*._domainkey` has `p=` (empty public key). This is a
+   null DKIM record that explicitly revokes signing. If Fastmail is the MX, their
+   DKIM records should be used instead (selector-specific, not wildcard).
+4. **🟡 A records DNS-only** — both apex and `www` are not proxied through
+   Cloudflare. Missing DDoS protection, WAF, and caching. IP `185.158.133.1`
+   exposed directly.
+5. **🟡 Lovable verification records** — `_lovable.filewitness.com.au` and
+   `_lovable.www.filewitness.com.au` present. Confirms Lovable deployment target.
+
+**Estate-wide Cloudflare security issues (from Chris's agent diagnostic):**
+
+- SSL mode `full` on all 5 (should be `full_strict`)
+- "Always Use HTTPS" OFF on all 5
+- Minimum TLS version 1.0 on all 5 (should be 1.2)
+- DNSSEC disabled on 4 of 5
+- Security level `medium` on all 5 (should be `high`)
+
+**Chris also mentioned ~280 domains in VentraIP and ~30 websites to move onto the
+SaaS setup.** That is a commercial/infrastructure decision outside this session's
+scope — noted so it is not lost.
+
+**This section is RECORDING, not fixing.** DNS changes require Cloudflare API access
+which this session does not have. Chris has another session with the Cloudflare agent
+actively working on the fixes.
