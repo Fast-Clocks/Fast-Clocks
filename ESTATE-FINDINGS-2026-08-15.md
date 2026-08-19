@@ -2187,3 +2187,74 @@ The other four are clean and could merge today if their pre-merge gates are sati
    requirement in apn-hub#11's NOT PROVEN section is aspirational, not operational.
 
 All 28 open PRs have now been read. The sweep that §26 started is complete.
+
+---
+
+## §35 — Estate-wide branch audit (2026-08-19)
+
+**Trigger:** Chris flagged branch sprawl across the estate.
+
+**Method:** Listed all branches across all 27 accessible repos (sovereign-finishing-machine
+denied by session scope — 28th repo unchecked).
+
+### Summary
+
+| Metric | Count |
+|---|---|
+| Total repos checked | 27 |
+| Total branches | 103 |
+| Repos with only `main` | 9 |
+| `claude/*` branches | 21 (across 13 repos) |
+| `codex/*` branches | 5 repos |
+| `copilot/*` branches | 4 repos |
+| `v0/*` branches | 3 repos |
+| `agent/*` branches | 1 repo (apn-hub, 4 branches) |
+| Stale `claude/*` (closed PR, branch kept) | 2 |
+| Orphan `claude/*` (no PR ever created) | 1 |
+
+### Stale branches — safe to delete
+
+1. **APN-Core-Site** `claude/security-and-quality-gate` — PR #7 closed unmerged
+2. **APN-Core-Site** `claude/supabase-free-resources-s914y3` — PR #5 closed unmerged
+3. **sovereign-showcase** `claude/sovereign-terminology-positioning-o8o6zg` — orphan, no PR
+
+One command deletes all three:
+```
+git push origin --delete claude/security-and-quality-gate claude/supabase-free-resources-s914y3  # in APN-Core-Site
+git push origin --delete claude/sovereign-terminology-positioning-o8o6zg  # in sovereign-showcase
+```
+
+### Non-claude agent branches (not from this sweep)
+
+These pre-date the estate sweep and were created by other tools (Codex, Copilot, v0):
+
+- **APN-Core-Site**: `codex/fix-typescript-errors`, `copilot/fix-*` (2), `v0/add-*` (2)
+- **filewitness**: `codex/fix-strict-type-errors`
+- **apn-provenance-keeper**: `codex/add-eslint-configuration`
+- **perthsafepet**: `codex/fix-typescript-errors`, `copilot/fix-*`, `v0/dev`
+- **apn-hub**: `agent/sovereign-*` (4), `codex/fix-type-errors`
+- **sovereign-evidence-factory**: `copilot/fix-*`
+- **v0-sovereignty-lab-ui**: `copilot/fix-*`
+- **privacy-scan**: `v0/alternative-ui`
+
+### Suspicious branch
+
+- **sovereign-suite-hub** has `__temp_should_not_exist` — name suggests it was meant to
+  be temporary. Worth inspecting or deleting.
+
+### Active `claude/*` branches (18, all tied to open PRs)
+
+These are from the security sweep and other active work. They stay until their PRs
+are merged or closed.
+
+### trace repo specifically
+
+Only 2 branches: `main` and `claude/quality-gate-lint` (PR #1, open). The PR is a
+security fix — 9 high-severity Next.js advisories including breach result
+cross-contamination. Created by another agent session during the estate sweep.
+
+### STATUS: DOCUMENTED
+
+Branch deletion blocked by session permissions. The 3 stale branches above are the
+only cleanup needed from the sweep. The remaining 18 `claude/*` branches all have
+open PRs and will be cleaned up as PRs merge or close.
