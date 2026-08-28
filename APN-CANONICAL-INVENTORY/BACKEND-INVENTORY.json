@@ -1,0 +1,73 @@
+{
+  "generated_by": "Claude (Supabase/backend/ledger/security/sovereignty authority)",
+  "generated_context": "read-only inspection, no production changes",
+  "inspection_date": "2026-07-23",
+  "organization": { "name": "Australian Privacy Network", "id": "upzwwfqvxuijrldohzwv" },
+  "reconciliation": "SUP- ids are temporary and AWAITING_CODEX_RECONCILIATION",
+  "records": [
+    {
+      "inventory_id": "SUP-PROJ-SYDNEY", "canonical_name": "", "current_name": "apn-backbone-sydney",
+      "item_type": "supabase_project", "product_family": "APN backbone",
+      "plain_english_purpose": "Canonical active backend: resource hub, domains, link-audit, 4-machine ledger spine, inbox v0",
+      "what_it_does": "Postgres 17 backend with RLS-gated public reads, validated anon inserts, cron machines and an append-only hash-chained audit spine",
+      "audience": "APN internal + public read surface", "current_location": "Supabase ap-southeast-2",
+      "source_project": "plhpjktkzsbfnltemhdl", "source_repository": "AWAITING_CODEX", "source_folder": "",
+      "current_url": "https://plhpjktkzsbfnltemhdl.supabase.co", "backend": "self",
+      "dependencies": ["postgres-17", "pg_cron", "pg_net", "pgcrypto", "supabase-auth", "supabase-storage", "supabase-edge-functions"],
+      "environment_variable_names": ["SUPABASE_URL", "SUPABASE_ANON_KEY", "SUPABASE_SERVICE_ROLE_KEY", "app.settings.service_role_key"],
+      "completion_score": 72, "completion_band": "61-75 Substantial", "current_status": "DEPLOYED",
+      "classification": "ACTIVE CORE", "commercial_model": "internal infrastructure", "intended_price": "n/a", "free_trial": "n/a",
+      "lineage": ["ADR", "APN"], "duplicate_group_id": "", "duplicate_locations": [], "sha256": "",
+      "known_risks": ["FIND-001", "FIND-004", "FIND-005", "FIND-006", "FIND-008"],
+      "contradictions": ["doc ledger_entries model not present here (FIND: SUP-RECON-LEDGER-LOCATION)"],
+      "next_three_actions": ["Codex product/repo mapping", "fix TRUNCATE + verification portability", "reconcile Lovable UUID migrations"],
+      "definition_of_finished": "Documented, drift-reconciled, ledger verifiably append-only + portable, backups tested",
+      "approved_for_move": false, "approved_for_delete": false, "approval_notes": "keep",
+      "review_date": "2026-07-23", "reviewer": "Claude",
+      "backend_detail": {
+        "sub_classification": "PRODUCTION BACKEND", "region": "ap-southeast-2", "pg_version": "17.6.1.127",
+        "tables": 21, "views": 3, "functions": 17, "security_definer_functions": 14, "triggers": 3,
+        "cron_jobs": 5, "edge_functions": 2, "storage_buckets": 1,
+        "rls_all_enabled": true, "force_rls": false,
+        "row_counts": {"resources": 1423, "apn_ledger_events": 13158, "domains": 216},
+        "ledger_capability": ["HASH-LINKED", "EVENT-LOG", "PRIVATELY-VERIFIABLE", "APN-DEPENDENT-VERIFICATION"],
+        "append_only": "PARTIAL (UPDATE/DELETE blocked; TRUNCATE not blocked)"
+      }
+    },
+    {
+      "inventory_id": "SUP-PROJ-FASTCLOCKS", "canonical_name": "", "current_name": "Fast-Clocks's Project",
+      "item_type": "supabase_project", "product_family": "unknown",
+      "plain_english_purpose": "INACTIVE project, purpose unverified", "what_it_does": "UNKNOWN (not inspectable without restore)",
+      "audience": "", "current_location": "Supabase ap-northeast-1", "source_project": "tyorcdwpwoxaqwsbgybm",
+      "source_repository": "AWAITING_CODEX", "source_folder": "", "current_url": "", "backend": "self",
+      "dependencies": [], "environment_variable_names": [], "completion_score": 0, "completion_band": "0-20 Concept shell",
+      "current_status": "RETIRED", "classification": "REQUIRES REVIEW", "commercial_model": "", "intended_price": "", "free_trial": "",
+      "lineage": [], "duplicate_group_id": "", "duplicate_locations": [], "sha256": "",
+      "known_risks": ["FIND-012"], "contradictions": [], "next_three_actions": ["confirm purpose with Chris", "do not restore without approval", "classify for retire or archive"],
+      "definition_of_finished": "Purpose confirmed; retire or archive decision recorded", "approved_for_move": false, "approved_for_delete": false,
+      "approval_notes": "do not restore/pause without explicit approval", "review_date": "2026-07-23", "reviewer": "Claude",
+      "backend_detail": { "sub_classification": "DORMANT BACKEND", "region": "ap-northeast-1", "status": "INACTIVE" }
+    },
+    {
+      "inventory_id": "SUP-TABLE-LEDGER-EVENTS", "canonical_name": "", "current_name": "public.apn_ledger_events",
+      "item_type": "table", "product_family": "APN four-machine spine",
+      "plain_english_purpose": "Shared append-only hash-chained audit spine (hash-cert/audit/communication/filing)",
+      "what_it_does": "Records events; BEFORE INSERT hash-chain trigger; BEFORE UPDATE/DELETE block trigger",
+      "audience": "system + service-role readers", "current_location": "plhpjktkzsbfnltemhdl.public",
+      "source_project": "plhpjktkzsbfnltemhdl", "source_repository": "AWAITING_CODEX", "source_folder": "",
+      "current_url": "", "backend": "self", "dependencies": ["pgcrypto digest sha256"], "environment_variable_names": [],
+      "completion_score": 65, "completion_band": "61-75 Substantial", "current_status": "DEPLOYED",
+      "classification": "ACTIVE CORE", "commercial_model": "", "intended_price": "", "free_trial": "",
+      "lineage": ["apn_ledger_tamper_evident_and_api migration"], "duplicate_group_id": "", "duplicate_locations": [], "sha256": "",
+      "known_risks": ["FIND-001", "FIND-002", "FIND-003", "FIND-004"], "contradictions": ["not the doc's ledger_entries/Merkle/Ed25519 model"],
+      "next_three_actions": ["revoke TRUNCATE from service_role", "canonical serialisation + hash_version", "resolve dual hash scheme"],
+      "definition_of_finished": "Verifiably append-only incl TRUNCATE, portable off-platform verification, single chaining authority",
+      "approved_for_move": false, "approved_for_delete": false, "approval_notes": "never truncate/mutate",
+      "review_date": "2026-07-23", "reviewer": "Claude",
+      "backend_detail": { "sub_classification": "LEDGER INFRASTRUCTURE", "rows": 13158, "rls_enabled": true,
+        "public_read": false, "verifier_fns_anon_executable": false }
+    }
+  ],
+  "risk_register_ref": "09-BACKEND-INVENTORY/BACKEND-RISKS.csv",
+  "source_report_ref": "06-SOURCE-REPORTS/SUPABASE-SOURCE-REPORT.md"
+}

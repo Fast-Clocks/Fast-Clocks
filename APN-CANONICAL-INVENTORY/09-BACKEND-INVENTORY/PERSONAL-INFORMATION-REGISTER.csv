@@ -1,0 +1,7 @@
+object,field,info_type,collected_by_product,collection_purpose,access_roles,public_exposure,retention_period,deletion_mechanism,residency,risk,legal_status
+inquiries,name;email;phone;company;message,contact PII,Sovereign Showcase / domain sales,Sales enquiry,service_role only,none (no anon SELECT),verify purge_expired coverage,erase_subject(email) / purge_expired,ap-southeast-2,MEDIUM,REQUIRES LEGAL REVIEW
+waitlist,email;name;message;user_agent;referrer,contact PII + device,APN launch site,Early-access signup,none (INSERT only),none (no SELECT),verify,erase_subject(email),ap-southeast-2,MEDIUM,REQUIRES LEGAL REVIEW
+resource_submissions,contributor_name;contributor_email;contributor_note,contributor PII,Public Resource Hub,Community submission,service_role review,email private (no public SELECT),until reviewed,service delete,ap-southeast-2,LOW-MEDIUM,REQUIRES LEGAL REVIEW
+inbox_projects;inbox_queue_items;inbox_routing_rules,created_by,auth user id,Inbox Guardian / Filing lane,Ownership isolation,owner (auth.uid),none,n/a,cascade on user,ap-southeast-2,LOW,REQUIRES LEGAL REVIEW
+network_events,ip_hash;user_agent,pseudonymous,Network telemetry,Referral/health tracking,service_role,none,verify,purge_expired,ap-southeast-2,LOW,REQUIRES LEGAL REVIEW
+company_profile,acn;contact_email;postal_address,business contact,APN corporate,Company identity,denied to anon (RLS),none,n/a,n/a,ap-southeast-2,LOW,INFORMATIONAL

@@ -1,0 +1,6 @@
+jobid,jobname,schedule,command,purpose,auth_method,notes
+1,apn-link-audit-enqueue,13 */6 * * *,select public.audit_enqueue(60),Queue link-audit work batch,SECURITY DEFINER fn,every 6h
+2,apn-link-audit-collect,*/5 * * * *,select public.audit_collect(),Collect link-audit results,SECURITY DEFINER fn (search_path public net extensions),every 5m
+3,apn-retention-purge,30 3 * * *,select public.purge_expired(),Retention/erasure purge,SECURITY DEFINER fn,daily 03:30
+4,sovereign-domain-watch,0 */2 * * *,net.http_post domain-watch (Bearer service_role_key from app.settings),Ground-truth domain sweep,service-role JWT,every 2h; secret via DB GUC
+5,apn-link-audit,*/10 * * * *,net.http_post link-audit?batch=12 (x-audit-key from audit_config),Link health sweep,shared secret header,every 10m

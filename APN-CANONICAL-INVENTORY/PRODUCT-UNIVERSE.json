@@ -1,0 +1,3231 @@
+{
+  "scope": "TARGETED GOOGLE DRIVE RESEARCH \u2014 NOT FULL T7 OR FILESYSTEM INVENTORY.",
+  "generated": "2026-07-23",
+  "reviewer": "Claude (product/Drive lane)",
+  "record_count": 41,
+  "envelope_note": "shared top-level envelope preserved; product-specific data in product_detail, backend in backend_detail",
+  "records": [
+    {
+      "inventory_id": "APN-PROD-0001",
+      "canonical_name": "Australian Data Removal \u2014 Core Service Ladder",
+      "current_name": "ADR",
+      "item_type": "service",
+      "product_family": "ADR",
+      "plain_english_purpose": "Manual, human-led personal-data removal for AU/NZ under the Privacy Act 1988; issues a Trust Anchor Certificate on completion.",
+      "what_it_does": "Manual, human-led personal-data removal for AU/NZ under the Privacy Act 1988; issues a Trust Anchor Certificate on completion.",
+      "audience": "AU/NZ individuals post-breach/doxxing/ID-theft; later B2B; vulnerable groups",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "external",
+      "dependencies": [
+        "Vercel",
+        "Stripe",
+        "Paperform",
+        "Airtable",
+        "Supabase",
+        "Next.js 14"
+      ],
+      "environment_variable_names": [],
+      "completion_score": 55,
+      "completion_band": "41-60 Demonstration",
+      "current_status": "PARTIALLY DEPLOYED",
+      "classification": "ACTIVE PRODUCT",
+      "commercial_model": "service ladder + subscription",
+      "intended_price": "DIY $75 | Portfolio Map CURRENT 10 Jun | LOCKED-LIVE || Founding $1,200 | Portfolio Map | LOCKED-LIVE || Audit $200 | older docs | RETIRED || Removal $999/$1,000 | older | RETIRED || Guardian $1,500/yr | older | RETIRED || Investigation $3,000 | older | RETIRED || Strategic $25,000/yr | older | RETIRED",
+      "free_trial": "n/a",
+      "lineage": [
+        "ADR"
+      ],
+      "duplicate_group_id": "",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "Stripe/Paperform/Airtable flow never tested end-to-end",
+        "~30 cases/mo solo cap",
+        "legal pages/SEO missing"
+      ],
+      "contradictions": [
+        "price ladders conflict (CON-001)",
+        "entity ABN vs ACN (CON-005)",
+        "payments test-mode (CON-010)"
+      ],
+      "next_three_actions": [
+        "confirm authoritative live price ladder",
+        "prove payment\u2192intake\u2192tracking end-to-end",
+        "publish legal pages"
+      ],
+      "definition_of_finished": "Live payments confirmed, flow tested, legal pages published",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [],
+        "integration_state": "NO BACKEND REQUIRED (public site)"
+      },
+      "product_detail": {
+        "era": "ADR",
+        "aliases": [
+          "Australian Data Removal",
+          "ADR",
+          "ausdataremoval.com.au",
+          "the cashflow engine"
+        ],
+        "price_variants": [
+          "DIY $75 | Portfolio Map CURRENT 10 Jun | LOCKED-LIVE",
+          "Founding $1,200 | Portfolio Map | LOCKED-LIVE",
+          "Audit $200 | older docs | RETIRED",
+          "Removal $999/$1,000 | older | RETIRED",
+          "Guardian $1,500/yr | older | RETIRED",
+          "Investigation $3,000 | older | RETIRED",
+          "Strategic $25,000/yr | older | RETIRED"
+        ],
+        "sources": [
+          {
+            "name": "ADR_Business_Breakdown.md",
+            "drive_id": "1FvErnZmcqs9OfW1Xzqqr0zeouImDxOvk",
+            "evidence": "DIRECT"
+          },
+          {
+            "name": "APN \u2014 Master Business Plan (Living Doc) v1",
+            "drive_id": "1G_lBLty7YUtOMjxz-mM-5H_mXyoKKny9dHaAAvjo1fc",
+            "evidence": "DIRECT"
+          },
+          {
+            "name": "APN-PORTFOLIO-MAP-CURRENT.md",
+            "drive_id": "1B9P3VZACABcKenc9zPdYerQdOEGrUhJNcEwjQob3kEI",
+            "evidence": "DIRECT"
+          },
+          {
+            "name": "DWD2.0.docx",
+            "drive_id": "1UigDmhZs-9wmLf-Ys3F3LYcYnCw1GHrV",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0002",
+      "canonical_name": "ADR Founding Members Program",
+      "current_name": "Founding Members",
+      "item_type": "offer",
+      "product_family": "ADR",
+      "plain_english_purpose": "One-time membership: signup audit + quarterly scans (12mo) + annual scan for life + price-lock + keyring.",
+      "what_it_does": "One-time membership: signup audit + quarterly scans (12mo) + annual scan for life + price-lock + keyring.",
+      "audience": "Early ADR supporters",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "external",
+      "dependencies": [
+        "Stripe"
+      ],
+      "environment_variable_names": [],
+      "completion_score": 45,
+      "completion_band": "41-60 Demonstration",
+      "current_status": "PARTIALLY DEPLOYED",
+      "classification": "ACTIVE PRODUCT",
+      "commercial_model": "one-time membership",
+      "intended_price": "$700 | ADR_Business_Breakdown Mar | HISTORICAL || $1,200 | Portfolio Map Jun | LOCKED-LIVE",
+      "free_trial": "n/a",
+      "lineage": [
+        "ADR"
+      ],
+      "duplicate_group_id": "",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "'annual scan for life' = compounding unpaid obligation; unclear renewal revenue"
+      ],
+      "contradictions": [
+        "price $700 vs $1,200 (CON-002)"
+      ],
+      "next_three_actions": [
+        "model the lifetime-obligation cost",
+        "confirm price",
+        "cap enforcement"
+      ],
+      "definition_of_finished": "Sustainable unit economics modelled and priced",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [],
+        "integration_state": "NO BACKEND REQUIRED"
+      },
+      "product_detail": {
+        "era": "ADR",
+        "aliases": [
+          "Founding Members",
+          "500-member cap"
+        ],
+        "price_variants": [
+          "$700 | ADR_Business_Breakdown Mar | HISTORICAL",
+          "$1,200 | Portfolio Map Jun | LOCKED-LIVE"
+        ],
+        "sources": [
+          {
+            "name": "ADR_Business_Breakdown.md",
+            "drive_id": "1FvErnZmcqs9OfW1Xzqqr0zeouImDxOvk",
+            "evidence": "DIRECT"
+          },
+          {
+            "name": "APN \u2014 Master Business Plan (Living Doc) v1",
+            "drive_id": "1G_lBLty7YUtOMjxz-mM-5H_mXyoKKny9dHaAAvjo1fc",
+            "evidence": "DIRECT"
+          },
+          {
+            "name": "APN-PORTFOLIO-MAP-CURRENT.md",
+            "drive_id": "1B9P3VZACABcKenc9zPdYerQdOEGrUhJNcEwjQob3kEI",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0003",
+      "canonical_name": "ADR DIY Removal Kit",
+      "current_name": "DIY Removal Kit / Roadmap",
+      "item_type": "digital_product",
+      "product_family": "ADR",
+      "plain_english_purpose": "Self-service PDF guide + template opt-out letters; low-touch lead-magnet product.",
+      "what_it_does": "Self-service PDF guide + template opt-out letters; low-touch lead-magnet product.",
+      "audience": "Price-sensitive DIY self-removers",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "external",
+      "dependencies": [
+        "Stripe",
+        "Make.com (designed)"
+      ],
+      "environment_variable_names": [],
+      "completion_score": 50,
+      "completion_band": "41-60 Demonstration",
+      "current_status": "PARTIALLY DEPLOYED",
+      "classification": "SALEABLE STARTER",
+      "commercial_model": "one-off digital",
+      "intended_price": "$75 | Portfolio Map | LOCKED-LIVE || $79 | older | RETIRED",
+      "free_trial": "n/a",
+      "lineage": [
+        "ADR"
+      ],
+      "duplicate_group_id": "",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "automated digital delivery not built (Make.com flow designed only)"
+      ],
+      "contradictions": [
+        "price $75 vs $79 (CON-003)"
+      ],
+      "next_three_actions": [
+        "build automated delivery",
+        "confirm price",
+        "attach to funnel"
+      ],
+      "definition_of_finished": "Checkout auto-delivers the kit",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [],
+        "integration_state": "NO BACKEND REQUIRED"
+      },
+      "product_detail": {
+        "era": "ADR",
+        "aliases": [
+          "DIY Kit",
+          "DIY Roadmap"
+        ],
+        "price_variants": [
+          "$75 | Portfolio Map | LOCKED-LIVE",
+          "$79 | older | RETIRED"
+        ],
+        "sources": [
+          {
+            "name": "DWD2.0.docx",
+            "drive_id": "1UigDmhZs-9wmLf-Ys3F3LYcYnCw1GHrV",
+            "evidence": "DIRECT"
+          },
+          {
+            "name": "ADR_Business_Breakdown.md",
+            "drive_id": "1FvErnZmcqs9OfW1Xzqqr0zeouImDxOvk",
+            "evidence": "DIRECT"
+          },
+          {
+            "name": "APN \u2014 Master Business Plan (Living Doc) v1",
+            "drive_id": "1G_lBLty7YUtOMjxz-mM-5H_mXyoKKny9dHaAAvjo1fc",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0004",
+      "canonical_name": "ExposureRadar / OSINT Scanner (ADR-era)",
+      "current_name": "ExposureRadar",
+      "item_type": "tool",
+      "product_family": "ADR",
+      "plain_english_purpose": "Free OSINT/breach scan as top-of-funnel lead capture feeding the paid ladder.",
+      "what_it_does": "Free OSINT/breach scan as top-of-funnel lead capture feeding the paid ladder.",
+      "audience": "High-intent AU search traffic",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "external",
+      "dependencies": [
+        "OSINT/breach sources"
+      ],
+      "environment_variable_names": [],
+      "completion_score": 25,
+      "completion_band": "21-40 Prototype",
+      "current_status": "UNVERIFIED",
+      "classification": "REQUIRES REVIEW",
+      "commercial_model": "free funnel",
+      "intended_price": "Free | funnel | n/a",
+      "free_trial": "n/a",
+      "lineage": [
+        "ADR"
+      ],
+      "duplicate_group_id": "",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "build status unclear / not confirmed deployed"
+      ],
+      "contradictions": [],
+      "next_three_actions": [
+        "confirm whether deployed",
+        "dedupe vs TRACE/DataTrace",
+        "decide keep/retire"
+      ],
+      "definition_of_finished": "Deployed status confirmed",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [],
+        "integration_state": "UNKNOWN"
+      },
+      "product_detail": {
+        "era": "ADR",
+        "aliases": [
+          "ExposureRadar",
+          "later TRACE/DataTrace"
+        ],
+        "price_variants": [
+          "Free | funnel | n/a"
+        ],
+        "sources": [
+          {
+            "name": "ADR_Business_Breakdown.md",
+            "drive_id": "1FvErnZmcqs9OfW1Xzqqr0zeouImDxOvk",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0005",
+      "canonical_name": "Sovereign Tank Lab (early product line)",
+      "current_name": "Sovereign Tank Lab",
+      "item_type": "product_line",
+      "product_family": "ADR",
+      "plain_english_purpose": "Early ADR-era product line, names not carried into later maps.",
+      "what_it_does": "Early ADR-era product line, names not carried into later maps.",
+      "audience": "Early adopters",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "none",
+      "dependencies": [],
+      "environment_variable_names": [],
+      "completion_score": 10,
+      "completion_band": "0-20 Concept shell",
+      "current_status": "RETIRED",
+      "classification": "REFERENCE",
+      "commercial_model": "one-off",
+      "intended_price": "Core Patch $1,950 | ADR_Business_Breakdown | HISTORICAL || Protocol Alpha $350 | HISTORICAL || Sentinel Badge $95 | HISTORICAL",
+      "free_trial": "n/a",
+      "lineage": [
+        "ADR"
+      ],
+      "duplicate_group_id": "",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "superseded; distinct from later Sovereign Tank game"
+      ],
+      "contradictions": [],
+      "next_three_actions": [
+        "archive as reference"
+      ],
+      "definition_of_finished": "Recorded as historical",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [],
+        "integration_state": "NO BACKEND REQUIRED"
+      },
+      "product_detail": {
+        "era": "ADR",
+        "aliases": [
+          "Core Patch",
+          "Protocol Alpha",
+          "Sentinel Badge"
+        ],
+        "price_variants": [
+          "Core Patch $1,950 | ADR_Business_Breakdown | HISTORICAL",
+          "Protocol Alpha $350 | HISTORICAL",
+          "Sentinel Badge $95 | HISTORICAL"
+        ],
+        "sources": [
+          {
+            "name": "ADR_Business_Breakdown.md",
+            "drive_id": "1FvErnZmcqs9OfW1Xzqqr0zeouImDxOvk",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0006",
+      "canonical_name": "darkwebscanner.com.au",
+      "current_name": "darkwebscanner (The Spoke)",
+      "item_type": "product_surface",
+      "product_family": "DWD",
+      "plain_english_purpose": "Terminal-aesthetic scanner site (HIBP + wallet scanners); free scan funnels to paid ADR tiers.",
+      "what_it_does": "Terminal-aesthetic scanner site (HIBP + wallet scanners); free scan funnels to paid ADR tiers.",
+      "audience": "High-intent AU search traffic",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "external",
+      "dependencies": [
+        "Next.js",
+        "HIBP API",
+        "Three.js",
+        "Supabase (robinson-tech-platform)",
+        "Stripe (test)",
+        "Claude 3.5"
+      ],
+      "environment_variable_names": [],
+      "completion_score": 40,
+      "completion_band": "21-40 Prototype",
+      "current_status": "PARTIALLY DEPLOYED",
+      "classification": "REQUIRES REVIEW",
+      "commercial_model": "free scan funnel",
+      "intended_price": "Free scan -> ADR ladder | DWD2.0 | n/a",
+      "free_trial": "free scan",
+      "lineage": [
+        "ADR",
+        "DWD"
+      ],
+      "duplicate_group_id": "",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "repo COMPROMISED (wallet-stealer) and quarantined read-only",
+        "Stripe test mode",
+        "leaky funnel"
+      ],
+      "contradictions": [
+        "repo compromised (CON handled in Codex lane)"
+      ],
+      "next_three_actions": [
+        "quarantine confirmed",
+        "rebuild clean or retire",
+        "migrate off compromised repo"
+      ],
+      "definition_of_finished": "Clean rebuild or formal retirement",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [],
+        "integration_state": "WRONG BACKEND / DISCONNECTED"
+      },
+      "product_detail": {
+        "era": "DWD",
+        "aliases": [
+          "darkwebscanner.com.au",
+          "The Spoke"
+        ],
+        "price_variants": [
+          "Free scan -> ADR ladder | DWD2.0 | n/a"
+        ],
+        "sources": [
+          {
+            "name": "DWD2.0.docx",
+            "drive_id": "1UigDmhZs-9wmLf-Ys3F3LYcYnCw1GHrV",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0007",
+      "canonical_name": "Dark Web Directory (The Hub)",
+      "current_name": "darkwebdirectory.com.au",
+      "item_type": "product_surface",
+      "product_family": "DWD",
+      "plain_english_purpose": "Content/SEO/education engine; becomes the APN free resource directory (~268 published).",
+      "what_it_does": "Content/SEO/education engine; becomes the APN free resource directory (~268 published).",
+      "audience": "AU public researching breaches/privacy",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "self",
+      "dependencies": [
+        "Next.js",
+        "Supabase"
+      ],
+      "environment_variable_names": [],
+      "completion_score": 50,
+      "completion_band": "41-60 Demonstration",
+      "current_status": "PARTIALLY DEPLOYED",
+      "classification": "MERGE SOURCE",
+      "commercial_model": "free SEO funnel",
+      "intended_price": "Free | DWD2.0 | n/a",
+      "free_trial": "free",
+      "lineage": [
+        "DWD",
+        "APN"
+      ],
+      "duplicate_group_id": "DG-DIRECTORY",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "content assembly + dedup/verify pipeline"
+      ],
+      "contradictions": [
+        "resource count varies (CON-007)"
+      ],
+      "next_three_actions": [
+        "merge into APN directory",
+        "dedupe",
+        "confirm published count"
+      ],
+      "definition_of_finished": "Folded into APN Free Resource Hub",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [
+          "SUP-PROJ-SYDNEY"
+        ],
+        "integration_state": "CONNECTED BUT INCOMPLETE"
+      },
+      "product_detail": {
+        "era": "DWD",
+        "aliases": [
+          "darkwebdirectory.com.au",
+          "The Hub",
+          "Dark Web Directory"
+        ],
+        "price_variants": [
+          "Free | DWD2.0 | n/a"
+        ],
+        "sources": [
+          {
+            "name": "DWD2.0.docx",
+            "drive_id": "1UigDmhZs-9wmLf-Ys3F3LYcYnCw1GHrV",
+            "evidence": "DIRECT"
+          },
+          {
+            "name": "APN-NETWORK-MAP-v1.md",
+            "drive_id": "1XjCzP2b4VFkdY0hCLX0IaQz79dsqkTP0W5sq8E_5SW0",
+            "evidence": "DIRECT"
+          },
+          {
+            "name": "APN \u2014 Master Business Plan (Living Doc) v1",
+            "drive_id": "1G_lBLty7YUtOMjxz-mM-5H_mXyoKKny9dHaAAvjo1fc",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0008",
+      "canonical_name": "Business-in-a-Box + Domain Portfolio",
+      "current_name": "Business-in-a-Box",
+      "item_type": "offer",
+      "product_family": "DWD",
+      "plain_english_purpose": "Domain + scanner API + deployed lander sold as a package; 200+ domain portfolio + marketplace.",
+      "what_it_does": "Domain + scanner API + deployed lander sold as a package; 200+ domain portfolio + marketplace.",
+      "audience": "SMB/agencies wanting white-label scanners",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "self",
+      "dependencies": [
+        "Stripe",
+        "Next.js landers",
+        "Supabase (domains table)"
+      ],
+      "environment_variable_names": [],
+      "completion_score": 30,
+      "completion_band": "21-40 Prototype",
+      "current_status": "PLANNED",
+      "classification": "MARKETPLACE ASSET",
+      "commercial_model": "package + domain sale",
+      "intended_price": "Package pricing | DWD2.0 | UNSTATED",
+      "free_trial": "n/a",
+      "lineage": [
+        "DWD"
+      ],
+      "duplicate_group_id": "",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "~167 usable of 216",
+        "some quarantined (stalkerware line)",
+        "~29 for charity",
+        "off-brand domains held for sale"
+      ],
+      "contradictions": [],
+      "next_three_actions": [
+        "classify all domains",
+        "price packages",
+        "approve marketplace"
+      ],
+      "definition_of_finished": "Domains classified + packages priced",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [
+          "SUP-TABLE-DOMAINS"
+        ],
+        "integration_state": "CONFIGURED, NOT VERIFIED"
+      },
+      "product_detail": {
+        "era": "DWD",
+        "aliases": [
+          "B2B2C white-label",
+          "Domain Portfolio",
+          "~200-216 domains"
+        ],
+        "price_variants": [
+          "Package pricing | DWD2.0 | UNSTATED"
+        ],
+        "sources": [
+          {
+            "name": "DWD2.0.docx",
+            "drive_id": "1UigDmhZs-9wmLf-Ys3F3LYcYnCw1GHrV",
+            "evidence": "DIRECT"
+          },
+          {
+            "name": "APN-NETWORK-MAP-v1.md",
+            "drive_id": "1XjCzP2b4VFkdY0hCLX0IaQz79dsqkTP0W5sq8E_5SW0",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0009",
+      "canonical_name": "Hugo AI (concierge / HITL)",
+      "current_name": "Hugo AI",
+      "item_type": "ai_layer",
+      "product_family": "DWD",
+      "plain_english_purpose": "AI avatar/concierge parsing scan data; premium tiers add human-in-the-loop analyst review.",
+      "what_it_does": "AI avatar/concierge parsing scan data; premium tiers add human-in-the-loop analyst review.",
+      "audience": "Premium/retainer customers",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "external",
+      "dependencies": [
+        "Claude 3.5 Sonnet"
+      ],
+      "environment_variable_names": [
+        "CLAUDE_API_KEY"
+      ],
+      "completion_score": 35,
+      "completion_band": "21-40 Prototype",
+      "current_status": "UNVERIFIED",
+      "classification": "CAPABILITY",
+      "commercial_model": "bundled premium",
+      "intended_price": "Bundled into premium tiers | DWD2.0 | n/a",
+      "free_trial": "n/a",
+      "lineage": [
+        "DWD",
+        "APN"
+      ],
+      "duplicate_group_id": "",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "'live in code' vs 'prototype in progress' (docs disagree)"
+      ],
+      "contradictions": [
+        "maturity conflict (CON-013)"
+      ],
+      "next_three_actions": [
+        "confirm live vs prototype",
+        "define HITL SLA",
+        "cost model"
+      ],
+      "definition_of_finished": "Consistent, costed, live concierge",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [],
+        "integration_state": "DEMONSTRATION ONLY"
+      },
+      "product_detail": {
+        "era": "DWD",
+        "aliases": [
+          "Hugo",
+          "'Your sentinel in digital waters'"
+        ],
+        "price_variants": [
+          "Bundled into premium tiers | DWD2.0 | n/a"
+        ],
+        "sources": [
+          {
+            "name": "DWD2.0.docx",
+            "drive_id": "1UigDmhZs-9wmLf-Ys3F3LYcYnCw1GHrV",
+            "evidence": "DIRECT"
+          },
+          {
+            "name": "APN \u2014 Master Business Plan (Living Doc) v1",
+            "drive_id": "1G_lBLty7YUtOMjxz-mM-5H_mXyoKKny9dHaAAvjo1fc",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0010",
+      "canonical_name": "APN Hub / Core (front door)",
+      "current_name": "APN Hub",
+      "item_type": "platform",
+      "product_family": "APN",
+      "plain_english_purpose": "Institutional parent + front door: tech/startup hub, marketplace, jobs, resource directory.",
+      "what_it_does": "Institutional parent + front door: tech/startup hub, marketplace, jobs, resource directory.",
+      "audience": "AU public + businesses + startups",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "self",
+      "dependencies": [
+        "Next.js",
+        "Vercel",
+        "Cloudflare",
+        "Stripe",
+        "Supabase",
+        "Claude",
+        "VentraIP DNS"
+      ],
+      "environment_variable_names": [
+        "SUPABASE_URL",
+        "SUPABASE_ANON_KEY"
+      ],
+      "completion_score": 55,
+      "completion_band": "41-60 Demonstration",
+      "current_status": "PARTIALLY DEPLOYED",
+      "classification": "PUBLIC FRONT DOOR",
+      "commercial_model": "umbrella",
+      "intended_price": "n/a | umbrella | n/a",
+      "free_trial": "n/a",
+      "lineage": [
+        "ADR",
+        "DWD",
+        "APN"
+      ],
+      "duplicate_group_id": "",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "two competing structural framings; front-end in build"
+      ],
+      "contradictions": [],
+      "next_three_actions": [
+        "choose one structure",
+        "ship front door",
+        "wire directory + hub"
+      ],
+      "definition_of_finished": "Single coherent front door live",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [
+          "SUP-PROJ-SYDNEY"
+        ],
+        "integration_state": "CONNECTED BUT INCOMPLETE"
+      },
+      "product_detail": {
+        "era": "APN",
+        "aliases": [
+          "Australian Privacy Network",
+          "APN umbrella",
+          "front door"
+        ],
+        "price_variants": [
+          "n/a | umbrella | n/a"
+        ],
+        "sources": [
+          {
+            "name": "APN-NETWORK-MAP-v1.md",
+            "drive_id": "1XjCzP2b4VFkdY0hCLX0IaQz79dsqkTP0W5sq8E_5SW0",
+            "evidence": "DIRECT"
+          },
+          {
+            "name": "APN-Project-Overview.md",
+            "drive_id": "16xmNJ3epeKHI4o0MQT31XyEgE_KyEwriQM1hMwVI2Yw",
+            "evidence": "DIRECT"
+          },
+          {
+            "name": "APN-PORTFOLIO-MAP-CURRENT.md",
+            "drive_id": "1B9P3VZACABcKenc9zPdYerQdOEGrUhJNcEwjQob3kEI",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0011",
+      "canonical_name": "APN Free Resource Hub + Verified Directory",
+      "current_name": "Free Resource Hub",
+      "item_type": "directory",
+      "product_family": "APN",
+      "plain_english_purpose": "Categorised, human-checked privacy resources (~268 published live).",
+      "what_it_does": "Categorised, human-checked privacy resources (~268 published live).",
+      "audience": "AU public + businesses embedding it",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "self",
+      "dependencies": [
+        "Supabase (RLS)",
+        "embed widget"
+      ],
+      "environment_variable_names": [
+        "SUPABASE_URL",
+        "SUPABASE_ANON_KEY"
+      ],
+      "completion_score": 65,
+      "completion_band": "61-75 Substantial",
+      "current_status": "DEPLOYED",
+      "classification": "FREE RESOURCE",
+      "commercial_model": "free public asset",
+      "intended_price": "Free | Master Business Plan | n/a",
+      "free_trial": "free",
+      "lineage": [
+        "DWD",
+        "APN"
+      ],
+      "duplicate_group_id": "",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "never advertise raw 50k count; anon reads internal columns (backend FIND-005)"
+      ],
+      "contradictions": [
+        "resource count 268 vs 310/316 vs 48k/50k (CON-007)"
+      ],
+      "next_three_actions": [
+        "confirm published count",
+        "switch public read to safe view",
+        "assemble explainers"
+      ],
+      "definition_of_finished": "Verified public directory with safe columns",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [
+          "SUP-PROJ-SYDNEY",
+          "SUP-TABLE-RESOURCES"
+        ],
+        "integration_state": "VERIFIED CONNECTED"
+      },
+      "product_detail": {
+        "era": "APN",
+        "aliases": [
+          "the harbour",
+          "Engine Room",
+          "Verified Resource Directory"
+        ],
+        "price_variants": [
+          "Free | Master Business Plan | n/a"
+        ],
+        "sources": [
+          {
+            "name": "APN \u2014 Master Business Plan (Living Doc) v1",
+            "drive_id": "1G_lBLty7YUtOMjxz-mM-5H_mXyoKKny9dHaAAvjo1fc",
+            "evidence": "DIRECT"
+          },
+          {
+            "name": "APN-Project-Overview.md",
+            "drive_id": "16xmNJ3epeKHI4o0MQT31XyEgE_KyEwriQM1hMwVI2Yw",
+            "evidence": "DIRECT"
+          },
+          {
+            "name": "APN-NETWORK-MAP-v1.md",
+            "drive_id": "1XjCzP2b4VFkdY0hCLX0IaQz79dsqkTP0W5sq8E_5SW0",
+            "evidence": "DIRECT"
+          },
+          {
+            "name": "SOVEREIGN ENGINE \u2014 Uses, Extensions and Keeper Builds",
+            "drive_id": "1235yBjKhXpAScE4dpIEgYDjji31UBo60KB8XLGKLIVM",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0012",
+      "canonical_name": "APN Directory / Resource Widget",
+      "current_name": "Resource Widget",
+      "item_type": "embeddable",
+      "product_family": "APN",
+      "plain_english_purpose": "Embeddable/white-label directory+tools other businesses license onto their own sites.",
+      "what_it_does": "Embeddable/white-label directory+tools other businesses license onto their own sites.",
+      "audience": "Businesses, associations, agencies",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "self",
+      "dependencies": [
+        "Supabase",
+        "embed"
+      ],
+      "environment_variable_names": [
+        "SUPABASE_URL",
+        "SUPABASE_ANON_KEY"
+      ],
+      "completion_score": 40,
+      "completion_band": "21-40 Prototype",
+      "current_status": "PLANNED",
+      "classification": "SALEABLE STARTER",
+      "commercial_model": "SaaS subscription",
+      "intended_price": "Lite A$29/mo | June pricing model | PROPOSED || Pro A$99/mo | PROPOSED || Business A$249/mo | PROPOSED || White-label A$750/mo + A$3,000 setup | PROPOSED",
+      "free_trial": "trial TBD",
+      "lineage": [
+        "APN"
+      ],
+      "duplicate_group_id": "",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "packaging to build"
+      ],
+      "contradictions": [
+        "pricing model differs from locked map (CON-001)"
+      ],
+      "next_three_actions": [
+        "build packaging",
+        "confirm pricing",
+        "first pilot embed"
+      ],
+      "definition_of_finished": "Licensable widget with billing",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [
+          "SUP-TABLE-RESOURCES"
+        ],
+        "integration_state": "CONFIGURED, NOT VERIFIED"
+      },
+      "product_detail": {
+        "era": "APN",
+        "aliases": [
+          "Directory Widget",
+          "'build once, use everywhere'"
+        ],
+        "price_variants": [
+          "Lite A$29/mo | June pricing model | PROPOSED",
+          "Pro A$99/mo | PROPOSED",
+          "Business A$249/mo | PROPOSED",
+          "White-label A$750/mo + A$3,000 setup | PROPOSED"
+        ],
+        "sources": [
+          {
+            "name": "APN \u2014 Master Business Plan (Living Doc) v1",
+            "drive_id": "1G_lBLty7YUtOMjxz-mM-5H_mXyoKKny9dHaAAvjo1fc",
+            "evidence": "DIRECT"
+          },
+          {
+            "name": "June Commercial Pricing Model (owner kiwichefchris)",
+            "drive_id": "",
+            "evidence": "DIRECT (drive_id pending \u2014 Codex)"
+          },
+          {
+            "name": "apn_master_specification_v2",
+            "drive_id": "1eFephrqosyJHAEDf01gMLxkpMLnnIxpMas5vb9bUtUQ",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0013",
+      "canonical_name": "APN Scanner / CID / Intelligence Platform",
+      "current_name": "Intelligence Platform",
+      "item_type": "platform",
+      "product_family": "APN",
+      "plain_english_purpose": "Library of ~20 privacy/intelligence tools opened via API + white-label.",
+      "what_it_does": "Library of ~20 privacy/intelligence tools opened via API + white-label.",
+      "audience": "Developers/resellers building on top",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "self",
+      "dependencies": [
+        "scanner tools",
+        "API layer",
+        "Supabase"
+      ],
+      "environment_variable_names": [],
+      "completion_score": 40,
+      "completion_band": "21-40 Prototype",
+      "current_status": "PARTIALLY DEPLOYED",
+      "classification": "CAPABILITY",
+      "commercial_model": "usage/seat API",
+      "intended_price": "Usage/seat-based | Master Business Plan | INFERENCE/UNSTATED",
+      "free_trial": "n/a",
+      "lineage": [
+        "APN"
+      ],
+      "duplicate_group_id": "",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "tools built; platform/API layer to build"
+      ],
+      "contradictions": [],
+      "next_three_actions": [
+        "inventory the ~20 tools",
+        "build API layer",
+        "price usage"
+      ],
+      "definition_of_finished": "Tools exposed via a metered API",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [],
+        "integration_state": "UNKNOWN"
+      },
+      "product_detail": {
+        "era": "APN",
+        "aliases": [
+          "~20 scanner tools",
+          "Composite Am I Exposed",
+          "CID"
+        ],
+        "price_variants": [
+          "Usage/seat-based | Master Business Plan | INFERENCE/UNSTATED"
+        ],
+        "sources": [
+          {
+            "name": "APN \u2014 Master Business Plan (Living Doc) v1",
+            "drive_id": "1G_lBLty7YUtOMjxz-mM-5H_mXyoKKny9dHaAAvjo1fc",
+            "evidence": "DIRECT"
+          },
+          {
+            "name": "DWD2.0.docx",
+            "drive_id": "1UigDmhZs-9wmLf-Ys3F3LYcYnCw1GHrV",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0014",
+      "canonical_name": "TRACE / DataTrace",
+      "current_name": "TRACE",
+      "item_type": "tool",
+      "product_family": "APN",
+      "plain_english_purpose": "'Check whether YOUR details are exposed' \u2014 scan + 3D spider-graph exposure audit, funnels into ADR.",
+      "what_it_does": "'Check whether YOUR details are exposed' \u2014 scan + 3D spider-graph exposure audit, funnels into ADR.",
+      "audience": "Consumers checking their own exposure",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "external",
+      "dependencies": [
+        "Scanner engine",
+        "3D graph",
+        "Supabase"
+      ],
+      "environment_variable_names": [],
+      "completion_score": 35,
+      "completion_band": "21-40 Prototype",
+      "current_status": "UNVERIFIED",
+      "classification": "ACTIVE PRODUCT",
+      "commercial_model": "exposure audit funnel",
+      "intended_price": "$75 exposure audit | Network Map | conflicts $200/$350 elsewhere",
+      "free_trial": "free scan",
+      "lineage": [
+        "ADR",
+        "DWD",
+        "APN"
+      ],
+      "duplicate_group_id": "",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "Portfolio Map lists DataTrace as 'UNKNOWN \u2014 confirm what this is'"
+      ],
+      "contradictions": [
+        "audit price $75 vs $200/$350 (CON-004)",
+        "DataTrace purpose unknown (CON-008)"
+      ],
+      "next_three_actions": [
+        "confirm what DataTrace is",
+        "confirm price",
+        "confirm build state"
+      ],
+      "definition_of_finished": "Named, priced, deployed scanner",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [],
+        "integration_state": "UNKNOWN"
+      },
+      "product_detail": {
+        "era": "APN",
+        "aliases": [
+          "TRACE",
+          "DataTrace.com.au",
+          "tracescanner"
+        ],
+        "price_variants": [
+          "$75 exposure audit | Network Map | conflicts $200/$350 elsewhere"
+        ],
+        "sources": [
+          {
+            "name": "APN-NETWORK-MAP-v1.md",
+            "drive_id": "1XjCzP2b4VFkdY0hCLX0IaQz79dsqkTP0W5sq8E_5SW0",
+            "evidence": "DIRECT"
+          },
+          {
+            "name": "APN-PORTFOLIO-MAP-CURRENT.md",
+            "drive_id": "1B9P3VZACABcKenc9zPdYerQdOEGrUhJNcEwjQob3kEI",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0015",
+      "canonical_name": "APN Builder ('Product Zero')",
+      "current_name": "APN Builder",
+      "item_type": "platform",
+      "product_family": "APN",
+      "plain_english_purpose": "Turns the public into researchers/verifiers/builders; earn standing, progress to reviewer->builder.",
+      "what_it_does": "Turns the public into researchers/verifiers/builders; earn standing, progress to reviewer->builder.",
+      "audience": "Public contributors / community",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "self",
+      "dependencies": [
+        "Supabase backbone",
+        "review-queue",
+        "rewards/profiles"
+      ],
+      "environment_variable_names": [
+        "SUPABASE_URL"
+      ],
+      "completion_score": 40,
+      "completion_band": "21-40 Prototype",
+      "current_status": "PLANNED",
+      "classification": "ACTIVE PRODUCT",
+      "commercial_model": "participation + packaging",
+      "intended_price": "n/a (participation) | Project Overview | n/a",
+      "free_trial": "n/a",
+      "lineage": [
+        "APN"
+      ],
+      "duplicate_group_id": "",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "in development; honesty clause (no income/equity guaranteed)"
+      ],
+      "contradictions": [],
+      "next_three_actions": [
+        "ship Builder v1",
+        "wire review queue",
+        "standing/rewards"
+      ],
+      "definition_of_finished": "Contributors can add+verify with standing",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [
+          "SUP-TABLE-RESOURCE-SUBMISSIONS"
+        ],
+        "integration_state": "CONNECTED BUT INCOMPLETE"
+      },
+      "product_detail": {
+        "era": "APN",
+        "aliases": [
+          "Product Zero",
+          "the contributor engine"
+        ],
+        "price_variants": [
+          "n/a (participation) | Project Overview | n/a"
+        ],
+        "sources": [
+          {
+            "name": "APN-Project-Overview.md",
+            "drive_id": "16xmNJ3epeKHI4o0MQT31XyEgE_KyEwriQM1hMwVI2Yw",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0016",
+      "canonical_name": "APN Bot Workshop",
+      "current_name": "Bot Workshop",
+      "item_type": "platform",
+      "product_family": "APN",
+      "plain_english_purpose": "Builders design/train/harden 'digital workers' with provenance/version/test records; APN licenses approved ones.",
+      "what_it_does": "Builders design/train/harden 'digital workers' with provenance/version/test records; APN licenses approved ones.",
+      "audience": "Advanced builders / licensees",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "self",
+      "dependencies": [
+        "Supabase",
+        "provenance ledger"
+      ],
+      "environment_variable_names": [],
+      "completion_score": 20,
+      "completion_band": "0-20 Concept shell",
+      "current_status": "PLANNED",
+      "classification": "REQUIRES REVIEW",
+      "commercial_model": "licensing",
+      "intended_price": "Licensing | Project Overview | UNSTATED",
+      "free_trial": "n/a",
+      "lineage": [
+        "APN"
+      ],
+      "duplicate_group_id": "",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "'Later' on roadmap"
+      ],
+      "contradictions": [],
+      "next_three_actions": [
+        "defer until Builder proven",
+        "design lifecycle",
+        "pilot one bot"
+      ],
+      "definition_of_finished": "One certified bot licensed",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [],
+        "integration_state": "NO BACKEND REQUIRED"
+      },
+      "product_detail": {
+        "era": "APN",
+        "aliases": [
+          "digital workforce"
+        ],
+        "price_variants": [
+          "Licensing | Project Overview | UNSTATED"
+        ],
+        "sources": [
+          {
+            "name": "APN-Project-Overview.md",
+            "drive_id": "16xmNJ3epeKHI4o0MQT31XyEgE_KyEwriQM1hMwVI2Yw",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0017",
+      "canonical_name": "APN Trust Spine / Verification Machine",
+      "current_name": "Trust Spine",
+      "item_type": "infrastructure",
+      "product_family": "APN",
+      "plain_english_purpose": "Shared identity + receipt/verification engine ('private when submitted, provable when challenged').",
+      "what_it_does": "Shared identity + receipt/verification engine ('private when submitted, provable when challenged').",
+      "audience": "All APN sites + external orgs",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "self",
+      "dependencies": [
+        "hash-chained ledger",
+        "Supabase",
+        "key-vault",
+        "Ed25519",
+        "OpenTimestamps"
+      ],
+      "environment_variable_names": [],
+      "completion_score": 45,
+      "completion_band": "41-60 Demonstration",
+      "current_status": "PLANNED",
+      "classification": "ACTIVE CORE",
+      "commercial_model": "infrastructure",
+      "intended_price": "n/a (infrastructure) | Network Map | n/a",
+      "free_trial": "n/a",
+      "lineage": [
+        "APN",
+        "Sovereign"
+      ],
+      "duplicate_group_id": "DG-TRUSTSPINE",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "architecture deep; build pending; matured into Sovereign Engine"
+      ],
+      "contradictions": [],
+      "next_three_actions": [
+        "converge with Sovereign Engine",
+        "build v1",
+        "key custody"
+      ],
+      "definition_of_finished": "Every site calls a working trust spine",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [
+          "SUP-TABLE-LEDGER-EVENTS"
+        ],
+        "integration_state": "CONNECTED BUT INCOMPLETE"
+      },
+      "product_detail": {
+        "era": "APN",
+        "aliases": [
+          "Trust Anchor",
+          "Verification Machine",
+          "Integrity Receipts",
+          "identity ladder Tier 0-3",
+          "-> Sovereign Engine"
+        ],
+        "price_variants": [
+          "n/a (infrastructure) | Network Map | n/a"
+        ],
+        "sources": [
+          {
+            "name": "APN \u2014 Master Business Plan (Living Doc) v1",
+            "drive_id": "1G_lBLty7YUtOMjxz-mM-5H_mXyoKKny9dHaAAvjo1fc",
+            "evidence": "DIRECT"
+          },
+          {
+            "name": "APN-NETWORK-MAP-v1.md",
+            "drive_id": "1XjCzP2b4VFkdY0hCLX0IaQz79dsqkTP0W5sq8E_5SW0",
+            "evidence": "DIRECT"
+          },
+          {
+            "name": "APN-Project-Overview.md",
+            "drive_id": "16xmNJ3epeKHI4o0MQT31XyEgE_KyEwriQM1hMwVI2Yw",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0018",
+      "canonical_name": "Dead Letter Box / 0xBRK.BKWD",
+      "current_name": "Dead Letter Box",
+      "item_type": "tool",
+      "product_family": "APN",
+      "plain_english_purpose": "Anonymous submission channel; 0xBRK.BKWD also an internal business-health dashboard (live % per part).",
+      "what_it_does": "Anonymous submission channel; 0xBRK.BKWD also an internal business-health dashboard (live % per part).",
+      "audience": "Whistleblowers / internal ops",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "self",
+      "dependencies": [
+        "ledger",
+        "Supabase"
+      ],
+      "environment_variable_names": [],
+      "completion_score": 25,
+      "completion_band": "21-40 Prototype",
+      "current_status": "PLANNED",
+      "classification": "INTERNAL TOOL",
+      "commercial_model": "internal",
+      "intended_price": "n/a | Master Business Plan | n/a",
+      "free_trial": "n/a",
+      "lineage": [
+        "APN"
+      ],
+      "duplicate_group_id": "",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "landing + concept complete; build pending"
+      ],
+      "contradictions": [],
+      "next_three_actions": [
+        "build submission flow",
+        "wire dashboard %",
+        "provenance"
+      ],
+      "definition_of_finished": "Provable anonymous submissions live",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [],
+        "integration_state": "NO BACKEND REQUIRED"
+      },
+      "product_detail": {
+        "era": "APN",
+        "aliases": [
+          "0xBRK.BKWD",
+          "anonymous-but-provable channel",
+          "business-health dashboard"
+        ],
+        "price_variants": [
+          "n/a | Master Business Plan | n/a"
+        ],
+        "sources": [
+          {
+            "name": "APN \u2014 Master Business Plan (Living Doc) v1",
+            "drive_id": "1G_lBLty7YUtOMjxz-mM-5H_mXyoKKny9dHaAAvjo1fc",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0019",
+      "canonical_name": "APN Tech Startup Hub + Sponsors / Jobs Board",
+      "current_name": "Tech Startup Hub",
+      "item_type": "marketplace",
+      "product_family": "APN",
+      "plain_english_purpose": "Cheap/free listing space for tech start-ups funded by sponsors; shared jobs board on every site.",
+      "what_it_does": "Cheap/free listing space for tech start-ups funded by sponsors; shared jobs board on every site.",
+      "audience": "AU tech startups + sponsors + job-seekers",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "self",
+      "dependencies": [
+        "Supabase",
+        "Stripe"
+      ],
+      "environment_variable_names": [
+        "SUPABASE_URL",
+        "SUPABASE_ANON_KEY"
+      ],
+      "completion_score": 40,
+      "completion_band": "21-40 Prototype",
+      "current_status": "PARTIALLY DEPLOYED",
+      "classification": "INDUSTRY SIDE DOOR",
+      "commercial_model": "listings + sponsorship + ads",
+      "intended_price": "Profile A$29/mo | June model | PROPOSED || Featured A$79/mo | PROPOSED || Partner A$299/mo | PROPOSED || Boosters A$49/A$149 | PROPOSED || Jobs A$99/A$199 | PROPOSED || Category sponsor A$1,500/mo | PROPOSED || Network sponsor A$5,000/mo | PROPOSED || Self-serve ad A$299/30d | PROPOSED",
+      "free_trial": "n/a",
+      "lineage": [
+        "APN"
+      ],
+      "duplicate_group_id": "",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "dashboard in hand; ships unfinished with coming-soon note; tables currently empty"
+      ],
+      "contradictions": [
+        "pricing model source (CON-001)"
+      ],
+      "next_three_actions": [
+        "populate listings",
+        "wire billing",
+        "confirm pricing"
+      ],
+      "definition_of_finished": "Paid listings + sponsors live",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [
+          "SUP-TABLE-JOBS",
+          "SUP-TABLE-ADS",
+          "SUP-TABLE-INQUIRIES",
+          "SUP-TABLE-PACKAGES"
+        ],
+        "integration_state": "CONNECTED BUT INCOMPLETE"
+      },
+      "product_detail": {
+        "era": "APN",
+        "aliases": [
+          "Startup Hub",
+          "Sponsors",
+          "Jobs Board"
+        ],
+        "price_variants": [
+          "Profile A$29/mo | June model | PROPOSED",
+          "Featured A$79/mo | PROPOSED",
+          "Partner A$299/mo | PROPOSED",
+          "Boosters A$49/A$149 | PROPOSED",
+          "Jobs A$99/A$199 | PROPOSED",
+          "Category sponsor A$1,500/mo | PROPOSED",
+          "Network sponsor A$5,000/mo | PROPOSED",
+          "Self-serve ad A$299/30d | PROPOSED"
+        ],
+        "sources": [
+          {
+            "name": "APN-NETWORK-MAP-v1.md",
+            "drive_id": "1XjCzP2b4VFkdY0hCLX0IaQz79dsqkTP0W5sq8E_5SW0",
+            "evidence": "DIRECT"
+          },
+          {
+            "name": "June Commercial Pricing Model (owner kiwichefchris)",
+            "drive_id": "",
+            "evidence": "DIRECT (drive_id pending \u2014 Codex)"
+          },
+          {
+            "name": "apn_master_specification_v2",
+            "drive_id": "1eFephrqosyJHAEDf01gMLxkpMLnnIxpMas5vb9bUtUQ",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0020",
+      "canonical_name": "Government & Public API Index",
+      "current_name": "Gov API Index",
+      "item_type": "directory",
+      "product_family": "APN",
+      "plain_english_purpose": "Informational directory of public-sector data/APIs.",
+      "what_it_does": "Informational directory of public-sector data/APIs.",
+      "audience": "Developers, researchers, public",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "self",
+      "dependencies": [
+        "Supabase"
+      ],
+      "environment_variable_names": [],
+      "completion_score": 25,
+      "completion_band": "21-40 Prototype",
+      "current_status": "PLANNED",
+      "classification": "FREE RESOURCE",
+      "commercial_model": "free",
+      "intended_price": "Free | Project Overview | INFERENCE",
+      "free_trial": "free",
+      "lineage": [
+        "APN"
+      ],
+      "duplicate_group_id": "",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "in development"
+      ],
+      "contradictions": [],
+      "next_three_actions": [
+        "scope sources",
+        "seed index",
+        "publish"
+      ],
+      "definition_of_finished": "Public API index live",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [],
+        "integration_state": "NO BACKEND REQUIRED"
+      },
+      "product_detail": {
+        "era": "APN",
+        "aliases": [
+          "public-sector directory"
+        ],
+        "price_variants": [
+          "Free | Project Overview | INFERENCE"
+        ],
+        "sources": [
+          {
+            "name": "APN-Project-Overview.md",
+            "drive_id": "16xmNJ3epeKHI4o0MQT31XyEgE_KyEwriQM1hMwVI2Yw",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0021",
+      "canonical_name": "APN Site Bundle",
+      "current_name": "Site Bundle",
+      "item_type": "component_library",
+      "product_family": "APN",
+      "plain_english_purpose": "'Build once, drop into any site': jobs, resource hub, ad slots, compliance/privacy packages, UI/branding kit, donation footer.",
+      "what_it_does": "'Build once, drop into any site': jobs, resource hub, ad slots, compliance/privacy packages, UI/branding kit, donation footer.",
+      "audience": "All APN network sites",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "self",
+      "dependencies": [
+        "shared components"
+      ],
+      "environment_variable_names": [],
+      "completion_score": 45,
+      "completion_band": "41-60 Demonstration",
+      "current_status": "PARTIALLY DEPLOYED",
+      "classification": "INTERNAL TOOL",
+      "commercial_model": "internal",
+      "intended_price": "n/a | Network Map | n/a",
+      "free_trial": "n/a",
+      "lineage": [
+        "APN"
+      ],
+      "duplicate_group_id": "",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "branding locked; ad slots/donation footer new"
+      ],
+      "contradictions": [],
+      "next_three_actions": [
+        "package bundle",
+        "version it",
+        "adopt across sites"
+      ],
+      "definition_of_finished": "Reusable bundle adopted network-wide",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [],
+        "integration_state": "NO BACKEND REQUIRED"
+      },
+      "product_detail": {
+        "era": "APN",
+        "aliases": [
+          "shared front-of-house layer",
+          "branding kit"
+        ],
+        "price_variants": [
+          "n/a | Network Map | n/a"
+        ],
+        "sources": [
+          {
+            "name": "APN-NETWORK-MAP-v1.md",
+            "drive_id": "1XjCzP2b4VFkdY0hCLX0IaQz79dsqkTP0W5sq8E_5SW0",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0022",
+      "canonical_name": "APN Education Arm",
+      "current_name": "Education",
+      "item_type": "content",
+      "product_family": "APN",
+      "plain_english_purpose": "Prevention/uplift videos and courses; revenue not dependent on prior harm.",
+      "what_it_does": "Prevention/uplift videos and courses; revenue not dependent on prior harm.",
+      "audience": "General public / at-risk groups",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "none",
+      "dependencies": [
+        "video/course platform"
+      ],
+      "environment_variable_names": [],
+      "completion_score": 20,
+      "completion_band": "0-20 Concept shell",
+      "current_status": "PLANNED",
+      "classification": "FREE RESOURCE",
+      "commercial_model": "content/courses",
+      "intended_price": "Unstated | Master Business Plan | INFERENCE",
+      "free_trial": "n/a",
+      "lineage": [
+        "ADR",
+        "APN"
+      ],
+      "duplicate_group_id": "",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "planned"
+      ],
+      "contradictions": [],
+      "next_three_actions": [
+        "scope curriculum",
+        "produce first set",
+        "distribute"
+      ],
+      "definition_of_finished": "First course set published",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [],
+        "integration_state": "NO BACKEND REQUIRED"
+      },
+      "product_detail": {
+        "era": "APN",
+        "aliases": [
+          "prevention/uplift",
+          "Government 101"
+        ],
+        "price_variants": [
+          "Unstated | Master Business Plan | INFERENCE"
+        ],
+        "sources": [
+          {
+            "name": "APN \u2014 Master Business Plan (Living Doc) v1",
+            "drive_id": "1G_lBLty7YUtOMjxz-mM-5H_mXyoKKny9dHaAAvjo1fc",
+            "evidence": "DIRECT"
+          },
+          {
+            "name": "ADR_Business_Breakdown.md",
+            "drive_id": "1FvErnZmcqs9OfW1Xzqqr0zeouImDxOvk",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0023",
+      "canonical_name": "APN Modernised API Design Standard",
+      "current_name": "API Design Standard",
+      "item_type": "document",
+      "product_family": "APN",
+      "plain_english_purpose": "Independent 2026 modernisation of the WoG API Design Standard (RFC 9457, TLS 1.3, OAuth 2.1, OpenAPI 3.1).",
+      "what_it_does": "Independent 2026 modernisation of the WoG API Design Standard (RFC 9457, TLS 1.3, OAuth 2.1, OpenAPI 3.1).",
+      "audience": "Government/enterprise API teams",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "none",
+      "dependencies": [],
+      "environment_variable_names": [],
+      "completion_score": 70,
+      "completion_band": "61-75 Substantial",
+      "current_status": "DEPLOYED",
+      "classification": "REFERENCE",
+      "commercial_model": "free resource",
+      "intended_price": "Free resource | Sovereign review | n/a",
+      "free_trial": "free",
+      "lineage": [
+        "APN",
+        "Sovereign"
+      ],
+      "duplicate_group_id": "",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "implementation artifact (document)"
+      ],
+      "contradictions": [],
+      "next_three_actions": [
+        "publish",
+        "link from hub",
+        "maintain"
+      ],
+      "definition_of_finished": "Published + maintained standard",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [],
+        "integration_state": "NO BACKEND REQUIRED"
+      },
+      "product_detail": {
+        "era": "APN",
+        "aliases": [
+          "governance spine",
+          "public resource"
+        ],
+        "price_variants": [
+          "Free resource | Sovereign review | n/a"
+        ],
+        "sources": [
+          {
+            "name": "03 \u2014 APN Modernised API Design Standard",
+            "drive_id": "1QrPtLxj-xZ4fizZklZLFwdTwb7Kkvu8HlfIYW2RO3tI",
+            "evidence": "DIRECT"
+          },
+          {
+            "name": "SOVEREIGN ENGINE \u2014 Uses, Extensions and Keeper Builds",
+            "drive_id": "1235yBjKhXpAScE4dpIEgYDjji31UBo60KB8XLGKLIVM",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0024",
+      "canonical_name": "Sovereign Engine (assurance core)",
+      "current_name": "Sovereign Engine",
+      "item_type": "infrastructure",
+      "product_family": "Sovereign",
+      "plain_english_purpose": "Provider-neutral assurance core: AUTHORISE->RECEIPT->EVENT->STATE->VERIFY->CERTIFY under an honest-claim boundary.",
+      "what_it_does": "Provider-neutral assurance core: AUTHORISE->RECEIPT->EVENT->STATE->VERIFY->CERTIFY under an honest-claim boundary.",
+      "audience": "Enterprise: education, gov/justice, workforce, procurement, compliance, certification",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "self",
+      "dependencies": [
+        "SHA-256 hash chain",
+        "Supabase/Postgres (Sydney)",
+        "RLS",
+        "RFC 3161",
+        "OpenTimestamps",
+        "S3 Object Lock",
+        "Ed25519 v0.3"
+      ],
+      "environment_variable_names": [
+        "SUPABASE_URL",
+        "SUPABASE_SERVICE_ROLE_KEY"
+      ],
+      "completion_score": 50,
+      "completion_band": "41-60 Demonstration",
+      "current_status": "PLANNED",
+      "classification": "ACTIVE CORE",
+      "commercial_model": "pilot/licence/sector/portfolio/usage",
+      "intended_price": "Pilot / licence / sector / usage | Commercial Discussion Pack | STRUCTURES ONLY, NUMBERS WITHHELD",
+      "free_trial": "paid pilot",
+      "lineage": [
+        "APN Trust Spine",
+        "Sovereign"
+      ],
+      "duplicate_group_id": "DG-TRUSTSPINE",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "external witness (Layer C) designed not built -> not independently tamper-evident (backend FIND-004)",
+        "doc ledger model not in visible account"
+      ],
+      "contradictions": [
+        "independent tamper-evidence not achieved (CON-011)"
+      ],
+      "next_three_actions": [
+        "build Layer C",
+        "canonical serialisation + version",
+        "first paid pilot"
+      ],
+      "definition_of_finished": "Independently verifiable receipts with a live pilot",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [
+          "SUP-TABLE-LEDGER-EVENTS"
+        ],
+        "integration_state": "CONNECTED BUT INCOMPLETE"
+      },
+      "product_detail": {
+        "era": "Sovereign",
+        "aliases": [
+          "the matured Trust Spine",
+          "assurance core"
+        ],
+        "price_variants": [
+          "Pilot / licence / sector / usage | Commercial Discussion Pack | STRUCTURES ONLY, NUMBERS WITHHELD"
+        ],
+        "sources": [
+          {
+            "name": "APN-Sovereign-Engine-Commercial-Discussion-Pack",
+            "drive_id": "1aWDwF0wHP8DxM48aMF2X1rdr3ap-cveBee-kFwJGpGs",
+            "evidence": "DIRECT"
+          },
+          {
+            "name": "SOVEREIGN ENGINE \u2014 Uses, Extensions and Keeper Builds",
+            "drive_id": "1235yBjKhXpAScE4dpIEgYDjji31UBo60KB8XLGKLIVM",
+            "evidence": "DIRECT"
+          },
+          {
+            "name": "01 \u2014 Sovereign Engine \u2014 Controlled Commercial Review \u2014 July 2026",
+            "drive_id": "1yIrAYGYcmADzBfBDeKax3CroI5jfO0tQ",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0025",
+      "canonical_name": "Assay Seal v0.1",
+      "current_name": "Assay Seal",
+      "item_type": "tool",
+      "product_family": "Sovereign",
+      "plain_english_purpose": "Client-side offline no-account bundle-commitment: SHA-256 per file -> bundle hash -> sign-off -> chained ~1KB receipt; offline verifier.",
+      "what_it_does": "Client-side offline no-account bundle-commitment: SHA-256 per file -> bundle hash -> sign-off -> chained ~1KB receipt; offline verifier.",
+      "audience": "Any product needing offline tamper-evidence",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "none",
+      "dependencies": [
+        "browser crypto (SHA-256)"
+      ],
+      "environment_variable_names": [],
+      "completion_score": 45,
+      "completion_band": "41-60 Demonstration",
+      "current_status": "DEMONSTRATION",
+      "classification": "ACTIVE CORE",
+      "commercial_model": "core primitive",
+      "intended_price": "n/a | Assay Seal Build Book | n/a",
+      "free_trial": "n/a",
+      "lineage": [
+        "Sovereign"
+      ],
+      "duplicate_group_id": "",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "8/8 logic tests pass BUT UI never browser-tested; seal.html/verify.html/test.mjs MISSING from Drive"
+      ],
+      "contradictions": [
+        "executables missing \u2014 cannot reproduce tests (CON-009 related)"
+      ],
+      "next_three_actions": [
+        "recover/rebuild executables",
+        "browser-test the UI",
+        "re-run 8/8"
+      ],
+      "definition_of_finished": "Executables recovered + browser-verified",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [],
+        "integration_state": "NO BACKEND REQUIRED"
+      },
+      "product_detail": {
+        "era": "Sovereign",
+        "aliases": [
+          "assay/0.1 receipt",
+          "the tested primitive"
+        ],
+        "price_variants": [
+          "n/a | Assay Seal Build Book | n/a"
+        ],
+        "sources": [
+          {
+            "name": "01 \u2014 Assay Seal v0.1 \u2014 Build Book and 8-of-8 Logic Tests",
+            "drive_id": "1QOcgR3MiBP15K4zt8DH7cAyVqNEuDCa2GkaGD8R2gHk",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0026",
+      "canonical_name": "APN Seal / Sign & Stamp",
+      "current_name": "APN Seal",
+      "item_type": "application",
+      "product_family": "Sovereign",
+      "plain_english_purpose": "Tamper-evident receipts for field sign-offs (incident reports, permits, SWMS, temp logs) working offline.",
+      "what_it_does": "Tamper-evident receipts for field sign-offs (incident reports, permits, SWMS, temp logs) working offline.",
+      "audience": "Construction/resources/EHS (vs Procore, SafetyCulture, HammerTech)",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "self",
+      "dependencies": [
+        "Assay Seal core",
+        "receipts"
+      ],
+      "environment_variable_names": [],
+      "completion_score": 40,
+      "completion_band": "21-40 Prototype",
+      "current_status": "PLANNED",
+      "classification": "INDUSTRY SIDE DOOR",
+      "commercial_model": "per-seat / per-site",
+      "intended_price": "Design + market-validated | Sovereign review | UNSTATED",
+      "free_trial": "n/a",
+      "lineage": [
+        "Sovereign"
+      ],
+      "duplicate_group_id": "",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "no regulator requires crypto integrity (signed PDF already satisfies WHS/ISO 45001) \u2014 stay in claim boundary"
+      ],
+      "contradictions": [],
+      "next_three_actions": [
+        "build MVP",
+        "first industry pilot",
+        "price"
+      ],
+      "definition_of_finished": "First paying site pilot",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [
+          "SUP-TABLE-LEDGER-EVENTS"
+        ],
+        "integration_state": "CONNECTED BUT INCOMPLETE"
+      },
+      "product_detail": {
+        "era": "Sovereign",
+        "aliases": [
+          "Sign & Stamp",
+          "field-compliance application"
+        ],
+        "price_variants": [
+          "Design + market-validated | Sovereign review | UNSTATED"
+        ],
+        "sources": [
+          {
+            "name": "SOVEREIGN ENGINE \u2014 Uses, Extensions and Keeper Builds",
+            "drive_id": "1235yBjKhXpAScE4dpIEgYDjji31UBo60KB8XLGKLIVM",
+            "evidence": "DIRECT"
+          },
+          {
+            "name": "02 \u2014 APN Seal \u2014 Market and Build Report",
+            "drive_id": "1Wk4qCdu9Fe7LEeuKtXq9fo-ghm3TRJCYoFcEaxdYEkc",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0027",
+      "canonical_name": "APN Backbone (apn-backbone-sydney)",
+      "current_name": "APN Backbone",
+      "item_type": "backend",
+      "product_family": "Sovereign",
+      "plain_english_purpose": "Single AU-hosted Supabase/Postgres source of truth; hash-chained append-only ledger + RLS + signed receipts.",
+      "what_it_does": "Single AU-hosted Supabase/Postgres source of truth; hash-chained append-only ledger + RLS + signed receipts.",
+      "audience": "All APN machines/products",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "https://plhpjktkzsbfnltemhdl.supabase.co",
+      "backend": "self",
+      "dependencies": [
+        "Supabase Postgres 17",
+        "RLS",
+        "RPC",
+        "pg_cron",
+        "pg_net"
+      ],
+      "environment_variable_names": [
+        "SUPABASE_URL",
+        "SUPABASE_SERVICE_ROLE_KEY"
+      ],
+      "completion_score": 72,
+      "completion_band": "61-75 Substantial",
+      "current_status": "DEPLOYED",
+      "classification": "ACTIVE CORE",
+      "commercial_model": "infrastructure",
+      "intended_price": "n/a (infrastructure) | Portfolio Map + LIVE-DB | n/a",
+      "free_trial": "n/a",
+      "lineage": [
+        "APN",
+        "Sovereign"
+      ],
+      "duplicate_group_id": "",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "append-only NOT enforced vs TRUNCATE (backend FIND-001); not tamper-evident until Layer C"
+      ],
+      "contradictions": [],
+      "next_three_actions": [
+        "revoke TRUNCATE from service_role",
+        "serialise chain",
+        "backups"
+      ],
+      "definition_of_finished": "Verifiably append-only + backed up",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [
+          "SUP-PROJ-SYDNEY",
+          "SUP-TABLE-LEDGER-EVENTS"
+        ],
+        "integration_state": "VERIFIED CONNECTED"
+      },
+      "product_detail": {
+        "era": "Sovereign",
+        "aliases": [
+          "canonical ledger",
+          "plhpjktkzsbfnltemhdl",
+          "apn_ledger_events"
+        ],
+        "price_variants": [
+          "n/a (infrastructure) | Portfolio Map + LIVE-DB | n/a"
+        ],
+        "sources": [
+          {
+            "name": "SOVEREIGN ENGINE \u2014 Uses, Extensions and Keeper Builds",
+            "drive_id": "1235yBjKhXpAScE4dpIEgYDjji31UBo60KB8XLGKLIVM",
+            "evidence": "DIRECT"
+          },
+          {
+            "name": "APN-PORTFOLIO-MAP-CURRENT.md",
+            "drive_id": "1B9P3VZACABcKenc9zPdYerQdOEGrUhJNcEwjQob3kEI",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0028",
+      "canonical_name": "APN Ledger Trust / provenance-keeper",
+      "current_name": "APN Ledger Trust",
+      "item_type": "product_surface",
+      "product_family": "Sovereign",
+      "plain_english_purpose": "Public 'check us' verification page over the backbone.",
+      "what_it_does": "Public 'check us' verification page over the backbone.",
+      "audience": "Anyone verifying a receipt",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "external",
+      "dependencies": [
+        "backbone",
+        "verifier functions"
+      ],
+      "environment_variable_names": [],
+      "completion_score": 45,
+      "completion_band": "41-60 Demonstration",
+      "current_status": "PARTIALLY DEPLOYED",
+      "classification": "PUBLIC FRONT DOOR",
+      "commercial_model": "free public",
+      "intended_price": "Free | Sovereign review | n/a",
+      "free_trial": "free",
+      "lineage": [
+        "Sovereign"
+      ],
+      "duplicate_group_id": "",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "doc ledger (ledger_entries/Merkle/Ed25519) NOT in visible Supabase account; verifier fns not anon-exposed"
+      ],
+      "contradictions": [
+        "backend location unknown (SUP-RECON-LEDGER-LOCATION)"
+      ],
+      "next_three_actions": [
+        "locate its Supabase project",
+        "expose safe verifier",
+        "prove end-to-end"
+      ],
+      "definition_of_finished": "Public verification works vendor-independently",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [
+          "SUP-RECON-LEDGER-LOCATION"
+        ],
+        "integration_state": "WRONG BACKEND / UNKNOWN"
+      },
+      "product_detail": {
+        "era": "Sovereign",
+        "aliases": [
+          "apn-provenance-keeper",
+          "public verify surface"
+        ],
+        "price_variants": [
+          "Free | Sovereign review | n/a"
+        ],
+        "sources": [
+          {
+            "name": "SOVEREIGN ENGINE \u2014 Uses, Extensions and Keeper Builds",
+            "drive_id": "1235yBjKhXpAScE4dpIEgYDjji31UBo60KB8XLGKLIVM",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0029",
+      "canonical_name": "Certificate / Trust-Seal Template",
+      "current_name": "Certificate Template",
+      "item_type": "template",
+      "product_family": "Sovereign",
+      "plain_english_purpose": "Reusable master certificate/trust-seal template (repeatable CERTIFY object).",
+      "what_it_does": "Reusable master certificate/trust-seal template (repeatable CERTIFY object).",
+      "audience": "Any certified product",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "none",
+      "dependencies": [],
+      "environment_variable_names": [],
+      "completion_score": 55,
+      "completion_band": "41-60 Demonstration",
+      "current_status": "DEPLOYED",
+      "classification": "REFERENCE",
+      "commercial_model": "template",
+      "intended_price": "n/a | Sovereign review | n/a",
+      "free_trial": "n/a",
+      "lineage": [
+        "Sovereign"
+      ],
+      "duplicate_group_id": "",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "implementation artifact"
+      ],
+      "contradictions": [],
+      "next_three_actions": [
+        "standardise",
+        "version",
+        "reuse"
+      ],
+      "definition_of_finished": "Reusable certified template",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [],
+        "integration_state": "NO BACKEND REQUIRED"
+      },
+      "product_detail": {
+        "era": "Sovereign",
+        "aliases": [
+          "the CERTIFY step",
+          "Perth Safe Pet instance"
+        ],
+        "price_variants": [
+          "n/a | Sovereign review | n/a"
+        ],
+        "sources": [
+          {
+            "name": "SOVEREIGN ENGINE \u2014 Uses, Extensions and Keeper Builds",
+            "drive_id": "1235yBjKhXpAScE4dpIEgYDjji31UBo60KB8XLGKLIVM",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0030",
+      "canonical_name": "APN Widget Studio (guardian-studio)",
+      "current_name": "Widget Studio",
+      "item_type": "embeddable",
+      "product_family": "Sovereign",
+      "plain_english_purpose": "Embeddable trust/verification widgets for third-party sites; v1/v2 acceptance tests.",
+      "what_it_does": "Embeddable trust/verification widgets for third-party sites; v1/v2 acceptance tests.",
+      "audience": "Third-party site owners",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "self",
+      "dependencies": [
+        "backbone",
+        "embed"
+      ],
+      "environment_variable_names": [
+        "SUPABASE_URL",
+        "SUPABASE_ANON_KEY"
+      ],
+      "completion_score": 55,
+      "completion_band": "41-60 Demonstration",
+      "current_status": "DEPLOYED",
+      "classification": "ACTIVE PRODUCT",
+      "commercial_model": "widget tiers",
+      "intended_price": "Bundled with widget tiers | Sovereign review | UNSTATED",
+      "free_trial": "trial TBD",
+      "lineage": [
+        "Sovereign"
+      ],
+      "duplicate_group_id": "",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "commercial packaging pending"
+      ],
+      "contradictions": [],
+      "next_three_actions": [
+        "confirm backend wiring",
+        "price",
+        "publish"
+      ],
+      "definition_of_finished": "Licensable widget suite",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [
+          "SUP-PROJ-SYDNEY"
+        ],
+        "integration_state": "CONFIGURED, NOT VERIFIED"
+      },
+      "product_detail": {
+        "era": "Sovereign",
+        "aliases": [
+          "apn-guardian-studio",
+          "embeddable trust widgets"
+        ],
+        "price_variants": [
+          "Bundled with widget tiers | Sovereign review | UNSTATED"
+        ],
+        "sources": [
+          {
+            "name": "SOVEREIGN ENGINE \u2014 Uses, Extensions and Keeper Builds",
+            "drive_id": "1235yBjKhXpAScE4dpIEgYDjji31UBo60KB8XLGKLIVM",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0031",
+      "canonical_name": "Sovereign Suite family",
+      "current_name": "Sovereign Suite",
+      "item_type": "product_family",
+      "product_family": "Sovereign",
+      "plain_english_purpose": "Commercial family: Circle (canonical, live), Hub (live front door to merge), Forge ($5k funnel, built-not-published), public Suite site.",
+      "what_it_does": "Commercial family: Circle (canonical, live), Hub (live front door to merge), Forge ($5k funnel, built-not-published), public Suite site.",
+      "audience": "Founders / commercial buyers",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "external",
+      "dependencies": [
+        "backbone",
+        "Stripe"
+      ],
+      "environment_variable_names": [],
+      "completion_score": 50,
+      "completion_band": "41-60 Demonstration",
+      "current_status": "PARTIALLY DEPLOYED",
+      "classification": "ACTIVE PRODUCT",
+      "commercial_model": "funnel + suite",
+      "intended_price": "Sovereign Forge $5,000 founder funnel | Sovereign review | STATED",
+      "free_trial": "n/a",
+      "lineage": [
+        "Sovereign"
+      ],
+      "duplicate_group_id": "DG-SUITE",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "Hub duplicates Suite; Forge has a duplicate to retire; stronger public claims to verify"
+      ],
+      "contradictions": [
+        "Sovereign Hub vs Suite duplication (CON-012)"
+      ],
+      "next_three_actions": [
+        "merge Hub->Suite",
+        "retire Forge duplicate",
+        "verify claims"
+      ],
+      "definition_of_finished": "One canonical Suite, duplicates retired",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [],
+        "integration_state": "CONFIGURED, NOT VERIFIED"
+      },
+      "product_detail": {
+        "era": "Sovereign",
+        "aliases": [
+          "Sovereign Circle",
+          "Launch Accelerator",
+          "Sovereign Hub",
+          "Sovereign Forge",
+          "sovereignsuite.com.au"
+        ],
+        "price_variants": [
+          "Sovereign Forge $5,000 founder funnel | Sovereign review | STATED"
+        ],
+        "sources": [
+          {
+            "name": "SOVEREIGN ENGINE \u2014 Uses, Extensions and Keeper Builds",
+            "drive_id": "1235yBjKhXpAScE4dpIEgYDjji31UBo60KB8XLGKLIVM",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0032",
+      "canonical_name": "Sovereign standalones & harvest/merge/bin set",
+      "current_name": "Estate triage items",
+      "item_type": "triage_set",
+      "product_family": "Sovereign",
+      "plain_english_purpose": "Estate-triage set: sellable standalones (AssistHub AI, Launch Ready Review), harvest parts, merges, and bin items.",
+      "what_it_does": "Estate-triage set: sellable standalones (AssistHub AI, Launch Ready Review), harvest parts, merges, and bin items.",
+      "audience": "varies",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "none",
+      "dependencies": [],
+      "environment_variable_names": [],
+      "completion_score": 15,
+      "completion_band": "0-20 Concept shell",
+      "current_status": "UNVERIFIED",
+      "classification": "REQUIRES REVIEW",
+      "commercial_model": "varies",
+      "intended_price": "varies | Sovereign review | UNSTATED",
+      "free_trial": "n/a",
+      "lineage": [
+        "Sovereign"
+      ],
+      "duplicate_group_id": "DG-TRIAGE",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "mostly name-only triage lines; 'Friendly Hub Finder' published publicly \u2014 flagged to unpublish"
+      ],
+      "contradictions": [],
+      "next_three_actions": [
+        "verify each item exists",
+        "decide sell/harvest/merge/bin",
+        "unpublish Friendly Hub Finder"
+      ],
+      "definition_of_finished": "Each item classified with evidence",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [],
+        "integration_state": "UNKNOWN"
+      },
+      "product_detail": {
+        "era": "Sovereign",
+        "aliases": [
+          "AssistHub AI",
+          "Launch Ready Review",
+          "APN Lighthouse Vision",
+          "Your Project Story",
+          "APN Surgery Suite",
+          "Project Hub Navigator",
+          "Account Consolidation Hub",
+          "The Inner Critic",
+          "Friendly Hub Finder"
+        ],
+        "price_variants": [
+          "varies | Sovereign review | UNSTATED"
+        ],
+        "sources": [
+          {
+            "name": "SOVEREIGN ENGINE \u2014 Uses, Extensions and Keeper Builds",
+            "drive_id": "1235yBjKhXpAScE4dpIEgYDjji31UBo60KB8XLGKLIVM",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0033",
+      "canonical_name": "Watchkeeper's Filing Machine",
+      "current_name": "Smart Filing Machine",
+      "item_type": "bundle",
+      "product_family": "Filing Machine",
+      "plain_english_purpose": "Portable offline bundle (v0.1) organising the estate into drawers: 01 Brand, 02 Builds, 03 Documents, 04 Story, 05 Receipts.",
+      "what_it_does": "Portable offline bundle (v0.1) organising the estate into drawers: 01 Brand, 02 Builds, 03 Documents, 04 Story, 05 Receipts.",
+      "audience": "Founder + collaborators/reviewers",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "none",
+      "dependencies": [
+        "self-contained HTML/SVG/MD/JSON"
+      ],
+      "environment_variable_names": [],
+      "completion_score": 30,
+      "completion_band": "21-40 Prototype",
+      "current_status": "PLANNED",
+      "classification": "INTERNAL TOOL",
+      "commercial_model": "internal packaging",
+      "intended_price": "Not priced (internal artifact) | filing-machine doc | n/a",
+      "free_trial": "n/a",
+      "lineage": [
+        "Filing Machine"
+      ],
+      "duplicate_group_id": "DG-FILING",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "asset links are placeholder docs.google paths; 5 duplicate copies"
+      ],
+      "contradictions": [
+        "'File Brain' name not found verbatim (CON-009)"
+      ],
+      "next_three_actions": [
+        "confirm File Brain == Filing Machine",
+        "dedupe the 5 copies",
+        "resolve placeholder assets"
+      ],
+      "definition_of_finished": "One canonical bundle with real assets",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [],
+        "integration_state": "NO BACKEND REQUIRED"
+      },
+      "product_detail": {
+        "era": "Filing Machine",
+        "aliases": [
+          "filing-machine",
+          "File Brain (name unconfirmed)",
+          "Watchkeeper's Filing Machine"
+        ],
+        "price_variants": [
+          "Not priced (internal artifact) | filing-machine doc | n/a"
+        ],
+        "sources": [
+          {
+            "name": "filing-machine (x5 duplicate docs)",
+            "drive_id": "1Zo7-jurmZCWVvHlI4wu37PY8nhsfbtMFsLdLs-QCtYw",
+            "evidence": "DIRECT"
+          },
+          {
+            "name": "FilingMachine.html",
+            "drive_id": "1_AzMovFaqLq-uHvFD1G1PMAj-akR_QjZ",
+            "evidence": "DIRECT"
+          },
+          {
+            "name": "FilingMachine_v2.html",
+            "drive_id": "10z5GwwmgxA6Ty7WdUx90pbw3uVzmbBB8",
+            "evidence": "DIRECT"
+          },
+          {
+            "name": "APN_SOVEREIGN_ENGINE_TECHNICAL_BOOK.md",
+            "drive_id": "11rwZ53moe2iDnSC200P4kwVtcR88sz6MOl3owpuktuU",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0034",
+      "canonical_name": "SafePet / Perth Pets",
+      "current_name": "SafePet",
+      "item_type": "vertical_product",
+      "product_family": "Verticals",
+      "plain_english_purpose": "NFP welfare-first WA pet-rehoming marketplace using a quiet Sovereign-style trust layer; only build with real public traffic.",
+      "what_it_does": "NFP welfare-first WA pet-rehoming marketplace using a quiet Sovereign-style trust layer; only build with real public traffic.",
+      "audience": "WA pet buyers/sellers/rescues",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "https://perthsafepet.lovable.app",
+      "backend": "external",
+      "dependencies": [
+        "Lovable",
+        "Stripe (sandbox, connected 17 Jul)",
+        "Sovereign identity engine",
+        "guardian AI"
+      ],
+      "environment_variable_names": [],
+      "completion_score": 55,
+      "completion_band": "41-60 Demonstration",
+      "current_status": "DEPLOYED",
+      "classification": "INDUSTRY SIDE DOOR",
+      "commercial_model": "rehoming/platform fees",
+      "intended_price": "Rehoming/platform fees (unset \u2014 sandbox) | SafePet review | UNSET",
+      "free_trial": "n/a",
+      "lineage": [
+        "Sovereign",
+        "Verticals"
+      ],
+      "duplicate_group_id": "",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "no privacy policy/terms/entity shown; '100% verified' vs 'pending' (ACL risk); NFP structure; NDB plan; refund terms before Stripe live; automated-decision disclosure binds 10 Dec 2026"
+      ],
+      "contradictions": [
+        "'100% verified/0 anonymous' vs 'pending' reality (CON-014)",
+        "payments sandbox (CON-010)"
+      ],
+      "next_three_actions": [
+        "publish privacy/terms/entity",
+        "fix verified vs pending claim",
+        "payment+refund terms before live"
+      ],
+      "definition_of_finished": "Compliant live marketplace with real payments",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [],
+        "integration_state": "WRONG BACKEND / UNKNOWN (Lovable, not Supabase Sydney)"
+      },
+      "product_detail": {
+        "era": "Verticals",
+        "aliases": [
+          "Perth Pets \u2014 Trusted & Safe",
+          "perthsafepet.lovable.app"
+        ],
+        "price_variants": [
+          "Rehoming/platform fees (unset \u2014 sandbox) | SafePet review | UNSET"
+        ],
+        "sources": [
+          {
+            "name": "SafePet_Compliance_Legal_Privacy_Review",
+            "drive_id": "1eupouhlVS4A1WewLaqejbJu_LlbhaK5mPAW828VYvGw",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0035",
+      "canonical_name": "Sovereign Tank (showcase / game)",
+      "current_name": "Sovereign Tank",
+      "item_type": "game",
+      "product_family": "Verticals",
+      "plain_english_purpose": "~100 limited-edition owned 'tanks' as real cyber-defence command centres wrapped in a free attack/defend game; engine showcase.",
+      "what_it_does": "~100 limited-edition owned 'tanks' as real cyber-defence command centres wrapped in a free attack/defend game; engine showcase.",
+      "audience": "Enthusiasts / showcase audience",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "none",
+      "dependencies": [
+        "engine",
+        "game front-end"
+      ],
+      "environment_variable_names": [],
+      "completion_score": 15,
+      "completion_band": "0-20 Concept shell",
+      "current_status": "PLANNED",
+      "classification": "FUTURE",
+      "commercial_model": "limited-edition + free-to-play",
+      "intended_price": "Limited-edition owned tanks (premium) | Sovereign review | UNSTATED",
+      "free_trial": "free-to-play",
+      "lineage": [
+        "Sovereign",
+        "Verticals"
+      ],
+      "duplicate_group_id": "",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "utility->real-money economy 'needs an AU gambling/gaming lawyer before anything real'"
+      ],
+      "contradictions": [
+        "distinct from Sovereign Tank Lab (0005) and Master Spec UI 'Sovereign Tank' node"
+      ],
+      "next_three_actions": [
+        "legal review before build",
+        "scope MVP showcase",
+        "decide keep/park"
+      ],
+      "definition_of_finished": "Legally-cleared showcase concept",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [],
+        "integration_state": "NO BACKEND REQUIRED"
+      },
+      "product_detail": {
+        "era": "Verticals",
+        "aliases": [
+          "~100 owned tanks",
+          "free-to-play"
+        ],
+        "price_variants": [
+          "Limited-edition owned tanks (premium) | Sovereign review | UNSTATED"
+        ],
+        "sources": [
+          {
+            "name": "SOVEREIGN ENGINE \u2014 Uses, Extensions and Keeper Builds",
+            "drive_id": "1235yBjKhXpAScE4dpIEgYDjji31UBo60KB8XLGKLIVM",
+            "evidence": "DIRECT"
+          },
+          {
+            "name": "sovereigntankdesign.md",
+            "drive_id": "1npV7tw4m2DJjuJLnZnA7kk9YdmW0I8j0J_Yi1gsw8vo",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0036",
+      "canonical_name": "Sovereignty Lab / reseller cluster",
+      "current_name": "Sovereignty Lab",
+      "item_type": "platform",
+      "product_family": "Verticals",
+      "plain_english_purpose": "Sovereignty lab + developer/reseller layer \u2014 buy the widget/API, build your own scanner business; traffic back to ADR.",
+      "what_it_does": "Sovereignty lab + developer/reseller layer \u2014 buy the widget/API, build your own scanner business; traffic back to ADR.",
+      "audience": "Developers / resellers",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "self",
+      "dependencies": [
+        "widget/API",
+        "Supabase"
+      ],
+      "environment_variable_names": [],
+      "completion_score": 25,
+      "completion_band": "21-40 Prototype",
+      "current_status": "PLANNED",
+      "classification": "REQUIRES REVIEW",
+      "commercial_model": "reseller subscription",
+      "intended_price": "Widget/API subscriptions | Portfolio Map | UNSTATED",
+      "free_trial": "n/a",
+      "lineage": [
+        "APN",
+        "Verticals"
+      ],
+      "duplicate_group_id": "",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "'DO NOT SHIP AS-IS' \u2014 strip fabricated certs/scanners/guarantees; keep only 2 real engines (DNS mapper, doc/PII analyzer)"
+      ],
+      "contradictions": [],
+      "next_three_actions": [
+        "strip fabricated features",
+        "keep 2 real engines",
+        "re-scope"
+      ],
+      "definition_of_finished": "Honest reseller layer shipped",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [
+          "SUP-TABLE-RESOURCES"
+        ],
+        "integration_state": "CONFIGURED, NOT VERIFIED"
+      },
+      "product_detail": {
+        "era": "Verticals",
+        "aliases": [
+          "Sovereign-Status",
+          "v0-sovereignty-lab-ui",
+          "sovereignsuite.com.au"
+        ],
+        "price_variants": [
+          "Widget/API subscriptions | Portfolio Map | UNSTATED"
+        ],
+        "sources": [
+          {
+            "name": "APN-PORTFOLIO-MAP-CURRENT.md",
+            "drive_id": "1B9P3VZACABcKenc9zPdYerQdOEGrUhJNcEwjQob3kEI",
+            "evidence": "DIRECT"
+          },
+          {
+            "name": "APN-NETWORK-MAP-v1.md",
+            "drive_id": "1XjCzP2b4VFkdY0hCLX0IaQz79dsqkTP0W5sq8E_5SW0",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0037",
+      "canonical_name": "Executive / Corporate Privacy",
+      "current_name": "Executive Privacy",
+      "item_type": "service",
+      "product_family": "Verticals",
+      "plain_english_purpose": "Premium higher-touch protection for high-exposure individuals (executives, directors, family offices).",
+      "what_it_does": "Premium higher-touch protection for high-exposure individuals (executives, directors, family offices).",
+      "audience": "Executives, directors, family offices",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "external",
+      "dependencies": [
+        "ADR delivery",
+        "landers"
+      ],
+      "environment_variable_names": [],
+      "completion_score": 35,
+      "completion_band": "21-40 Prototype",
+      "current_status": "PARTIALLY DEPLOYED",
+      "classification": "ACTIVE PRODUCT",
+      "commercial_model": "premium retainer",
+      "intended_price": "Premium (maps to Guardian/Retainer) | Project Overview | INFERENCE",
+      "free_trial": "n/a",
+      "lineage": [
+        "ADR",
+        "Verticals"
+      ],
+      "duplicate_group_id": "",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "'Limited Intake'"
+      ],
+      "contradictions": [],
+      "next_three_actions": [
+        "define scope/SLA",
+        "price",
+        "open intake"
+      ],
+      "definition_of_finished": "Priced premium tier with intake",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [],
+        "integration_state": "NO BACKEND REQUIRED"
+      },
+      "product_detail": {
+        "era": "Verticals",
+        "aliases": [
+          "corporateprivacy.au",
+          "executiveprivacy.au"
+        ],
+        "price_variants": [
+          "Premium (maps to Guardian/Retainer) | Project Overview | INFERENCE"
+        ],
+        "sources": [
+          {
+            "name": "APN-Project-Overview.md",
+            "drive_id": "16xmNJ3epeKHI4o0MQT31XyEgE_KyEwriQM1hMwVI2Yw",
+            "evidence": "DIRECT"
+          },
+          {
+            "name": "DWD2.0.docx",
+            "drive_id": "1UigDmhZs-9wmLf-Ys3F3LYcYnCw1GHrV",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0038",
+      "canonical_name": "Hologram Safety Displays",
+      "current_name": "Hologram Displays",
+      "item_type": "hardware_concept",
+      "product_family": "Verticals",
+      "plain_english_purpose": "Holographic safety displays for industrial/mining ('optional larger play').",
+      "what_it_does": "Holographic safety displays for industrial/mining ('optional larger play').",
+      "audience": "Mining/industrial EHS",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "none",
+      "dependencies": [
+        "hardware"
+      ],
+      "environment_variable_names": [],
+      "completion_score": 10,
+      "completion_band": "0-20 Concept shell",
+      "current_status": "PLANNED",
+      "classification": "FUTURE",
+      "commercial_model": "hardware",
+      "intended_price": "Unstated | Master Business Plan | UNSTATED",
+      "free_trial": "n/a",
+      "lineage": [
+        "Verticals"
+      ],
+      "duplicate_group_id": "",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "concept only"
+      ],
+      "contradictions": [],
+      "next_three_actions": [
+        "park until core proven",
+        "feasibility",
+        "partner"
+      ],
+      "definition_of_finished": "Feasibility assessed",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [],
+        "integration_state": "NO BACKEND REQUIRED"
+      },
+      "product_detail": {
+        "era": "Verticals",
+        "aliases": [
+          "industrial / mining"
+        ],
+        "price_variants": [
+          "Unstated | Master Business Plan | UNSTATED"
+        ],
+        "sources": [
+          {
+            "name": "APN \u2014 Master Business Plan (Living Doc) v1",
+            "drive_id": "1G_lBLty7YUtOMjxz-mM-5H_mXyoKKny9dHaAAvjo1fc",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0039",
+      "canonical_name": "Sovereign Data Environment (ADS)",
+      "current_name": "Sovereign Data Environment",
+      "item_type": "infrastructure",
+      "product_family": "Verticals",
+      "plain_english_purpose": "AU-hosted, air-gapped 'sovereign' backbone for ADR casework PII \u2014 hard-separated from public tools.",
+      "what_it_does": "AU-hosted, air-gapped 'sovereign' backbone for ADR casework PII \u2014 hard-separated from public tools.",
+      "audience": "ADR casework (internal)",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "none",
+      "dependencies": [
+        "AU hosting",
+        "isolation"
+      ],
+      "environment_variable_names": [],
+      "completion_score": 25,
+      "completion_band": "21-40 Prototype",
+      "current_status": "PLANNED",
+      "classification": "INTERNAL TOOL",
+      "commercial_model": "infrastructure",
+      "intended_price": "n/a (infrastructure) | Master Business Plan | n/a",
+      "free_trial": "n/a",
+      "lineage": [
+        "ADR",
+        "Verticals"
+      ],
+      "duplicate_group_id": "",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "architecture role defined"
+      ],
+      "contradictions": [],
+      "next_three_actions": [
+        "design isolation",
+        "separate from public backbone",
+        "pilot"
+      ],
+      "definition_of_finished": "Isolated casework environment live",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [],
+        "integration_state": "NO BACKEND REQUIRED"
+      },
+      "product_detail": {
+        "era": "Verticals",
+        "aliases": [
+          "ADS",
+          "air-gapped casework backbone"
+        ],
+        "price_variants": [
+          "n/a (infrastructure) | Master Business Plan | n/a"
+        ],
+        "sources": [
+          {
+            "name": "APN \u2014 Master Business Plan (Living Doc) v1",
+            "drive_id": "1G_lBLty7YUtOMjxz-mM-5H_mXyoKKny9dHaAAvjo1fc",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0040",
+      "canonical_name": "Mass-Breach Response Packages",
+      "current_name": "Mass-Breach Packages",
+      "item_type": "offer",
+      "product_family": "Verticals",
+      "plain_english_purpose": "Pre-built response packages that scale to national demand on a single breach event.",
+      "what_it_does": "Pre-built response packages that scale to national demand on a single breach event.",
+      "audience": "Consumers/orgs hit by a mass breach",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "external",
+      "dependencies": [
+        "ADR delivery",
+        "scanners"
+      ],
+      "environment_variable_names": [],
+      "completion_score": 20,
+      "completion_band": "0-20 Concept shell",
+      "current_status": "PLANNED",
+      "classification": "FUTURE",
+      "commercial_model": "productised packages",
+      "intended_price": "Productised packages | Master Business Plan | UNSTATED",
+      "free_trial": "n/a",
+      "lineage": [
+        "ADR",
+        "Verticals"
+      ],
+      "duplicate_group_id": "",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "Year-2 revenue line"
+      ],
+      "contradictions": [],
+      "next_three_actions": [
+        "pre-build playbooks",
+        "capacity plan",
+        "price"
+      ],
+      "definition_of_finished": "Ready-to-deploy breach packages",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [],
+        "integration_state": "NO BACKEND REQUIRED"
+      },
+      "product_detail": {
+        "era": "Verticals",
+        "aliases": [
+          "Optus/Medibank-scale"
+        ],
+        "price_variants": [
+          "Productised packages | Master Business Plan | UNSTATED"
+        ],
+        "sources": [
+          {
+            "name": "APN \u2014 Master Business Plan (Living Doc) v1",
+            "drive_id": "1G_lBLty7YUtOMjxz-mM-5H_mXyoKKny9dHaAAvjo1fc",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    },
+    {
+      "inventory_id": "APN-PROD-0041",
+      "canonical_name": "Social Mission \u2014 Elderly Care",
+      "current_name": "Social Mission",
+      "item_type": "mission",
+      "product_family": "Verticals",
+      "plain_english_purpose": "Charitable mission funded by ADR surplus toward a training centre (~5,000/yr) for care of isolated elderly Australians.",
+      "what_it_does": "Charitable mission funded by ADR surplus toward a training centre (~5,000/yr) for care of isolated elderly Australians.",
+      "audience": "Isolated elderly + carers",
+      "current_location": "Google Drive research (targeted)",
+      "source_project": "AWAITING_CODEX",
+      "source_repository": "AWAITING_CODEX",
+      "source_folder": "AWAITING_CODEX",
+      "current_url": "",
+      "backend": "none",
+      "dependencies": [],
+      "environment_variable_names": [],
+      "completion_score": 10,
+      "completion_band": "0-20 Concept shell",
+      "current_status": "PLANNED",
+      "classification": "FUTURE",
+      "commercial_model": "charitable",
+      "intended_price": "Charitable (n/a) | Master Business Plan | n/a",
+      "free_trial": "n/a",
+      "lineage": [
+        "ADR",
+        "Verticals"
+      ],
+      "duplicate_group_id": "",
+      "duplicate_locations": [],
+      "sha256": "",
+      "known_risks": [
+        "Year 4+ concept"
+      ],
+      "contradictions": [],
+      "next_three_actions": [
+        "define give-back mechanism",
+        "partner",
+        "report"
+      ],
+      "definition_of_finished": "Give-back operating + reported",
+      "approved_for_move": false,
+      "approved_for_delete": false,
+      "approval_notes": "read-only research record; no move/delete without Chris",
+      "review_date": "2026-07-23",
+      "reviewer": "Claude (product/Drive lane)",
+      "backend_detail": {
+        "backend_ids": [],
+        "integration_state": "NO BACKEND REQUIRED"
+      },
+      "product_detail": {
+        "era": "Verticals",
+        "aliases": [
+          "5% give-back",
+          "IDCARE / Parkinson's NZ",
+          "training centre"
+        ],
+        "price_variants": [
+          "Charitable (n/a) | Master Business Plan | n/a"
+        ],
+        "sources": [
+          {
+            "name": "APN \u2014 Master Business Plan (Living Doc) v1",
+            "drive_id": "1G_lBLty7YUtOMjxz-mM-5H_mXyoKKny9dHaAAvjo1fc",
+            "evidence": "DIRECT"
+          }
+        ]
+      }
+    }
+  ]
+}

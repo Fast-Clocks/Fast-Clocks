@@ -1,0 +1,42 @@
+product_id,canonical_name,backend,backend_ids,integration_state,notes
+APN-PROD-0001,Australian Data Removal — Core Service Ladder,external,,NO BACKEND REQUIRED (public site),Stripe/Paperform/Airtable flow never tested end-to-end
+APN-PROD-0002,ADR Founding Members Program,external,,NO BACKEND REQUIRED,'annual scan for life' = compounding unpaid obligation; unclear renewal revenue
+APN-PROD-0003,ADR DIY Removal Kit,external,,NO BACKEND REQUIRED,automated digital delivery not built (Make.com flow designed only)
+APN-PROD-0004,ExposureRadar / OSINT Scanner (ADR-era),external,,UNKNOWN,build status unclear / not confirmed deployed
+APN-PROD-0005,Sovereign Tank Lab (early product line),none,,NO BACKEND REQUIRED,superseded; distinct from later Sovereign Tank game
+APN-PROD-0006,darkwebscanner.com.au,external,,WRONG BACKEND / DISCONNECTED,repo COMPROMISED (wallet-stealer) and quarantined read-only
+APN-PROD-0007,Dark Web Directory (The Hub),self,SUP-PROJ-SYDNEY,CONNECTED BUT INCOMPLETE,content assembly + dedup/verify pipeline
+APN-PROD-0008,Business-in-a-Box + Domain Portfolio,self,SUP-TABLE-DOMAINS,"CONFIGURED, NOT VERIFIED",~167 usable of 216
+APN-PROD-0009,Hugo AI (concierge / HITL),external,,DEMONSTRATION ONLY,'live in code' vs 'prototype in progress' (docs disagree)
+APN-PROD-0010,APN Hub / Core (front door),self,SUP-PROJ-SYDNEY,CONNECTED BUT INCOMPLETE,two competing structural framings; front-end in build
+APN-PROD-0011,APN Free Resource Hub + Verified Directory,self,SUP-PROJ-SYDNEY; SUP-TABLE-RESOURCES,VERIFIED CONNECTED,never advertise raw 50k count; anon reads internal columns (backend FIND-005)
+APN-PROD-0012,APN Directory / Resource Widget,self,SUP-TABLE-RESOURCES,"CONFIGURED, NOT VERIFIED",packaging to build
+APN-PROD-0013,APN Scanner / CID / Intelligence Platform,self,,UNKNOWN,tools built; platform/API layer to build
+APN-PROD-0014,TRACE / DataTrace,external,,UNKNOWN,Portfolio Map lists DataTrace as 'UNKNOWN — confirm what this is'
+APN-PROD-0015,APN Builder ('Product Zero'),self,SUP-TABLE-RESOURCE-SUBMISSIONS,CONNECTED BUT INCOMPLETE,in development; honesty clause (no income/equity guaranteed)
+APN-PROD-0016,APN Bot Workshop,self,,NO BACKEND REQUIRED,'Later' on roadmap
+APN-PROD-0017,APN Trust Spine / Verification Machine,self,SUP-TABLE-LEDGER-EVENTS,CONNECTED BUT INCOMPLETE,architecture deep; build pending; matured into Sovereign Engine
+APN-PROD-0018,Dead Letter Box / 0xBRK.BKWD,self,,NO BACKEND REQUIRED,landing + concept complete; build pending
+APN-PROD-0019,APN Tech Startup Hub + Sponsors / Jobs Board,self,SUP-TABLE-JOBS; SUP-TABLE-ADS; SUP-TABLE-INQUIRIES; SUP-TABLE-PACKAGES,CONNECTED BUT INCOMPLETE,dashboard in hand; ships unfinished with coming-soon note; tables currently empty
+APN-PROD-0020,Government & Public API Index,self,,NO BACKEND REQUIRED,in development
+APN-PROD-0021,APN Site Bundle,self,,NO BACKEND REQUIRED,branding locked; ad slots/donation footer new
+APN-PROD-0022,APN Education Arm,none,,NO BACKEND REQUIRED,planned
+APN-PROD-0023,APN Modernised API Design Standard,none,,NO BACKEND REQUIRED,implementation artifact (document)
+APN-PROD-0024,Sovereign Engine (assurance core),self,SUP-TABLE-LEDGER-EVENTS,CONNECTED BUT INCOMPLETE,external witness (Layer C) designed not built -> not independently tamper-evident (backend FIND-004)
+APN-PROD-0025,Assay Seal v0.1,none,,NO BACKEND REQUIRED,8/8 logic tests pass BUT UI never browser-tested; seal.html/verify.html/test.mjs MISSING from Drive
+APN-PROD-0026,APN Seal / Sign & Stamp,self,SUP-TABLE-LEDGER-EVENTS,CONNECTED BUT INCOMPLETE,no regulator requires crypto integrity (signed PDF already satisfies WHS/ISO 45001) — stay in claim boundary
+APN-PROD-0027,APN Backbone (apn-backbone-sydney),self,SUP-PROJ-SYDNEY; SUP-TABLE-LEDGER-EVENTS,VERIFIED CONNECTED,append-only NOT enforced vs TRUNCATE (backend FIND-001); not tamper-evident until Layer C
+APN-PROD-0028,APN Ledger Trust / provenance-keeper,external,SUP-RECON-LEDGER-LOCATION,WRONG BACKEND / UNKNOWN,doc ledger (ledger_entries/Merkle/Ed25519) NOT in visible Supabase account; verifier fns not anon-exposed
+APN-PROD-0029,Certificate / Trust-Seal Template,none,,NO BACKEND REQUIRED,implementation artifact
+APN-PROD-0030,APN Widget Studio (guardian-studio),self,SUP-PROJ-SYDNEY,"CONFIGURED, NOT VERIFIED",commercial packaging pending
+APN-PROD-0031,Sovereign Suite family,external,,"CONFIGURED, NOT VERIFIED",Hub duplicates Suite; Forge has a duplicate to retire; stronger public claims to verify
+APN-PROD-0032,Sovereign standalones & harvest/merge/bin set,none,,UNKNOWN,mostly name-only triage lines; 'Friendly Hub Finder' published publicly — flagged to unpublish
+APN-PROD-0033,Watchkeeper's Filing Machine,none,,NO BACKEND REQUIRED,asset links are placeholder docs.google paths; 5 duplicate copies
+APN-PROD-0034,SafePet / Perth Pets,external,,"WRONG BACKEND / UNKNOWN (Lovable, not Supabase Sydney)",no privacy policy/terms/entity shown; '100% verified' vs 'pending' (ACL risk); NFP structure; NDB plan; refund terms before Stripe live; automated-decision disclosure binds 10 Dec 2026
+APN-PROD-0035,Sovereign Tank (showcase / game),none,,NO BACKEND REQUIRED,utility->real-money economy 'needs an AU gambling/gaming lawyer before anything real'
+APN-PROD-0036,Sovereignty Lab / reseller cluster,self,SUP-TABLE-RESOURCES,"CONFIGURED, NOT VERIFIED","'DO NOT SHIP AS-IS' — strip fabricated certs/scanners/guarantees; keep only 2 real engines (DNS mapper, doc/PII analyzer)"
+APN-PROD-0037,Executive / Corporate Privacy,external,,NO BACKEND REQUIRED,'Limited Intake'
+APN-PROD-0038,Hologram Safety Displays,none,,NO BACKEND REQUIRED,concept only
+APN-PROD-0039,Sovereign Data Environment (ADS),none,,NO BACKEND REQUIRED,architecture role defined
+APN-PROD-0040,Mass-Breach Response Packages,external,,NO BACKEND REQUIRED,Year-2 revenue line
+APN-PROD-0041,Social Mission — Elderly Care,none,,NO BACKEND REQUIRED,Year 4+ concept

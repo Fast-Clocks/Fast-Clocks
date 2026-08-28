@@ -1,0 +1,24 @@
+table,policy,cmd,roles,classification,note
+apn_ledger_events,apn_ledger_events inbox insert,INSERT,authenticated,AUTHENTICATED USER ISOLATED,machine='inbox' AND actor_id=auth.uid()
+apn_ledger_events,apn_ledger_events inbox read own,SELECT,authenticated,AUTHENTICATED USER ISOLATED,own inbox events only; no anon read
+audit_config,(none),-,-,DENY-ALL INTENTIONAL,RLS on + zero policies + service-only grant (holds cron_secret)
+company_profile,(none),-,-,DENY-ALL INTENTIONAL,RLS on + zero policies; leftover anon SELECT grant masked by RLS
+resources,Public read published resources,SELECT,anon+authenticated,PUBLIC READ INTENTIONAL,is_published AND link_status<>broken AND network-wide AND withheld_reason IS NULL
+resource_submissions,anon submit resource,INSERT,anon,PUBLIC INSERT VALIDATED,status forced pending; email validated
+resource_submissions,no public submission read,SELECT,public,DENY-ALL INTENTIONAL,USING false
+resource_submissions,service manage submissions,ALL,service_role,SERVICE-ONLY,
+waitlist,anon can join waitlist,INSERT,anon,PUBLIC INSERT VALIDATED,email validated; no SELECT
+inquiries,anon insert inquiries,INSERT,anon,PUBLIC INSERT VALIDATED,email+length validated
+inquiries,service all inquiries,ALL,service_role,SERVICE-ONLY,
+domains,anon read live domains,SELECT,anon,PUBLIC READ INTENTIONAL,status in live/listed-for-sale
+link_audit_queue,No public audit queue read,SELECT,public,DENY-ALL INTENTIONAL,USING false
+manual_resources,No public manual resource read,SELECT,public,DENY-ALL INTENTIONAL,USING false
+network_events,service all network_events,ALL,service_role,SERVICE-ONLY,
+network_nodes,anon read active nodes,SELECT,anon,PUBLIC READ INTENTIONAL,is_active
+packages,anon read listed packages,SELECT,anon,PUBLIC READ INTENTIONAL,active+listed
+ads,anon read active ads,SELECT,anon,PUBLIC READ INTENTIONAL,active window
+jobs,anon read active jobs,SELECT,anon,PUBLIC READ INTENTIONAL,active window
+brands,Public read active brands,SELECT,anon+authenticated,PUBLIC READ INTENTIONAL,is_active
+verticals,Public read active verticals,SELECT,anon+authenticated,PUBLIC READ INTENTIONAL,is_active
+resource_categories,Public read categories,SELECT,anon+authenticated,PUBLIC READ INTENTIONAL,is_active
+inbox_projects;inbox_queue_items;inbox_routing_rules,owner read/write/update/delete,ALL(split),authenticated,AUTHENTICATED USER ISOLATED,auth.uid()=created_by (no org/tenant field)
